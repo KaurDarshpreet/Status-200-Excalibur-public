@@ -14,77 +14,75 @@ datasource db {
 }
 
 model Student {
-  domain_id String @id
-  password String 
-  name String
-  hostel String
-  room_number String
-  phone_number Int
+  domain_id       String         @id
+  password        String
+  name            String
+  hostel          String
+  room_number     String
+  phone_number    Int
   profile_picture String?
-  issue_list Issue[]
-  notification Notification[]
+  issue_list      Issue[]
+  notification    Notification[]
 }
 
 model Technician {
-  technician_id String @id @default(uuid())
-  password String
-  name String
-  category Categories
-  phone_number Int
-  Address String?
-  issue_list Issue[]
+  technician_id String     @id @default(uuid())
+  password      String
+  name          String
+  category      Categories
+  phone_number  Int
+  Address       String?
+  issue_list    Issue[]
 }
 
 model Issue {
-  issue_id Int @id @default(autoincrement())
-  created_at DateTime @default(now())
-  is_public Boolean @default(false)
-  category Categories
-  is_resolved Boolean @default(false)
+  issue_id    Int        @id @default(autoincrement())
+  created_at  DateTime   @default(now())
+  is_public   Boolean    @default(false)
+  category    Categories
+  is_resolved Boolean    @default(false)
   issue_media String?
-  location String
+  location    String
 
-  student_id String
+  student_id    String
   technician_id String?
 
   notification Notification?
 
-  student Student @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
+  student    Student     @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
   technician Technician? @relation(fields: [technician_id], references: [technician_id], onDelete: Cascade)
-
 }
-model Notification{
-  issue_id Int @unique
-  student_id String
-  sent_at DateTime @default(now())
+
+model Notification {
+  issue_id        Int      @unique
+  student_id      String
+  sent_at         DateTime @default(now())
   hostel_admin_id String?
 
+  issue        Issue         @relation(fields: [issue_id], references: [issue_id], onDelete: Cascade)
+  student      Student       @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
+  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [hostel_admin_id], onDelete: Cascade)
 
-  issue Issue @relation(fields: [issue_id], references: [issue_id],onDelete: Cascade)
-  student Student @relation(fields: [student_id], references: [domain_id],onDelete: Cascade)
-  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [hostel_admin_id],onDelete: Cascade)
-
-  @@id([issue_id,student_id])
+  @@id([issue_id, student_id])
 }
 
-model Hostel_admin{
-  hostel_admin_id String @id @default(uuid())
-  hostel String
-  name String
-  email String
-  password String
-  notification Notification[]
-  phone_number Int
+model Hostel_admin {
+  hostel_admin_id String         @id @default(uuid())
+  hostel          String
+  name            String
+  email           String
+  password        String
+  notification    Notification[]
+  phone_number    Int
 }
 
-model College_admin{
+model College_admin {
   college_admin_id String @id @default(uuid())
-  name String
-  password String
-  college_name String
-  phone_number Int
+  name             String
+  password         String
+  college_name     String
+  phone_number     Int
 }
-
 
 enum Categories {
   carpentry
@@ -96,7 +94,3 @@ enum Categories {
   mess_staff
   sweeper
 }
-
-
-
-
