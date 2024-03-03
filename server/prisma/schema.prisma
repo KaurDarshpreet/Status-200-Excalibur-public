@@ -19,7 +19,7 @@ model Student {
   name            String
   hostel          String
   room_number     String
-  phone_number    Int
+  phone_number    String
   profile_picture String?
   issue_list      Issue[]
   notification    Notification[]
@@ -30,16 +30,18 @@ model Technician {
   password      String
   name          String
   category      Categories
-  phone_number  Int
+  phone_number  String
   Address       String?
   issue_list    Issue[]
 }
 
 model Issue {
-  issue_id    Int        @id @default(autoincrement())
+  issue_id    Int       @id @default(autoincrement())
   created_at  DateTime   @default(now())
   is_public   Boolean    @default(false)
   category    Categories
+  title      String
+  description String
   is_resolved Boolean    @default(false)
   issue_media String?
   location    String
@@ -73,7 +75,7 @@ model Hostel_admin {
   email           String
   password        String
   notification    Notification[]
-  phone_number    Int
+  phone_number    String
 }
 
 model College_admin {
@@ -81,7 +83,7 @@ model College_admin {
   name             String
   password         String
   college_name     String
-  phone_number     Int
+  phone_number     String
 }
 
 enum Categories {
