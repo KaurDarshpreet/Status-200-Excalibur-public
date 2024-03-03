@@ -1,6 +1,6 @@
 import { Router } from "express";
 import collegeAdminRoutes from "./CollegeAdminRoutes";
-import hostelAdminRoutes from "./hostelAdminRoutes";
+import hostelAdminRoutes from "./HostelAdminRoutes";
 
 const AdminRoutes:Router = Router();
 

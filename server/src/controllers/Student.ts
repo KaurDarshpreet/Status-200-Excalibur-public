@@ -121,12 +121,31 @@ export const createIssue = async (req: Request, res: Response) => {
                 },
             },
         });
+
+        // push issue id in the Issue array of student 
+        await prisma.student.update({
+            where: {
+                domain_id: student_id,
+            },
+            data: {
+                issue_list: {
+                    connect: {
+                        issue_id: issue.issue_id,
+                    },
+                },
+            },
+        })
+        
         return res.status(200).json({
+            success : true,
             message: "Issue created successfully",
             issue 
         });
     } catch (error:any) {
-        return res.status(500).json({ error: "Something went wrong" });
+        return res.status(500).json({ 
+            success : false,
+            error: "Something went wrong" 
+        });
     }
 
 }
