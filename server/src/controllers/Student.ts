@@ -8,7 +8,10 @@ export const signup = async (req: Request, res: Response) => {
     try {
         const {domain_id , name , hostel , password , phone_number , room_number,profile_pic} = req.body;
         if (!domain_id || !name || !hostel || !password) {
-            return res.status(400).json({ error: "Please fill all fields" });
+            return res.status(400).json({
+                success : false, 
+                error: "Please fill all fields" 
+            });
         }
         
         // check if user already exists or not
@@ -56,7 +59,10 @@ export const login = async (req: Request, res: Response) => {
     try {
         const {domain_id , password} = req.body;
         if (!domain_id || !password) {
-            return res.status(400).json({ error: "Please fill all fields" });
+            return res.status(400).json({
+                success : false ,
+                error: "Please fill all fields" 
+            });
         }
 
         const student = await prisma.student.findFirst({
@@ -66,7 +72,10 @@ export const login = async (req: Request, res: Response) => {
         })
 
         if (!student) {
-            return res.status(400).json({ error: "Invalid credentials" });
+            return res.status(400).json({
+                success : false,
+                error: "Invalid credentials"
+            });
         }
 
         // check if password is correct
@@ -89,11 +98,15 @@ export const login = async (req: Request, res: Response) => {
         };
 
         return res.cookie("token", token, options).status(200).json({
+            success : true,
             message: "Login successful",
             student 
         });
     } catch (error:any) {
-        return res.status(500).json({ error: "Something went wrong" });
+        return res.status(500).json({
+            success : false, 
+            error: "Something went wrong" 
+        });
     }
 
 }
@@ -103,7 +116,10 @@ export const createIssue = async (req: Request, res: Response) => {
         const {category , student_id, location , title , is_public, description , issue_media} = req.body; 
     //  const student_id = req.user.id;  //authenticate krne ke baad req me user ki id daaldena , as of now req me le rha hu //
         if (!category || !title || !location || !description) {
-            return res.status(400).json({ error: "Please fill all fields" });
+            return res.status(400).json({
+                success : false, 
+                error: "Please fill all fields" 
+            });
         }
 
         // not written issue_media since cloudinary is not yet integrated
@@ -164,20 +180,23 @@ export const getAllIssues = async (req : Request , res : Response) => {
 
         if(issues.length === 0) {
             return res.status(200).json({
+                success : true,
                 message : "No issues found"
             })
         }
         
 
     return res.status(20).json({
+        success : true,
         message : "Issues fetched successfully",
         issues
     })
     } catch (error:any) {
         return res.status(500).json({
+            success : false,
             message : "Something went wrong"
         })
     }
 }
 
-// generate a Notification once issue created preferably sms ( TODO : )
+// generate a Notification once issue created preferably sms ( TODO :)
