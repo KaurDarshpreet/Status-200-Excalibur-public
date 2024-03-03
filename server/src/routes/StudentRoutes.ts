@@ -7,4 +7,4 @@ StudentRoutes.post('/login', login);
 StudentRoutes.post('/createIssue', createIssue) ; // add a middleware of auth here 
 StudentRoutes.get('/getIssues',getAllIssues); // add a middleware of auth here
 
-export default StudentRoutes; 
+export default StudentRoutes;  

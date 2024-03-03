@@ -6,9 +6,9 @@ import jwt from "jsonwebtoken";
 
 export const signup = async (req: Request, res: Response) => {
     try {
-        const {name , category , password , phone_number , Address} = req.body;
+        const {name , email , category , password , phone_number , Address} = req.body;
 
-        if(!name || !password || !category || !phone_number){
+        if(!name || !email || !password || !category || !phone_number){
             return res.status(400).json({
                 success : false,
                 message : "Please fill all fields"
@@ -19,7 +19,7 @@ export const signup = async (req: Request, res: Response) => {
         const existingTechnician = await prisma.technician.findFirst(
             {
                 where : {
-                    phone_number , category , name
+                    email
                 }
             }
         )
@@ -37,6 +37,7 @@ export const signup = async (req: Request, res: Response) => {
         const technician = await prisma.technician.create({
             data : {
                 name,
+                email,
                 category,
                 phone_number,
                 Address,
@@ -59,8 +60,8 @@ export const signup = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
     try {
-        const {name , category , phone_number , password} = req.body;
-        if (!name || !category || !phone_number || !password) {
+        const {email, password} = req.body;
+        if (!email|| !password) {
             return res.status(400).json({
                 success : false,
                 message: "Please fill all fields"
@@ -69,9 +70,7 @@ export const login = async (req: Request, res: Response) => {
 
         const technician = await prisma.technician.findFirst({
             where: {
-                name,
-                category,
-                phone_number,
+                email
             },
         });
 
@@ -93,9 +92,7 @@ export const login = async (req: Request, res: Response) => {
         }
 
         const token = jwt.sign({
-            name : technician.name,
-            category : technician.category,
-            phone_number : technician.phone_number
+            email : technician.email,
         }, process.env.JWT_SECRET!);
 
         // Set cookie for token and return success response
