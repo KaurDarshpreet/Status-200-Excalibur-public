@@ -81,12 +81,14 @@ export const login = async (req: Request, res: Response) => {
         // check if password is correct
         const isPasswordCorrect = await bcrypt.compare(password, student.password);
         if (!isPasswordCorrect) {
-            return res.status(400).json({ error: "Invalid credentials" });
+            return res.status(400).json({ 
+                success : false,
+                error: "Invalid credentials" 
+            });
         }
 
         const token = jwt.sign({
             domain_id: student.domain_id,
-            name: student.name,
         }, process.env.JWT_SECRET!, 
         { expiresIn: "1h"})
         
@@ -100,7 +102,7 @@ export const login = async (req: Request, res: Response) => {
         return res.cookie("token", token, options).status(200).json({
             success : true,
             message: "Login successful",
-            student 
+            token 
         });
     } catch (error:any) {
         return res.status(500).json({

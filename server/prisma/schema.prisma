@@ -29,6 +29,7 @@ model Technician {
   technician_id String     @id @default(uuid())
   password      String
   name          String
+  email         String
   category      Categories
   phone_number  String
   Address       String?
@@ -60,30 +61,32 @@ model Notification {
   student_id      String
   sent_at         DateTime @default(now())
   hostel_admin_id String?
+  college_admin_id String?
 
   issue        Issue         @relation(fields: [issue_id], references: [issue_id], onDelete: Cascade)
   student      Student       @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
-  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [hostel_admin_id], onDelete: Cascade)
+  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [domain_id], onDelete: Cascade)
+  college_admin College_admin? @relation(fields: [college_admin_id], references: [domain_id], onDelete: Cascade)
 
   @@id([issue_id, student_id])
 }
 
 model Hostel_admin {
-  hostel_admin_id String         @id @default(uuid())
+  domain_id       String         @id 
   hostel          String
   name            String
-  email           String
   password        String
   notification    Notification[]
   phone_number    String
 }
 
 model College_admin {
-  college_admin_id String @id @default(uuid())
+  domain_id       String         @id 
   name             String
   password         String
   college_name     String
   phone_number     String
+  Notification     Notification[]
 }
 
 enum Categories {
