@@ -5,3 +5,10 @@
     text-decoration: none;
     scroll-behavior: smooth;
 }
+
+google_login{
+    color: white;
+}
+google_login > p{
+    color: white;
+}

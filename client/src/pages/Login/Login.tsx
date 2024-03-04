@@ -5,6 +5,7 @@ import technicianBG from '../../assets/technician_background.jpg'
 import hostelAdminBG from '../../assets/hostel_admin_background.jpg'
 import collegeAdminBG from '../../assets/college_admin_background.jpg'
 import { Link } from "react-router-dom"
+import { GoogleLogin } from '@react-oauth/google';
 
 interface SelectCollegeProps {
     college : string,
@@ -80,6 +81,29 @@ const Role = ({handleRole} : SelectRoleProps) => {
     )
 }
 const StudentLogin = () => {
+    const [user, setUser] = useState(null);
+    const responseMessage = async (response: any) => {
+        console.log(response);
+        const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
+          method: "POST",
+          body: JSON.stringify({
+            token: response.credential
+          }),
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+    
+        const data = await res.json();
+        console.log(data);
+        setUser(() => {
+          return data;
+        });
+      }
+
+      const errorMessage = (error: any) => {
+        console.log(error);
+      }
     return (
         <>
             {/* Asking for DomainID and Password for Login as Student or Google Login */}
@@ -87,6 +111,7 @@ const StudentLogin = () => {
             <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
             <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
             <button className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border">Login</button>
+            {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user.username}</p><p>{user.email}</p></div>}
             <a href="#" className="text-blue-500">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
             <p className="text-yellow-500">Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link></p>
