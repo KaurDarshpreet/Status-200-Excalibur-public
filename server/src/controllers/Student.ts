@@ -208,7 +208,7 @@ export const createIssue = async (req: Request, res: Response) => {
 
 }
 
-export const yourIssues= async (req : Request , res : Response) => {
+export const getAllIssues= async (req : Request , res : Response) => {
     try {
         const { domain_id } = (req as AuthenticatedRequest).user;
         const { role } = (req as AuthenticatedRequest).user;
@@ -243,7 +243,7 @@ export const yourIssues= async (req : Request , res : Response) => {
         return res.status(400).json({
             success : false,
             message : "Something went wrong"
-        })
+        });
     }
 }
 
