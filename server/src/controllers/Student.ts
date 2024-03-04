@@ -243,7 +243,7 @@ export const yourIssues= async (req : Request , res : Response) => {
         return res.status(400).json({
             success : false,
             message : "Something went wrong"
-        })
+        });
     }
 }
 
