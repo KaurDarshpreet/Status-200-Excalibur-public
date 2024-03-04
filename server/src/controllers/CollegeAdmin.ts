@@ -129,9 +129,163 @@ export const login_collegeAdmin = async(req:Request , res : Response)=>{
 
 
 export const assignCollegeIssue = async(req:Request , res : Response)=>{
-    const {domain_id} = (req as AuthenticatedRequest).user;
+    try {
+        const {domain_id} = (req as AuthenticatedRequest).user;
+        const {issue_id} = req.body;
+        if(!domain_id){
+            return res.status(400).json({
+                success : false,
+                message : "Unauthorized access"
+            });
+        }
+        const collegeAdmin = await prisma.college_admin.findUnique({
+            where : {
+                domain_id
+            }
+        })
+    
+        if(!collegeAdmin){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid credentials"
+            });
+        }
+    
+        const location = collegeAdmin.college_name;
+    
+        const issueDetails = await prisma.issue.findUnique({
+            where: {
+                issue_id: Number(issue_id),
+            },
+        });
+    
+        if (!issueDetails) {
+            return res.status(400).json({
+                success: false,
+                message: "Issue not found",
+            });
+        }
+    
+        //generated an array for all matching category tecnician
+        const technicians = await prisma.technician.findMany({
+            where: {
+                category: issueDetails.category,
+            },
+        });
+    
+        // if no technicians found from given category return ..
+        if (!technicians.length) {
+            return res.status(404).json({
+                success: false,
+                message: "No technicians available",
+            });
+        }
+    
+        //Issue randomly kisi bhi technician ko assign ho jayegi
+        const randomTechnician = technicians[Math.floor(Math.random() * technicians.length)];
+    
+        const updatedIssue = await prisma.issue.update({
+            where: {
+                issue_id: Number(issue_id),
+            },
+            data: {
+                technician_id: randomTechnician.technician_id,
+            },
+        });
+    
+        return res.json({
+            success: true,
+            message: "Issue assigned successfully",
+            issue: updatedIssue,
+        });
+    } catch (error: any) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
 }
 
 export const reviewCollegeIssue = async(req:Request , res : Response)=>{
-    const {domain_id} = (req as AuthenticatedRequest).user;
+    try {
+        const {domain_id} = (req as AuthenticatedRequest).user;
+        if(!domain_id){
+            return res.status(400).json({
+                success : false,
+                message : "Unauthorized access"
+            });
+        }
+        const collegeAdmin = await prisma.college_admin.findUnique({
+            where : {
+                domain_id
+            }
+        })
+        if(!collegeAdmin){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid credentials"
+            });
+        }
+        const location = collegeAdmin.college_name;
+        const issues = await prisma.issue.deleteMany({
+            where : {
+                location : location,
+                is_resolved : true
+            }
+        })
+
+        return res.status(200).json({
+            success : true,
+            message : "Issues reviewed and resolved successfully",
+            issues
+        })
+
+    } catch (error:any) {
+        return res.status(500).json({
+            success : false,
+            message: 'Something went wrong'
+        })
+    }
+}
+
+export const checkCollegeIssue = async(req : Request , res : Response)=>{
+    try {
+        const {domain_id} = (req as AuthenticatedRequest).user;
+        if(!domain_id){
+            return res.status(400).json({
+                success : false,
+                message : "Unauthorized access"
+            });
+        }
+        const collegeAdmin = await prisma.college_admin.findUnique({
+            where : {
+                domain_id
+            }
+        })
+        if(!collegeAdmin){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid credentials"
+            });
+        }
+        const location = collegeAdmin.college_name;
+        const issues = await prisma.issue.findMany({
+            where : {
+                location : location,
+                is_resolved : false,
+                technician_id : { not: null }
+            }
+        })
+        return res.status(200).json({
+            success : true,
+            message : "Here is the list of assigned issues at your College",
+            issues
+        })
+    } catch (error) {
+        return res.status(500).json({
+            success : false,
+            message : "Something went wrong"
+        })
+        
+    }
 }
