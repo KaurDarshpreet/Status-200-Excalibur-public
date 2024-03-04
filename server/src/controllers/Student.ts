@@ -6,11 +6,17 @@ import jwt from "jsonwebtoken";
 
 export const signup_student = async (req: Request, res: Response) => {
     try {
-        const {domain_id , name , hostel , password , phone_number , room_number,profile_pic} = req.body;
+        const {domain_id , name , role ,  hostel , password , phone_number , room_number,profile_pic} = req.body;
         if (!domain_id || !name || !hostel || !password) {
             return res.status(400).json({
                 success : false, 
                 error: "Please fill all fields" 
+            });
+        }
+        if(role !== "student"){
+            return res.status(400).json({
+                success : false,
+                error: "Invalid access to this route. Please sign up as a student."
             });
         }
         
@@ -64,6 +70,12 @@ export const login_student = async (req: Request, res: Response) => {
                 error: "Please fill all fields" 
             });
         }
+        if(req.body.role !== "student"){
+            return res.status(400).json({
+                success : false,
+                error: "Invalid access to this route. Please sign in as a student."
+            });
+        }
 
         const student = await prisma.student.findUnique({
             where: {
@@ -89,6 +101,7 @@ export const login_student = async (req: Request, res: Response) => {
 
         const token = jwt.sign({
             domain_id: student.domain_id,
+            role : "student"
         }, process.env.JWT_SECRET!, 
         { expiresIn: "1h"})
         
@@ -115,12 +128,19 @@ export const login_student = async (req: Request, res: Response) => {
 
 export const createIssue = async (req: Request, res: Response) => {
     try{
-        const {category , student_id, location , title , is_public, description , issue_media} = req.body; 
+        const {category , student_id,role, location , title , is_public, description , issue_media} = req.body; 
     //  const student_id = req.user.id;  //authenticate krne ke baad req me user ki id daaldena , as of now req me le rha hu //
         if (!category || !title || !location || !description) {
             return res.status(400).json({
                 success : false, 
                 error: "Please fill all fields" 
+            });
+        }
+
+        if(role !== "student"){
+            return res.status(400).json({
+                success : false,
+                error: "Invalid access to this route. Please sign in as a student."
             });
         }
 
@@ -173,7 +193,13 @@ export const getAllIssues = async (req : Request , res : Response) => {
         const {student_id} = req.body;
     // const student_id = req.user.id ; // authenticate krne ke baad req me user ki id daaldena
 
- 
+        if(req.body.role !== "student"){
+            return res.status(400).json({
+                success : false,
+                error: "Invalid access to this route. Please sign in as a student."
+            });
+        }
+
         const issues = await prisma.issue.findMany({
             where : {
                 student_id
@@ -187,12 +213,12 @@ export const getAllIssues = async (req : Request , res : Response) => {
             })
         }
         
+        return res.status(200).json({
+            success : true,
+            message : "Issues fetched successfully",
+            issues
+        })
 
-    return res.status(20).json({
-        success : true,
-        message : "Issues fetched successfully",
-        issues
-    })
     } catch (error:any) {
         return res.status(500).json({
             success : false,

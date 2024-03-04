@@ -5,7 +5,7 @@ import jwt from "jsonwebtoken";
 
 export const signup_collegeAdmin = async(req:Request , res : Response)=>{
     try {
-        const {domain_id , name , college_name , password , phone_number} = req.body;
+        const {domain_id , name ,role , college_name , password , phone_number} = req.body;
     
         if(!domain_id || !name || !college_name || !password || !phone_number){
             return res.status(400).json({
@@ -13,7 +13,13 @@ export const signup_collegeAdmin = async(req:Request , res : Response)=>{
                 message : "Please fill all fields"
             });
         }
-    
+        
+        if(role !== "college_admin"){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid access to this route. Please sign up as a college admin."
+            });
+        }
         //check whether the college admin already exists or not
         const existingcollegeAdmin = await prisma.college_admin.findUnique(
             {
@@ -64,7 +70,13 @@ export const login_collegeAdmin = async(req:Request , res : Response)=>{
             message : "Please fill all fields"
         });
      }
- 
+     
+     if(req.body.role !== "college_admin"){
+        return res.status(400).json({
+            success : false,
+            message : "Invalid access to this route. Please sign in as a college admin."
+        });
+     }
      const collegeAdmin = await prisma.college_admin.findUnique({
          where: {
              domain_id
@@ -90,6 +102,7 @@ export const login_collegeAdmin = async(req:Request , res : Response)=>{
      //create and assign a token
      const token = jwt.sign({
         domain_id: collegeAdmin.domain_id,
+        role : "college_admin"
      }, process.env.JWT_SECRET!, 
      { expiresIn: "1h"})
  
