@@ -4,24 +4,26 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import  RootRouter  from "./routes";
-export const prisma = new PrismaClient()
+import multer from 'multer';
 
-require("dotenv").config();
+const prisma = new PrismaClient()
+
 
 //middlewares
 const app: Express = express();
 
-app.use(express.json());
 app.use(express.json());
 app.use(cookieParser());
 
 app.use(cors());
 
 app.use('/api',RootRouter);
-app.get("/",async (req: Request, res: Response)=>{
+app.get("/", async (req: Request, res: Response)=>{
     res.json("Express server");
 });
 
 app.listen(5000, ()=>{
     console.log("server running on port 5000");
 });
+
+export { prisma };

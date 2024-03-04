@@ -3,11 +3,25 @@ import {prisma} from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import AuthenticatedRequest from "../interfaces/authenticatedRequest";
-
+import MulterFileRequest from "../interfaces/multerFile";
+import { handleUpload } from "../utilities/cloudinaryManager";
 
 export const signup_student = async (req: Request, res: Response) => {
+    try{
+        const b64 = Buffer.from((req as MulterFileRequest).file.buffer).toString("base64");
+        let dataURI = "data:" + (req as MulterFileRequest).file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+        req.body.profile_pic = cldRes;
+    }
+    catch(error: any){
+        console.log("Error uploading the file");
+        res.json({
+            message: "File upload failed"
+        });
+    }
+
     try {
-        const {domain_id , name , role ,  hostel , password , phone_number , room_number,profile_pic} = req.body;
+        const {domain_id , name , role ,  hostel , password , phone_number , room_number, profile_pic} = req.body;
         if (!domain_id || !name || !hostel || !password) {
             return res.status(400).json({
                 success : false, 
@@ -46,6 +60,7 @@ export const signup_student = async (req: Request, res: Response) => {
                 phone_number,
                 room_number,
                 password : hashedPassword,
+                profile_picture: profile_pic
             },
         });
         return res.status(200).json({
@@ -128,6 +143,7 @@ export const login_student = async (req: Request, res: Response) => {
 }
 
 export const createIssue = async (req: Request, res: Response) => {
+    
     try{
         const {category , location , title , is_public, description , issue_media} = req.body; 
 
