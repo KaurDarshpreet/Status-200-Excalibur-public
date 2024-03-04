@@ -2,6 +2,7 @@ import { Request,Response} from "express";
 import {prisma} from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import AuthenticatedRequest from "../interfaces/authenticatedRequest";
 
 
 export const signup_student = async (req: Request, res: Response) => {
@@ -25,7 +26,7 @@ export const signup_student = async (req: Request, res: Response) => {
             where : {
                 domain_id
             }
-        })
+        });
 
         if(existingstudent){
             return res.status(400).json({
@@ -180,7 +181,7 @@ export const createIssue = async (req: Request, res: Response) => {
             issue 
         });
     } catch (error:any) {
-        return res.status(500).json({ 
+        return res.status(400).json({ 
             success : false,
             error: "Something went wrong" 
         });
@@ -190,21 +191,13 @@ export const createIssue = async (req: Request, res: Response) => {
 
 export const getAllIssues = async (req : Request , res : Response) => {
     try {
-        const {student_id} = req.body;
-    // const student_id = req.user.id ; // authenticate krne ke baad req me user ki id daaldena
-
-        if(req.body.role !== "student"){
-            return res.status(400).json({
-                success : false,
-                error: "Invalid access to this route. Please sign in as a student."
-            });
-        }
+        const { domain_id } = (req as AuthenticatedRequest).user;
 
         const issues = await prisma.issue.findMany({
             where : {
-                student_id
+                student_id: domain_id
             }
-        })
+        });
 
         if(issues.length === 0) {
             return res.status(200).json({
@@ -220,7 +213,7 @@ export const getAllIssues = async (req : Request , res : Response) => {
         })
 
     } catch (error:any) {
-        return res.status(500).json({
+        return res.status(400).json({
             success : false,
             message : "Something went wrong"
         })
