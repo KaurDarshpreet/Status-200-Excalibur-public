@@ -2,7 +2,7 @@ import { Router } from "express";
 import { createIssue, getAllIssues } from "../controllers/Student";
 import { assignHostelIssue, reviewHostelIssue } from "../controllers/HostelAdmin";
 import { assignCollegeIssue, reviewCollegeIssue } from "../controllers/CollegeAdmin";
-import { resolveIssue } from "../controllers/Technician";
+import { Issuelist, resolveIssue } from "../controllers/Technician";
 import authenticateToken from "../middlewares/jwtVerification";
 import { collegeAdminAuth, hostelAdminAuth, studentAuth, technicianAuth } from "../middlewares/roleAuthentication";
 
@@ -15,6 +15,7 @@ IssueRoutes.get('/getIssues', authenticateToken, studentAuth, getAllIssues);
 
 //technician routes
 IssueRoutes.post('/resolve/:issue_id', authenticateToken, technicianAuth , resolveIssue);
+IssueRoutes.get('/issueList', authenticateToken, technicianAuth , Issuelist);
 
 
 //hostel admin routes
