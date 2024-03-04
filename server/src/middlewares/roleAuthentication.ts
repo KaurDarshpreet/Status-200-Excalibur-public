@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from "express";
-import { prisma } from "../index";
 import AuthenticatedRequest from "../interfaces/authenticatedRequest";
 
 function studentAuth(req: Request, res: Response, next: NextFunction) {
@@ -13,7 +12,6 @@ function studentAuth(req: Request, res: Response, next: NextFunction) {
 
 function hostelAdminAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     if (req.body.role === 'hostel_admin') {
-        // prisma query
         next();
     }
     else {
@@ -23,7 +21,6 @@ function hostelAdminAuth(req: AuthenticatedRequest, res: Response, next: NextFun
 
 function collegeAdminAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     if (req.body.role === 'college_admin') {
-        // prisma query
         next();
     }
     else {
