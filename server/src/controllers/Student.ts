@@ -129,8 +129,11 @@ export const login_student = async (req: Request, res: Response) => {
 
 export const createIssue = async (req: Request, res: Response) => {
     try{
-        const {category , student_id,role, location , title , is_public, description , issue_media} = req.body; 
-    //  const student_id = req.user.id;  //authenticate krne ke baad req me user ki id daaldena , as of now req me le rha hu //
+        const {category , location , title , is_public, description , issue_media} = req.body; 
+
+        const student_id = (req as AuthenticatedRequest).user.id; 
+        const role = (req as AuthenticatedRequest).user.role;
+
         if (!category || !title || !location || !description) {
             return res.status(400).json({
                 success : false, 
@@ -192,6 +195,14 @@ export const createIssue = async (req: Request, res: Response) => {
 export const getAllIssues = async (req : Request , res : Response) => {
     try {
         const { domain_id } = (req as AuthenticatedRequest).user;
+        const { role } = (req as AuthenticatedRequest).user;
+
+        if(role !== "student"){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid access to this route. Please sign in as a student."
+            });
+        }
 
         const issues = await prisma.issue.findMany({
             where : {

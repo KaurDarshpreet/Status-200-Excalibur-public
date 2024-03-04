@@ -1,16 +1,29 @@
 import { Router } from "express";
-import { createIssue } from "../controllers/Student";
+import { createIssue, getAllIssues } from "../controllers/Student";
 import { assignHostelIssue, reviewHostelIssue } from "../controllers/HostelAdmin";
 import { assignCollegeIssue, reviewCollegeIssue } from "../controllers/CollegeAdmin";
 import { resolveIssue } from "../controllers/Technician";
+import authenticateToken from "../middlewares/jwtVerification";
+import { collegeAdminAuth, hostelAdminAuth, studentAuth, technicianAuth } from "../middlewares/roleAuthentication";
 
 const IssueRoutes:Router = Router();
 
-IssueRoutes.post('/create',createIssue);
-IssueRoutes.post('/hostel/assign',assignHostelIssue);
-IssueRoutes.post('/college/assign',assignCollegeIssue);
-IssueRoutes.post('/resolve',resolveIssue);
-IssueRoutes.get('/hostel/review',reviewHostelIssue);
-IssueRoutes.get('/college/review',reviewCollegeIssue);
+//students routes
+IssueRoutes.post('/create', authenticateToken, studentAuth,createIssue);
+IssueRoutes.get('/getIssues', authenticateToken, studentAuth, getAllIssues);
+
+
+//technician routes
+IssueRoutes.post('/resolve/:issue_id', authenticateToken, technicianAuth , resolveIssue);
+
+
+//hostel admin routes
+// IssueRoutes.post('/hostel/assign', authenticateToken, hostelAdminAuth , assignHostelIssue);
+// IssueRoutes.get('/hostel/review', authenticateToken, hostelAdminAuth , reviewHostelIssue);
+
+
+//college admin routes
+// IssueRoutes.post('/college/assign', authenticateToken, collegeAdminAuth , assignCollegeIssue);
+// IssueRoutes.get('/college/review', authenticateToken, hostelAdminAuth , reviewCollegeIssue);
 
 export default IssueRoutes;
