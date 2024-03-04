@@ -23,27 +23,27 @@ model Student {
   profile_picture String?
   issue_list      Issue[]
   notification    Notification[]
-  role Roles @default(student)
+  role            Roles          @default(student)
 }
 
 model Technician {
   technician_id String     @id @default(uuid())
   password      String
   name          String
-  email         String @unique 
+  email         String     @unique
   category      Categories
   phone_number  String
   Address       String?
   issue_list    Issue[]
-  role Roles @default(technician)
+  role          Roles      @default(technician)
 }
 
 model Issue {
-  issue_id    Int       @id @default(autoincrement())
+  issue_id    Int        @id @default(autoincrement())
   created_at  DateTime   @default(now())
   is_public   Boolean    @default(false)
   category    Categories
-  title      String
+  title       String
   description String
   is_resolved Boolean    @default(false)
   issue_media String?
@@ -54,51 +54,52 @@ model Issue {
 
   notification Notification?
 
-  student    Student     @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
-  technician Technician? @relation(fields: [technician_id], references: [technician_id], onDelete: Cascade)
+  student    Student     @relation(fields: [student_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
+  technician Technician? @relation(fields: [technician_id], references: [technician_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model Notification {
-  issue_id        Int      @unique
-  student_id      String
-  sent_at         DateTime @default(now())
-  hostel_admin_id String?
+  issue_id         Int      @unique
+  student_id       String
+  sent_at          DateTime @default(now())
+  hostel_admin_id  String?
   college_admin_id String?
 
-  issue        Issue         @relation(fields: [issue_id], references: [issue_id], onDelete: Cascade)
-  student      Student       @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
-  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [domain_id], onDelete: Cascade)
-  college_admin College_admin? @relation(fields: [college_admin_id], references: [domain_id], onDelete: Cascade)
+  issue         Issue          @relation(fields: [issue_id], references: [issue_id], onDelete: Cascade, onUpdate: Cascade)
+  student       Student        @relation(fields: [student_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
+  hostel_admin  Hostel_admin?  @relation(fields: [hostel_admin_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
+  college_admin College_admin? @relation(fields: [college_admin_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([issue_id, student_id])
 }
 
 model Hostel_admin {
-  domain_id       String         @id 
-  hostel          String
-  name            String
-  password        String
-  notification    Notification[]
-  phone_number    String
-  role Roles @default(hostel_admin)
+  domain_id    String         @id
+  hostel       String
+  name         String
+  password     String
+  notification Notification[]
+  phone_number String
+  role         Roles          @default(hostel_admin)
 }
 
 model College_admin {
-  domain_id        String         @id 
-  name             String
-  password         String
-  college_name     String
-  phone_number     String
-  Notification     Notification[]
-  role Roles @default(college_admin)
+  domain_id    String         @id
+  name         String
+  password     String
+  college_name String
+  phone_number String
+  Notification Notification[]
+  role         Roles          @default(college_admin)
 }
 
-enum Roles { 
-  student 
-  technician 
+enum Roles {
+  student
+  technician
   hostel_admin
   college_admin
 }
+
 enum Categories {
   carpentry
   electrician
