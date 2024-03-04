@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon ./src/index.ts",
     "deploy": "node ./dist/index.js",
-    "build": "npm install && npx tsc"
+    "build": "npm install"
   },
   "keywords": [],
   "author": "",
