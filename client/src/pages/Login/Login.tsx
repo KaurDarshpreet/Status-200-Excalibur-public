@@ -81,7 +81,10 @@ const Role = ({handleRole} : SelectRoleProps) => {
     )
 }
 const StudentLogin = () => {
-    const [user, setUser] = useState(null);
+    const [user, setUser] = useState({
+        username: '',
+        email: ''
+    });
     const responseMessage = async (response: any) => {
         console.log(response);
         const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
@@ -111,7 +114,7 @@ const StudentLogin = () => {
             <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
             <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
             <button className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border">Login</button>
-            {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
+            {user ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
             <a href="#" className="text-blue-500">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
             <p className="text-yellow-500">Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link></p>
@@ -122,7 +125,7 @@ const TechnicianLogin = () => {
     const [user, setUser] = useState(null);
     const responseMessage = async (response: any) => {
         console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
+        const res = await fetch("http://localhost:5000/api/login/technician/v1/google", {
           method: "POST",
           body: JSON.stringify({
             token: response.credential
@@ -160,7 +163,7 @@ const HostelAdminLogin = () => {
     const [user, setUser] = useState(null);
     const responseMessage = async (response: any) => {
         console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
+        const res = await fetch("http://localhost:5000/api/login/admin/hostel/v1/google", {
           method: "POST",
           body: JSON.stringify({
             token: response.credential
@@ -198,7 +201,7 @@ const CollegeAdminLogin = () => {
     const [user, setUser] = useState(null);
     const responseMessage = async (response: any) => {
         console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
+        const res = await fetch("http://localhost:5000/api/login/admin/college/v1/google", {
           method: "POST",
           body: JSON.stringify({
             token: response.credential
