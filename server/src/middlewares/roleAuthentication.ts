@@ -10,7 +10,7 @@ function studentAuth(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-function hostelAdminAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+function hostelAdminAuth(req: Request, res: Response, next: NextFunction) {
     if ((req as AuthenticatedRequest).user.role === 'hostel_admin') {
         next();
     }
@@ -19,7 +19,7 @@ function hostelAdminAuth(req: AuthenticatedRequest, res: Response, next: NextFun
     }
 }
 
-function collegeAdminAuth(req: AuthenticatedRequest, res: Response, next: NextFunction) {
+function collegeAdminAuth(req: Request, res: Response, next: NextFunction) {
     if ((req as AuthenticatedRequest).user.role === 'college_admin') {
         next();
     }

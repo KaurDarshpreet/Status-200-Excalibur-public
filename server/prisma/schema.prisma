@@ -54,8 +54,8 @@ model Issue {
 
   notification Notification?
 
-  student    Student     @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
-  technician Technician? @relation(fields: [technician_id], references: [technician_id], onDelete: Cascade)
+  student    Student     @relation(fields: [student_id], references: [domain_id], onDelete: Cascade , onUpdate: Cascade)
+  technician Technician? @relation(fields: [technician_id], references: [technician_id], onDelete: Cascade , onUpdate: Cascade)
 }
 
 model Notification {
@@ -65,10 +65,10 @@ model Notification {
   hostel_admin_id String?
   college_admin_id String?
 
-  issue        Issue         @relation(fields: [issue_id], references: [issue_id], onDelete: Cascade)
-  student      Student       @relation(fields: [student_id], references: [domain_id], onDelete: Cascade)
-  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [domain_id], onDelete: Cascade)
-  college_admin College_admin? @relation(fields: [college_admin_id], references: [domain_id], onDelete: Cascade)
+  issue        Issue         @relation(fields: [issue_id], references: [issue_id], onDelete: Cascade, onUpdate: Cascade)
+  student      Student       @relation(fields: [student_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
+  hostel_admin Hostel_admin? @relation(fields: [hostel_admin_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
+  college_admin College_admin? @relation(fields: [college_admin_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
 
   @@id([issue_id, student_id])
 }
