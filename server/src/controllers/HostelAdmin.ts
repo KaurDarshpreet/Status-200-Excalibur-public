@@ -105,7 +105,7 @@ export const login_hostelAdmin = async (req: Request, res: Response) => {
         //create and assign a token
         const token = jwt.sign({
             domain_id: hostelAdmin.domain_id,
-            role : "hostel_admin"
+            role: "hostel_admin"
         }, process.env.JWT_SECRET!,
             { expiresIn: "1h" })
 
@@ -118,7 +118,8 @@ export const login_hostelAdmin = async (req: Request, res: Response) => {
         return res.cookie("token", token, options).status(200).json({
             success: true,
             message: "Logged in successfully",
-            token
+            token,
+            hostelAdmin
         })
     } catch (error: any) {
         return res.status(500).json({
@@ -130,68 +131,31 @@ export const login_hostelAdmin = async (req: Request, res: Response) => {
 }
 
 export const assignHostelIssue = async (req: Request, res: Response) => {
-try {
-        const {domain_id} = (req as AuthenticatedRequest).user;
-        const {issue_id} = req.body;
-        if(!domain_id){
-            return res.status(400).json({
-                success : false,
-                message : "Unauthorized access"
-            });
-        }
-        const hostelAdmin = await prisma.hostel_admin.findUnique({
-            where : {
-                domain_id
-            }
-        })
-    
-        if(!hostelAdmin){
-            return res.status(400).json({
-                success : false,
-                message : "Invalid credentials"
-            });
-        }
-    
-        const location = hostelAdmin.hostel;
-    
-        const issueDetails = await prisma.issue.findUnique({
-            where: {
-                issue_id: Number(issue_id),
-            },
-        });
-    
-        if (!issueDetails) {
+    try {
+        const { domain_id } = (req as AuthenticatedRequest).user;
+        const { issue_id, technician_id } = req.body;
+        if (!domain_id) {
             return res.status(400).json({
                 success: false,
-                message: "Issue not found",
+                message: "Unauthorized access"
             });
         }
-    
-        //array generate krali for all matching technician
-        const technicians = await prisma.technician.findMany({
-            where: {
-                category: issueDetails.category,
-            },
-        });
-    
-        if (!technicians.length) {
-            return res.status(404).json({
+        if (!technician_id) {
+            return res.status(400).json({
                 success: false,
-                message: "No technicians available",
+                message: "No Technician selected"
             });
         }
-    
-        const randomTechnician = technicians[Math.floor(Math.random() * technicians.length)];
-    
+
         const updatedIssue = await prisma.issue.update({
             where: {
                 issue_id: Number(issue_id),
             },
             data: {
-                technician_id: randomTechnician.technician_id,
+                technician_id: technician_id,
             },
         });
-    
+
         return res.json({
             success: true,
             message: "Issue assigned successfully",
@@ -207,85 +171,104 @@ try {
 
 export const reviewHostelIssue = async (req: Request, res: Response) => {
     try {
-        const {domain_id} = (req as AuthenticatedRequest).user;
-        if(!domain_id){
+        const { domain_id } = (req as AuthenticatedRequest).user;
+        const { issue_id } = req.body;
+
+        if (!domain_id) {
             return res.status(400).json({
-                success : false,
-                message : "Unauthorized access"
+                success: false,
+                message: "Unauthorized access"
             });
         }
-        const hostelAdmin = await prisma.hostel_admin.findUnique({
-            where : {
-                domain_id
+        const issue = await prisma.issue.delete({
+            where: {
+                issue_id
             }
-        })
-        if(!hostelAdmin){
-            return res.status(400).json({
-                success : false,
-                message : "Invalid credentials"
-            });
-        }
-        const hostel = hostelAdmin.hostel;
-        const issues = await prisma.issue.deleteMany({
-            where : {
-                location : hostel,
-                is_resolved : true
-            }
-        })
+        });
 
         return res.status(200).json({
-            success : true,
-            message : "Issues reviewed and resolved successfully",
-            issues
-        })
+            success: true,
+            message: "Issues reviewed and resolved successfully",
+            issue
+        });
 
-    } catch (error:any) {
-        return res.status(500).json({
-            success : false,
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
             message: 'Something went wrong'
-        })
+        });
     }
 
 }
 
-export const checkHostelIssue = async(req : Request , res : Response)=>{
+export const checkHostelIssue = async (req: Request, res: Response) => {
     try {
-        const {domain_id} = (req as AuthenticatedRequest).user;
-        if(!domain_id){
+        const { domain_id } = (req as AuthenticatedRequest).user;
+        if (!domain_id) {
             return res.status(400).json({
-                success : false,
-                message : "Unauthorized access"
+                success: false,
+                message: "Unauthorized access"
             });
         }
         const hostelAdmin = await prisma.hostel_admin.findUnique({
-            where : {
+            where: {
                 domain_id
             }
         })
-        if(!hostelAdmin){
+        if (!hostelAdmin) {
             return res.status(400).json({
-                success : false,
-                message : "Invalid credentials"
+                success: false,
+                message: "Invalid credentials"
             });
         }
         const hostel = hostelAdmin.hostel;
         const issues = await prisma.issue.findMany({
-            where : {
-                location : hostel,
-                is_resolved : false,
-                technician_id : { not: null }
+            where: {
+                location: hostel,
+                is_resolved: false
             }
-        })
+        });
         return res.status(200).json({
-            success : true,
-            message : "Here is the list of assigned issues at your hostel",
+            success: true,
+            message: "Here is the list of assigned issues at your hostel",
             issues
         })
     } catch (error) {
         return res.status(500).json({
-            success : false,
-            message : "Something went wrong"
-        })
-        
+            success: false,
+            message: "Something went wrong"
+        });
+
+    }
+}
+
+export const listTechnicians = async (req: Request, res: Response) => {
+    try {
+        const { domain_id } = (req as AuthenticatedRequest).user;
+        if (!domain_id) {
+            return res.status(400).json({
+                success: false,
+                message: "Unauthorized access"
+            });
+        }
+
+        const technicians = await prisma.technician.findMany();
+        if (technicians.length == 0) {
+            return res.json({
+                success: false,
+                message: "No technicians found"
+            });
+        }
+
+        res.json({
+            success: true,
+            technicians
+        });
+    }
+    catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Something went wrong"
+        });
     }
 }

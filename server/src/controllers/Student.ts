@@ -1,5 +1,5 @@
-import { Request,Response} from "express";
-import {prisma} from "../index"
+import { Request, Response } from "express";
+import { prisma } from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import AuthenticatedRequest from "../interfaces/authenticatedRequest";
@@ -7,50 +7,47 @@ import MulterFileRequest from "../interfaces/multerFile";
 import { handleUpload } from "../utilities/cloudinaryManager";
 
 export const signup_student = async (req: Request, res: Response) => {
-    try{
+    try {
         const b64 = Buffer.from((req as MulterFileRequest).file.buffer).toString("base64");
         let dataURI = "data:" + (req as MulterFileRequest).file.mimetype + ";base64," + b64;
         const cldRes = await handleUpload(dataURI);
         req.body.profile_pic = cldRes;
     }
-    catch(error: any){
-        console.log("Error uploading the file");
-        res.json({
-            message: "File upload failed"
-        });
+    catch (error: any) {
+        req.body.profile_pic = null;
     }
 
     try {
-        const {domain_id , name , role ,  hostel , password , phone_number , room_number, profile_pic} = req.body;
+        const { domain_id, name, role, hostel, password, phone_number, room_number, profile_pic } = req.body;
         if (!domain_id || !name || !hostel || !password) {
             return res.status(400).json({
-                success : false, 
-                error: "Please fill all fields" 
+                success: false,
+                error: "Please fill all fields"
             });
         }
-        if(role !== "student"){
+        if (role !== "student") {
             return res.status(400).json({
-                success : false,
+                success: false,
                 error: "Invalid access to this route. Please sign up as a student."
             });
         }
-        
+
         // check if user already exists or not
         const existingstudent = await prisma.student.findUnique({
-            where : {
+            where: {
                 domain_id
             }
         });
 
-        if(existingstudent){
+        if (existingstudent) {
             return res.status(400).json({
-				success: false,
-				message: "User already exists. Please sign in to continue.",
-			});
+                success: false,
+                message: "User already exists. Please sign in to continue.",
+            });
         }
-        
+
         // Hash the password
-		const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         const student = await prisma.student.create({
             data: {
@@ -59,19 +56,19 @@ export const signup_student = async (req: Request, res: Response) => {
                 hostel,
                 phone_number,
                 room_number,
-                password : hashedPassword,
+                password: hashedPassword,
                 profile_picture: profile_pic
             },
         });
         return res.status(200).json({
-            success : true ,
+            success: true,
             message: "Student created successfully",
-            student 
+            student
         });
-    } catch (error:any) {
+    } catch (error: any) {
         console.log(error.message)
         return res.status(500).json({
-            success : false,
+            success: false,
             error: "Something went wrong"
         });
     }
@@ -79,16 +76,16 @@ export const signup_student = async (req: Request, res: Response) => {
 
 export const login_student = async (req: Request, res: Response) => {
     try {
-        const {domain_id , password} = req.body;
+        const { domain_id, password } = req.body;
         if (!domain_id || !password) {
             return res.status(400).json({
-                success : false ,
-                error: "Please fill all fields" 
+                success: false,
+                error: "Please fill all fields"
             });
         }
-        if(req.body.role !== "student"){
+        if (req.body.role !== "student") {
             return res.status(400).json({
-                success : false,
+                success: false,
                 error: "Invalid access to this route. Please sign in as a student."
             });
         }
@@ -101,7 +98,7 @@ export const login_student = async (req: Request, res: Response) => {
 
         if (!student) {
             return res.status(400).json({
-                success : false,
+                success: false,
                 error: "Invalid credentials"
             });
         }
@@ -109,18 +106,18 @@ export const login_student = async (req: Request, res: Response) => {
         // check if password is correct
         const isPasswordCorrect = await bcrypt.compare(password, student.password);
         if (!isPasswordCorrect) {
-            return res.status(400).json({ 
-                success : false,
-                error: "Invalid credentials" 
+            return res.status(400).json({
+                success: false,
+                error: "Invalid credentials"
             });
         }
 
         const token = jwt.sign({
             domain_id: student.domain_id,
-            role : "student"
-        }, process.env.JWT_SECRET!, 
-        { expiresIn: "1h"})
-        
+            role: "student"
+        }, process.env.JWT_SECRET!,
+            { expiresIn: "1h" })
+
 
         // Set cookie for token and return success response
         const options = {
@@ -129,42 +126,52 @@ export const login_student = async (req: Request, res: Response) => {
         };
 
         return res.cookie("token", token, options).status(200).json({
-            success : true,
+            success: true,
             message: "Login successful",
-            token 
+            token,
+            student
         });
-    } catch (error:any) {
+    } catch (error: any) {
         return res.status(500).json({
-            success : false, 
-            error: "Something went wrong" 
+            success: false,
+            error: "Something went wrong"
         });
     }
 
 }
 
 export const createIssue = async (req: Request, res: Response) => {
-    
-    try{
-        const {category , location , title , is_public, description , issue_media} = req.body; 
 
-        const student_id = (req as AuthenticatedRequest).user.id; 
+    try {
+        const b64 = Buffer.from((req as MulterFileRequest).file.buffer).toString("base64");
+        let dataURI = "data:" + (req as MulterFileRequest).file.mimetype + ";base64," + b64;
+        const cldRes = await handleUpload(dataURI);
+        req.body.issue_media = cldRes;
+    }
+    catch (error: any) {
+        req.body.issue_media = null;
+    }
+
+
+    try {
+        const { category, location, title, is_public, description, issue_media } = req.body;
+
+        const student_id = (req as AuthenticatedRequest).user.id;
         const role = (req as AuthenticatedRequest).user.role;
 
         if (!category || !title || !location || !description) {
             return res.status(400).json({
-                success : false, 
-                error: "Please fill all fields" 
+                success: false,
+                error: "Please fill all fields"
             });
         }
 
-        if(role !== "student"){
+        if (role !== "student") {
             return res.status(400).json({
-                success : false,
+                success: false,
                 error: "Invalid access to this route. Please sign in as a student."
             });
         }
-
-        // not written issue_media since cloudinary is not yet integrated
 
         const issue = await prisma.issue.create({
             data: {
@@ -173,76 +180,62 @@ export const createIssue = async (req: Request, res: Response) => {
                 location,
                 is_public,
                 description,
-                issue_media: issue_media || null,
+                issue_media: issue_media,
                 student: {
                     connect: { domain_id: student_id },
                 },
             },
         });
 
-        // push issue id in the Issue array of student 
-        await prisma.student.update({
-            where: {
-                domain_id: student_id,
-            },
-            data: {
-                issue_list: {
-                    connect: {
-                        issue_id: issue.issue_id,
-                    },
-                },
-            },
-        })
-        
         return res.status(200).json({
-            success : true,
+            success: true,
             message: "Issue created successfully",
-            issue 
+            issue
         });
-    } catch (error:any) {
-        return res.status(400).json({ 
-            success : false,
-            error: "Something went wrong" 
+    } catch (error: any) {
+        return res.status(400).json({
+            success: false,
+            error: "Something went wrong"
         });
     }
 
 }
 
-export const getAllIssues= async (req : Request , res : Response) => {
+export const getAllIssues = async (req: Request, res: Response) => {
     try {
         const { domain_id } = (req as AuthenticatedRequest).user;
         const { role } = (req as AuthenticatedRequest).user;
 
-        if(role !== "student"){
+        if (role !== "student") {
             return res.status(400).json({
-                success : false,
-                message : "Invalid access to this route. Please sign in as a student."
+                success: false,
+                message: "Invalid access to this route. Please sign in as a student."
             });
         }
 
         const issues = await prisma.issue.findMany({
-            where : {
+            where: {
                 student_id: domain_id
             }
         });
 
-        if(issues.length === 0) {
+        if (issues.length === 0) {
             return res.status(200).json({
-                success : true,
-                message : "No issues found"
+                success: true,
+                message: "No issues found"
             })
         }
-        
+
         return res.status(200).json({
-            success : true,
-            message : "Issues fetched successfully",
+            success: true,
+            message: "Issues fetched successfully",
             issues
         })
 
-    } catch (error:any) {
+    } catch (error: any) {
         return res.status(400).json({
-            success : false,
-            message : "Something went wrong"
+            success: false,
+            message: "Something went wrong"
         });
     }
 }

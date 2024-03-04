@@ -120,7 +120,8 @@ export const login_technician = async (req: Request, res: Response) => {
         return res.cookie("token", token, options).status(200).json({
             success: true,
             message: "Logged in successfully",
-            token
+            token,
+            technician
         });
 
     } catch (error) {
@@ -132,46 +133,35 @@ export const login_technician = async (req: Request, res: Response) => {
 }
 
 
-export const Issuelist = async(req : Request, res : Response) => {
+export const Issuelist = async (req: Request, res: Response) => {
     try {
-        const {email} = (req as AuthenticatedRequest).user;
+        const { email } = (req as AuthenticatedRequest).user;
 
-        if(!email){
+        if (!email) {
             return res.status(400).json({
-                success : false,
-                message : "Invalid email"
+                success: false,
+                message: "Invalid email"
             });
         }
 
-        const technician = await prisma.technician.findUnique({
-            where : {
-                email
-            }
-        })
-        
-        if(!technician){
-            return res.status(400).json({
-                success : false,
-                message : "Invalid credentials"
-            });
-        }
-        const technician_id = technician.technician_id;
         const issues = await prisma.issue.findMany({
-            where : {
-                technician_id : technician_id
+            where: {
+                technician: {
+                    email: email
+                }
             }
         });
 
-        if(!issues){
+        if (!issues) {
             return res.status(200).json({
-                success : true,
-                message : "No issues found"
+                success: true,
+                message: "No issues found"
             });
         }
 
         return res.status(200).json({
-            success : true,
-            message : "These are the issues assigned to you.",
+            success: true,
+            message: "These are the issues assigned to you.",
             issues
         });
 
@@ -185,7 +175,7 @@ export const Issuelist = async(req : Request, res : Response) => {
 
 export const resolveIssue = async (req: Request, res: Response) => {
     try {
-        const { issue_id } = req.params;
+        const issue_id = parseInt(req.params.issue_id);
         const { email } = (req as AuthenticatedRequest).user;
         if (!email) {
             return res.status(400).json({
@@ -202,11 +192,11 @@ export const resolveIssue = async (req: Request, res: Response) => {
         }
 
         await prisma.issue.update({
-            where : {
-                issue_id : +issue_id 
+            where: {
+                issue_id: issue_id
             },
-            data : {
-                is_resolved : true
+            data: {
+                is_resolved: true
             }
         })
 

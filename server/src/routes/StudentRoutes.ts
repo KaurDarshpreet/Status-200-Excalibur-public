@@ -5,6 +5,4 @@ import { studentAuth } from "../middlewares/roleAuthentication";
 
 const StudentRoutes: Router = Router();
 
-StudentRoutes.get("/issues", authenticateToken, studentAuth, getAllIssues);
-
 export default StudentRoutes;
