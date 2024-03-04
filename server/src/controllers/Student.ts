@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 
-export const signup = async (req: Request, res: Response) => {
+export const signup_student = async (req: Request, res: Response) => {
     try {
         const {domain_id , name , hostel , password , phone_number , room_number,profile_pic} = req.body;
         if (!domain_id || !name || !hostel || !password) {
@@ -15,7 +15,7 @@ export const signup = async (req: Request, res: Response) => {
         }
         
         // check if user already exists or not
-        const existingstudent = await prisma.student.findFirst({
+        const existingstudent = await prisma.student.findUnique({
             where : {
                 domain_id
             }
@@ -55,7 +55,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 }
 
-export const login = async (req: Request, res: Response) => {
+export const login_student = async (req: Request, res: Response) => {
     try {
         const {domain_id , password} = req.body;
         if (!domain_id || !password) {
@@ -65,7 +65,7 @@ export const login = async (req: Request, res: Response) => {
             });
         }
 
-        const student = await prisma.student.findFirst({
+        const student = await prisma.student.findUnique({
             where: {
                 domain_id,
             },

@@ -23,17 +23,19 @@ model Student {
   profile_picture String?
   issue_list      Issue[]
   notification    Notification[]
+  role Roles @default(student)
 }
 
 model Technician {
   technician_id String     @id @default(uuid())
   password      String
   name          String
-  email         String
+  email         String @unique 
   category      Categories
   phone_number  String
   Address       String?
   issue_list    Issue[]
+  role Roles @default(technician)
 }
 
 model Issue {
@@ -78,6 +80,7 @@ model Hostel_admin {
   password        String
   notification    Notification[]
   phone_number    String
+  role Roles @default(hostel_admin)
 }
 
 model College_admin {
@@ -87,8 +90,15 @@ model College_admin {
   college_name     String
   phone_number     String
   Notification     Notification[]
+  role Roles @default(college_admin)
 }
 
+enum Roles { 
+  student 
+  technician 
+  hostel_admin
+  college_admin
+}
 enum Categories {
   carpentry
   electrician

@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
 
-export const signup = async (req: Request, res: Response) => {
+export const signup_technician = async (req: Request, res: Response) => {
     try {
         const {name , email , category , password , phone_number , Address} = req.body;
 
@@ -16,7 +16,7 @@ export const signup = async (req: Request, res: Response) => {
         }
 
         //check whether the technician already exists or not
-        const existingTechnician = await prisma.technician.findFirst(
+        const existingTechnician = await prisma.technician.findUnique(
             {
                 where : {
                     email
@@ -58,7 +58,7 @@ export const signup = async (req: Request, res: Response) => {
     }
 }
 
-export const login = async (req: Request, res: Response) => {
+export const login_technician = async (req: Request, res: Response) => {
     try {
         const {email, password} = req.body;
         if (!email|| !password) {
@@ -68,7 +68,7 @@ export const login = async (req: Request, res: Response) => {
             });
         }
 
-        const technician = await prisma.technician.findFirst({
+        const technician = await prisma.technician.findUnique({
             where: {
                 email
             },
@@ -115,3 +115,4 @@ export const login = async (req: Request, res: Response) => {
     }
 }
 
+export const resolveIssue = async (req: Request, res: Response) => {}
