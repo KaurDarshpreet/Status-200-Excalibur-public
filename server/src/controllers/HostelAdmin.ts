@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import AuthenticatedRequest from "../interfaces/authenticatedRequest";
 
 export const signup_hostelAdmin = async (req: Request, res: Response) => {
     try {
@@ -129,6 +130,10 @@ export const login_hostelAdmin = async (req: Request, res: Response) => {
 }
 
 
-export const assignHostelIssue = async (req: Request, res: Response) => { }
+export const assignHostelIssue = async (req: Request, res: Response) => {
+    const {domain_id} = (req as AuthenticatedRequest).user;
+}
 
-export const reviewHostelIssue = async (req: Request, res: Response) => { }
+export const reviewHostelIssue = async (req: Request, res: Response) => {
+    const {domain_id} = (req as AuthenticatedRequest).user;
+}

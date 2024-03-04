@@ -84,7 +84,7 @@ model Hostel_admin {
 }
 
 model College_admin {
-  domain_id       String         @id 
+  domain_id        String         @id 
   name             String
   password         String
   college_name     String

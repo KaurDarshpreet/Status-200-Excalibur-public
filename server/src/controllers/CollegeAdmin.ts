@@ -2,6 +2,7 @@ import { Request,Response} from "express";
 import {prisma} from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import AuthenticatedRequest from "../interfaces/authenticatedRequest";
 
 export const signup_collegeAdmin = async(req:Request , res : Response)=>{
     try {
@@ -127,6 +128,10 @@ export const login_collegeAdmin = async(req:Request , res : Response)=>{
 }
 
 
-export const assignCollegeIssue = async(req:Request , res : Response)=>{}
+export const assignCollegeIssue = async(req:Request , res : Response)=>{
+    const {domain_id} = (req as AuthenticatedRequest).user;
+}
 
-export const reviewCollegeIssue = async(req:Request , res : Response)=>{}
+export const reviewCollegeIssue = async(req:Request , res : Response)=>{
+    const {domain_id} = (req as AuthenticatedRequest).user;
+}
