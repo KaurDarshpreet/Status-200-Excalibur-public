@@ -21,7 +21,7 @@ const TextInput = (props: {
     required: boolean;
     placeholder: string;
 }) => (
-    <input type="text" {...props} className='border border-gray-300 rounded px-4 py-2 mt-2' />
+    <input type="text" {...props} className='border border-gray-300 rounded px-4 py-2 mt-2 text-black' />
 );
 
 const IssueForm = () => {
@@ -49,14 +49,14 @@ const IssueForm = () => {
     
     return (
         <>
-            <label htmlFor="media" className='bg-slate-200 min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-center rounded-lg'>
+            <label htmlFor="media" className='bg-slate-200 min-h-[94svh] min-w-[45svw] flex flex-col items-center justify-center rounded-lg'>
                 {!media && <BsCamera2 className='bg-[#fff] w-[100px] h-[100px] rounded-full p-5 hover:p-2 cursor-pointer transition-all' />}
                 {media && (
                     <div className='m-4 flex flex-col items-center justify-center'>
                         {media.type.includes('image') ? (
-                            <img src={URL.createObjectURL(media)} alt="Uploaded Image" className='min-w-[400px] min-h-[400px] max-w-[40svw] max-h-[80svh]' />
+                            <img src={URL.createObjectURL(media)} alt="Uploaded Image" className='max-w-[40svw] max-h-[80svh]' />
                         ) : (
-                            <video className='min-w-[400px] min-h-[400px] max-w-[40svw] max-h-[80svh]' controls>
+                            <video className='max-w-[40svw] max-h-[80svh]' controls>
                                 <source src={URL.createObjectURL(media)} type={media.type} />
                             </video>
                         )}
@@ -64,7 +64,7 @@ const IssueForm = () => {
                     </div>
                 )}
             </label>
-            <form onSubmit={handleSubmit} className='m-4 flex flex-col text-white font-semibold'>
+            <form onSubmit={handleSubmit} className='m-5 flex flex-col text-white font-semibold basis-[100%]'>
                 <h1 className='text-center text-3xl font-bold text-blue-200'>Report Issue</h1>
                 <hr className='w-3/4 border-white border-1 self-center mb-5' />
                 {textInput.map((input) => (

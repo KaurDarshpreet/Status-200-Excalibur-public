@@ -12,3 +12,21 @@ google_login{
 google_login > p{
     color: white;
 }
+
+.customScrollbar::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+	border-radius: 10px;
+	background-color: rgba(0, 0, 0, 0);
+}
+.customScrollbar::-webkit-scrollbar{
+	width: 12px;
+	background-color: rgba(0, 0, 0, 0.352);
+    backdrop-filter: blur(20px);
+    border-radius: 10px;
+}
+.customScrollbar::-webkit-scrollbar-thumb{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+	background-color: #ffffff35;
+    backdrop-filter: blur(20px);
+}
