@@ -6,12 +6,19 @@ import jwt from "jsonwebtoken";
 
 export const signup_technician = async (req: Request, res: Response) => {
     try {
-        const {name , email , category , password , phone_number , Address} = req.body;
+        const {name , email , role ,category , password , phone_number , Address} = req.body;
 
         if(!name || !email || !password || !category || !phone_number){
             return res.status(400).json({
                 success : false,
                 message : "Please fill all fields"
+            });
+        }
+
+        if(role !== "technician"){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid access to this route. Please sign up as a technician."
             });
         }
 
@@ -61,10 +68,18 @@ export const signup_technician = async (req: Request, res: Response) => {
 export const login_technician = async (req: Request, res: Response) => {
     try {
         const {email, password} = req.body;
+
         if (!email|| !password) {
             return res.status(400).json({
                 success : false,
                 message: "Please fill all fields"
+            });
+        }
+
+        if(req.body.role !== "technician"){
+            return res.status(400).json({
+                success : false,
+                message : "Invalid access to this route. Please sign in as a technician."
             });
         }
 
@@ -93,6 +108,7 @@ export const login_technician = async (req: Request, res: Response) => {
 
         const token = jwt.sign({
             email : technician.email,
+            role : "technician"
         }, process.env.JWT_SECRET!);
 
         // Set cookie for token and return success response
