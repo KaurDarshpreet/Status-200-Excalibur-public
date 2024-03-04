@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client'
 import "dotenv/config";
 import cookieParser from "cookie-parser";
 import cors from "cors";
-import { RootRouter } from "./routes";
+import  RootRouter  from "./routes";
 export const prisma = new PrismaClient()
 
 require("dotenv").config();

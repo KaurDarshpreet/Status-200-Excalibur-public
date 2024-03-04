@@ -3,7 +3,7 @@ import {prisma} from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const signup = async(req:Request , res : Response)=>{
+export const signup_collegeAdmin = async(req:Request , res : Response)=>{
     try {
         const {domain_id , name , college_name , password , phone_number} = req.body;
     
@@ -15,7 +15,7 @@ export const signup = async(req:Request , res : Response)=>{
         }
     
         //check whether the college admin already exists or not
-        const existingcollegeAdmin = await prisma.college_admin.findFirst(
+        const existingcollegeAdmin = await prisma.college_admin.findUnique(
             {
                 where : {
                     domain_id 
@@ -55,7 +55,7 @@ export const signup = async(req:Request , res : Response)=>{
     }
 }
 
-export const login = async(req:Request , res : Response)=>{
+export const login_collegeAdmin = async(req:Request , res : Response)=>{
    try {
      const {domain_id , password} = req.body;
      if(!domain_id || !password){
@@ -65,7 +65,7 @@ export const login = async(req:Request , res : Response)=>{
         });
      }
  
-     const collegeAdmin = await prisma.college_admin.findFirst({
+     const collegeAdmin = await prisma.college_admin.findUnique({
          where: {
              domain_id
          }
@@ -112,3 +112,8 @@ export const login = async(req:Request , res : Response)=>{
    }
 
 }
+
+
+export const assignCollegeIssue = async(req:Request , res : Response)=>{}
+
+export const reviewCollegeIssue = async(req:Request , res : Response)=>{}
