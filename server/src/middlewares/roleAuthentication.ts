@@ -38,4 +38,13 @@ function technicianAuth(req: Request, res: Response, next: NextFunction) {
     }
 }
 
-export { studentAuth, hostelAdminAuth, collegeAdminAuth, technicianAuth};
+function adminAuth(req: Request, res: Response, next: NextFunction){
+    if ((req as AuthenticatedRequest).user.role === 'hostel_admin' || (req as AuthenticatedRequest).user.role === 'college_admin') {
+        next();
+    }
+    else {
+        return res.sendStatus(403);
+    }
+}
+
+export { studentAuth, hostelAdminAuth, collegeAdminAuth, technicianAuth, adminAuth };

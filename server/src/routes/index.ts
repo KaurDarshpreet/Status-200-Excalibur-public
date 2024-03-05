@@ -13,9 +13,11 @@ RootRouter.use('/signup',SignupRoutes);
 RootRouter.use('/login',LoginRoutes);
 
 // protected routes
+RootRouter.use('/issue',IssueRoutes);
+
+// CRUD routes for Entities
 RootRouter.use('/student',StudentRoutes);
 RootRouter.use('/admin',AdminRoutes);
 RootRouter.use('/technician',TechnicianRoutes);
-RootRouter.use('/issue',IssueRoutes);
 
 export default RootRouter;

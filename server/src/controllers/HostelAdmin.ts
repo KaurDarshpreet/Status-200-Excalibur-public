@@ -241,34 +241,3 @@ export const checkHostelIssue = async (req: Request, res: Response) => {
 
     }
 }
-
-export const technicianList = async (req: Request, res: Response) => {
-    try {
-        const { domain_id } = (req as AuthenticatedRequest).user;
-        if (!domain_id) {
-            return res.status(400).json({
-                success: false,
-                message: "Unauthorized access"
-            });
-        }
-
-        const technicians = await prisma.technician.findMany();
-        if (technicians.length == 0) {
-            return res.json({
-                success: false,
-                message: "No technicians found"
-            });
-        }
-
-        res.json({
-            success: true,
-            technicians
-        });
-    }
-    catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Something went wrong"
-        });
-    }
-}
