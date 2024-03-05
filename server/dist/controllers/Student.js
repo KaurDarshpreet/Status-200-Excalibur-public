@@ -141,17 +141,8 @@ const login_student = (req, res) => __awaiter(void 0, void 0, void 0, function* 
 exports.login_student = login_student;
 const createIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const b64 = Buffer.from(req.file.buffer).toString("base64");
-        let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
-        const cldRes = yield (0, cloudinaryManager_1.handleUpload)(dataURI);
-        req.body.issue_media = cldRes;
-    }
-    catch (error) {
-        req.body.issue_media = null;
-    }
-    try {
-        const { category, location, title, is_public, description, issue_media } = req.body;
-        const student_id = req.user.id;
+        const { category, location, title, is_public, description } = req.body;
+        const student_id = req.user.domain_id;
         const role = req.user.role;
         if (!category || !title || !location || !description) {
             return res.status(400).json({
@@ -165,12 +156,27 @@ const createIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 error: "Invalid access to this route. Please sign in as a student."
             });
         }
+        let isPublic = false;
+        if (is_public === 'true') {
+            isPublic = true;
+        }
+        let issue_media = null;
+        try {
+            const b64 = Buffer.from(req.file.buffer).toString("base64");
+            let dataURI = "data:" + req.file.mimetype + ";base64," + b64;
+            const cldRes = yield (0, cloudinaryManager_1.handleUpload)(dataURI);
+            req.body.issue_media = cldRes;
+            issue_media = req.body.issue_media;
+        }
+        catch (error) {
+            req.body.issue_media = null;
+        }
         const issue = yield index_1.prisma.issue.create({
             data: {
                 category,
                 title,
                 location,
-                is_public,
+                is_public: isPublic,
                 description,
                 issue_media: issue_media,
                 student: {
@@ -185,6 +191,7 @@ const createIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(400).json({
             success: false,
             error: "Something went wrong"

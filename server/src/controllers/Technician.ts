@@ -34,7 +34,7 @@ export const signup_technician = async (req: Request, res: Response) => {
         if (existingTechnician) {
             return res.status(400).json({
                 success: false,
-                message: "Technician already exists. Please sign in to continue."
+                message: "Technician already exists. Please Log in to continue."
             });
         }
 
@@ -193,12 +193,15 @@ export const resolveIssue = async (req: Request, res: Response) => {
 
         await prisma.issue.update({
             where: {
-                issue_id: issue_id
+                issue_id: issue_id,
+                technician: {
+                    email: email
+                }
             },
             data: {
                 is_resolved: true
             }
-        })
+        });
 
         return res.status(200).json({
             success: true,
@@ -208,7 +211,7 @@ export const resolveIssue = async (req: Request, res: Response) => {
 
     } catch (error: any) {
         console.log(error.message);
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: "Something went wrong"
         });

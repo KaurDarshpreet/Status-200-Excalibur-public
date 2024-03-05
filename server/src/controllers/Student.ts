@@ -141,22 +141,9 @@ export const login_student = async (req: Request, res: Response) => {
 }
 
 export const createIssue = async (req: Request, res: Response) => {
-
     try {
-        const b64 = Buffer.from((req as MulterFileRequest).file.buffer).toString("base64");
-        let dataURI = "data:" + (req as MulterFileRequest).file.mimetype + ";base64," + b64;
-        const cldRes = await handleUpload(dataURI);
-        req.body.issue_media = cldRes;
-    }
-    catch (error: any) {
-        req.body.issue_media = null;
-    }
-
-
-    try {
-        const { category, location, title, is_public, description, issue_media } = req.body;
-
-        const student_id = (req as AuthenticatedRequest).user.id;
+        const { category, location, title, is_public, description} = req.body;
+        const student_id = (req as AuthenticatedRequest).user.domain_id;
         const role = (req as AuthenticatedRequest).user.role;
 
         if (!category || !title || !location || !description) {
@@ -165,12 +152,27 @@ export const createIssue = async (req: Request, res: Response) => {
                 error: "Please fill all fields"
             });
         }
-
         if (role !== "student") {
             return res.status(400).json({
                 success: false,
                 error: "Invalid access to this route. Please sign in as a student."
             });
+        }
+        let isPublic = false;
+
+        if(is_public === 'true'){
+            isPublic = true;
+        }
+        let issue_media: any = null;
+        try {
+            const b64 = Buffer.from((req as MulterFileRequest).file.buffer).toString("base64");
+            let dataURI = "data:" + (req as MulterFileRequest).file.mimetype + ";base64," + b64;
+            const cldRes = await handleUpload(dataURI);
+            req.body.issue_media = cldRes;
+            issue_media = req.body.issue_media;
+        }
+        catch (error: any) {
+            req.body.issue_media = null;
         }
 
         const issue = await prisma.issue.create({
@@ -178,7 +180,7 @@ export const createIssue = async (req: Request, res: Response) => {
                 category,
                 title,
                 location,
-                is_public,
+                is_public: isPublic,
                 description,
                 issue_media: issue_media,
                 student: {
@@ -193,6 +195,7 @@ export const createIssue = async (req: Request, res: Response) => {
             issue
         });
     } catch (error: any) {
+        console.log(error);
         return res.status(400).json({
             success: false,
             error: "Something went wrong"

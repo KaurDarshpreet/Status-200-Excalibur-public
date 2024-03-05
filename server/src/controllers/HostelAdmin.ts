@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { Request, Response, response } from "express";
 import { prisma } from "../index"
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
@@ -146,7 +146,23 @@ export const assignHostelIssue = async (req: Request, res: Response) => {
                 message: "No Technician selected"
             });
         }
+        const issue = await prisma.issue.findUnique({
+            where: {
+                issue_id: Number(issue_id)
+            }
+        });
 
+        const technician = await prisma.technician.findUnique({
+            where: {
+                technician_id: technician_id
+            }
+        });
+
+        if(issue?.category !== technician?.category){
+            return res.json({
+                message: "please select technician with matching category"
+            });
+        }
         const updatedIssue = await prisma.issue.update({
             where: {
                 issue_id: Number(issue_id),

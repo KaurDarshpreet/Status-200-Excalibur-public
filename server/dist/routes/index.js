@@ -15,8 +15,9 @@ const RootRouter = (0, express_1.Router)();
 RootRouter.use('/signup', SignupRoutes_1.default);
 RootRouter.use('/login', LoginRoutes_1.default);
 // protected routes
+RootRouter.use('/issue', IssueRoutes_1.default);
+// CRUD routes for Entities
 RootRouter.use('/student', StudentRoutes_1.default);
 RootRouter.use('/admin', AdminRoutes_1.default);
 RootRouter.use('/technician', TechnicianRoutes_1.default);
-RootRouter.use('/issue', IssueRoutes_1.default);
 exports.default = RootRouter;

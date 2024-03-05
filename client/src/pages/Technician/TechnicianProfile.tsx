@@ -1,14 +1,18 @@
-import { useState } from 'react'
+// import { useState } from 'react'
 
-export default function TechnicianProfile() {
-    const [user, setUser] = useState({
-        profilePhoto: 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp',
-        name: 'John Doe', 
-        email: 'exmple@test.com',
-        phone: '1234567890',
-        address: 'New York',
-        category: 'Electricity'
-    })
+type TechnicianProfileProps = {
+    user: {
+        profilePhoto: string;
+        name: string;
+        email: string;
+        phone: string;
+        address: string;
+        category: string;
+    }
+}
+
+export default function TechnicianProfile({user} : TechnicianProfileProps) {
+    
     return (
     <div className="profile flex flex-col items-center gap-2 bg-black min-w-[20svw] h-max mb-auto mt-5 rounded-md p-4">
         <div className="profile_pic w-[150px] h-[150px] rounded-full bg-slate-700 flex items-center justify-center">

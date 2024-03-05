@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.technicianAuth = exports.collegeAdminAuth = exports.hostelAdminAuth = exports.studentAuth = void 0;
+exports.adminAuth = exports.technicianAuth = exports.collegeAdminAuth = exports.hostelAdminAuth = exports.studentAuth = void 0;
 function studentAuth(req, res, next) {
     if (req.user.role === 'student') {
         next();
@@ -37,3 +37,12 @@ function technicianAuth(req, res, next) {
     }
 }
 exports.technicianAuth = technicianAuth;
+function adminAuth(req, res, next) {
+    if (req.user.role === 'hostel_admin' || req.user.role === 'college_admin') {
+        next();
+    }
+    else {
+        return res.sendStatus(403);
+    }
+}
+exports.adminAuth = adminAuth;

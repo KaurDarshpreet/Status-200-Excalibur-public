@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.resolveIssue = exports.Issuelist = exports.login_technician = exports.signup_technician = void 0;
+exports.technicianList = exports.resolveIssue = exports.Issuelist = exports.login_technician = exports.signup_technician = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -40,7 +40,7 @@ const signup_technician = (req, res) => __awaiter(void 0, void 0, void 0, functi
         if (existingTechnician) {
             return res.status(400).json({
                 success: false,
-                message: "Technician already exists. Please sign in to continue."
+                message: "Technician already exists. Please Log in to continue."
             });
         }
         // Hash the password
@@ -181,7 +181,10 @@ const resolveIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         yield index_1.prisma.issue.update({
             where: {
-                issue_id: issue_id
+                issue_id: issue_id,
+                technician: {
+                    email: email
+                }
             },
             data: {
                 is_resolved: true
@@ -194,10 +197,39 @@ const resolveIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.log(error.message);
-        return res.status(500).json({
+        return res.status(400).json({
             success: false,
             message: "Something went wrong"
         });
     }
 });
 exports.resolveIssue = resolveIssue;
+const technicianList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { domain_id } = req.user;
+        if (!domain_id) {
+            return res.status(400).json({
+                success: false,
+                message: "Unauthorized access"
+            });
+        }
+        const technicians = yield index_1.prisma.technician.findMany();
+        if (technicians.length == 0) {
+            return res.json({
+                success: false,
+                message: "No technicians found"
+            });
+        }
+        res.json({
+            success: true,
+            technicians
+        });
+    }
+    catch (error) {
+        return res.status(400).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+});
+exports.technicianList = technicianList;

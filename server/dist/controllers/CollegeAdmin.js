@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listTechnicians = exports.checkCollegeIssue = exports.reviewCollegeIssue = exports.assignCollegeIssue = exports.login_collegeAdmin = exports.signup_collegeAdmin = void 0;
+exports.checkCollegeIssue = exports.reviewCollegeIssue = exports.assignCollegeIssue = exports.login_collegeAdmin = exports.signup_collegeAdmin = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -222,32 +222,3 @@ const checkCollegeIssue = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.checkCollegeIssue = checkCollegeIssue;
-const listTechnicians = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { domain_id } = req.user;
-        if (!domain_id) {
-            return res.status(400).json({
-                success: false,
-                message: "Unauthorized access"
-            });
-        }
-        const technicians = yield index_1.prisma.technician.findMany();
-        if (technicians.length == 0) {
-            return res.json({
-                success: false,
-                message: "No technicians found"
-            });
-        }
-        res.json({
-            success: true,
-            technicians
-        });
-    }
-    catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Something went wrong"
-        });
-    }
-});
-exports.listTechnicians = listTechnicians;

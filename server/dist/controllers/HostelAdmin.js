@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.technicianList = exports.checkHostelIssue = exports.reviewHostelIssue = exports.assignHostelIssue = exports.login_hostelAdmin = exports.signup_hostelAdmin = void 0;
+exports.checkHostelIssue = exports.reviewHostelIssue = exports.assignHostelIssue = exports.login_hostelAdmin = exports.signup_hostelAdmin = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -143,6 +143,21 @@ const assignHostelIssue = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 message: "No Technician selected"
             });
         }
+        const issue = yield index_1.prisma.issue.findUnique({
+            where: {
+                issue_id: Number(issue_id)
+            }
+        });
+        const technician = yield index_1.prisma.technician.findUnique({
+            where: {
+                technician_id: technician_id
+            }
+        });
+        if ((issue === null || issue === void 0 ? void 0 : issue.category) !== (technician === null || technician === void 0 ? void 0 : technician.category)) {
+            return res.json({
+                message: "please select technician with matching category"
+            });
+        }
         const updatedIssue = yield index_1.prisma.issue.update({
             where: {
                 issue_id: Number(issue_id),
@@ -235,32 +250,3 @@ const checkHostelIssue = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.checkHostelIssue = checkHostelIssue;
-const technicianList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { domain_id } = req.user;
-        if (!domain_id) {
-            return res.status(400).json({
-                success: false,
-                message: "Unauthorized access"
-            });
-        }
-        const technicians = yield index_1.prisma.technician.findMany();
-        if (technicians.length == 0) {
-            return res.json({
-                success: false,
-                message: "No technicians found"
-            });
-        }
-        res.json({
-            success: true,
-            technicians
-        });
-    }
-    catch (error) {
-        return res.status(400).json({
-            success: false,
-            message: "Something went wrong"
-        });
-    }
-});
-exports.technicianList = technicianList;
