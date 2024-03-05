@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.listTechnicians = exports.checkHostelIssue = exports.reviewHostelIssue = exports.assignHostelIssue = exports.login_hostelAdmin = exports.signup_hostelAdmin = void 0;
+exports.technicianList = exports.checkHostelIssue = exports.reviewHostelIssue = exports.assignHostelIssue = exports.login_hostelAdmin = exports.signup_hostelAdmin = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -235,7 +235,7 @@ const checkHostelIssue = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.checkHostelIssue = checkHostelIssue;
-const listTechnicians = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const technicianList = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { domain_id } = req.user;
         if (!domain_id) {
@@ -263,4 +263,4 @@ const listTechnicians = (req, res) => __awaiter(void 0, void 0, void 0, function
         });
     }
 });
-exports.listTechnicians = listTechnicians;
+exports.technicianList = technicianList;

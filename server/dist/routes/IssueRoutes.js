@@ -22,8 +22,10 @@ IssueRoutes.get('/issueList', jwtVerification_1.default, roleAuthentication_1.te
 IssueRoutes.put('/hostel/assign', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, HostelAdmin_1.assignHostelIssue);
 IssueRoutes.put('/hostel/review', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, HostelAdmin_1.reviewHostelIssue);
 IssueRoutes.get('/hostel/checkIssues', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, HostelAdmin_1.checkHostelIssue);
+IssueRoutes.get('/hostel/checkIssues', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, HostelAdmin_1.technicianList);
 //college admin routes
 IssueRoutes.put('/college/assign', jwtVerification_1.default, roleAuthentication_1.collegeAdminAuth, CollegeAdmin_1.assignCollegeIssue);
 IssueRoutes.put('/college/review', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, CollegeAdmin_1.reviewCollegeIssue);
 IssueRoutes.get('/college/checkIssues', jwtVerification_1.default, roleAuthentication_1.collegeAdminAuth, CollegeAdmin_1.checkCollegeIssue);
+IssueRoutes.get('/college/checkIssues', jwtVerification_1.default, roleAuthentication_1.collegeAdminAuth, CollegeAdmin_1.listTechnicians);
 exports.default = IssueRoutes;
