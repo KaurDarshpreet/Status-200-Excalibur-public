@@ -47,6 +47,8 @@ const CollegeAdminDash = () => {
             category: "Electricity",
             visibility: "Public",
             assigned: false,
+            complete: false,
+            reviewed: false,
             location: "College Part 1"
         },
         {
@@ -56,6 +58,8 @@ const CollegeAdminDash = () => {
             category: "Electricity",
             visibility: "Public",
             assigned: false,
+            complete: false,
+            reviewed: false,
             location: "College Part 2"
         },
         {
@@ -65,12 +69,21 @@ const CollegeAdminDash = () => {
             category: "Electricity",
             visibility: "Public",
             assigned: false,
+            complete: false,
+            reviewed: false,
             location: "College Part 3"
         }
     ]) // [Issue, Issue, Issue, ...]
     function handleAssign(idx : number){
         const newIssues = [...issues];
         newIssues[idx].assigned = true;
+        // axios call to update the issue
+        setIssues(newIssues);
+    }
+    function handleReview(idx : number){
+        const newIssues = [...issues];
+        newIssues[idx].reviewed = true;
+        // axios call to update the issue
         setIssues(newIssues);
     }
     return (
@@ -85,8 +98,8 @@ const CollegeAdminDash = () => {
             <div className="post_issue min-h-[94svh] min-w-[73svw] bg-blue-950 rounded-md flex justify-between items-center">
                 {selected.AssignAdmins && <AssignAdmins />}
                 {selected.NotAssignedPage && <NotAssignedPage issues={issues} handleAssign={handleAssign} />}
-                {selected.AssignedPage && <AssignedPage />}
-                {selected.ReviewPage && <ReviewPage />}
+                {selected.AssignedPage && <AssignedPage issues={issues} />}
+                {selected.ReviewPage && <ReviewPage issues={issues} handleReview={handleReview} />}
             </div>
         </div>
     )
