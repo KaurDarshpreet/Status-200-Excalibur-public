@@ -7,6 +7,8 @@ type Issue = {
   category: string;
   visibility: string;
   assigned: boolean;
+  complete: boolean;
+  reviewed: boolean;
   location: string;
 };
 
