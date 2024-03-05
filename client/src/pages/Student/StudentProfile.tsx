@@ -14,7 +14,7 @@ export default function StudentProfile() {
             <div className="profile_pic w-[100px] h-[100px] bg-slate-200 rounded-full mt-4">
                 <img src={user.profilePhoto} className='rounded-full' />
             </div>
-            <div className="profile_name text-red-300 font-bold text-2xl mt-2">{user.name}</div>
+            <div className="profile_name text-red-300 font-bold text-2xl mt-2 text-center">{user.name}</div>
             <br />
             <div className="profile_email text-yellow-300 font-bold py-1 px-2 bg-blue-950 rounded-lg text-2xl">{user.rollNo}</div>
             <div className="profile_email text-white text-lg font-semibold my-1">{user.email}</div>
