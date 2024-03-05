@@ -14,7 +14,16 @@ type Issue = {
     complete: boolean;
     reviewed: boolean;
     location: string;
+    technician: {
+        name: string;
+        email: string;
+        category: string;
+        phone: string;
+        address: string;
+        profilePhoto: string;
+    }
 };
+
 
 type IssueCardProps = {
     name: string;
@@ -47,21 +56,21 @@ export default function ReviewPage({issues, handleReview} : ReviewPageProps){
                 {issues.map((issue, index) => {
                     return (
                         <>
-                            {!issue.reviewed && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />}
+                            {!issue.reviewed && issue.assigned && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />}
                         </>
                     )
                 })}
             </div>
-            {!issues[idx].reviewed && <div className="bg-slate-200 min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
+            {!issues[idx].reviewed &&  issues[idx].assigned &&<div className="bg-slate-200 min-h-[94svh] min-w-[40svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
                 <h1 className="profile_name text-slate-600 font-bold text-2xl mt-2 min-h-max">{issues[idx].category} : {issues[idx].title}</h1>
                 {issues[idx].media && (
-                    <div className="min-w-[45svw] min-h-[50svh] bg-slate-400 rounded-lg p-1 flex items-center justify-center">
+                    <div className="min-w-[30svw] min-h-[50svh] bg-slate-400 rounded-lg p-1 flex items-center justify-center">
                         {issues[idx].media.endsWith(".jpg") || issues[idx].media.endsWith(".jpeg") ||
                             issues[idx].media.endsWith(".png") || issues[idx].media.endsWith(".gif") ? <img src={issues[idx].media} alt="Issue Media" className="w-full h-full object-cover" /> : <video src={issues[idx].media} controls className="w-full h-full object-cover" />}
                     </div>
                 )}
                 <p className="text-slate-600">{issues[idx].description}</p>
-                <button onClick={() => handleReview(idx)} className="bg-green-500 text-white p-2 rounded-md font-semibold my-2 w-[95%]">Review</button>
+                <button onClick={() => handleReview(idx)} className="bg-green-600 text-white px-4 py-1 basis-[30%]  rounded-md font-bold">Review</button>
             </div>}
         </>
     )

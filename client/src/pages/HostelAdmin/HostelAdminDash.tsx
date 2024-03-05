@@ -47,6 +47,14 @@ const HostelAdminDash = () => {
             category: "Electricity",
             visibility: "Public",
             assigned: false,
+            technician: {
+                name: "John Doe",
+                email: "hello@test.com",
+                category: "Electricity",
+                phone: "1234567890",
+                address: "New York",
+                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            },
             complete: false,
             reviewed: false,
             location: "Hostel Part 1"
@@ -58,6 +66,14 @@ const HostelAdminDash = () => {
             category: "Electricity",
             visibility: "Public",
             assigned: false,
+            technician: {
+                name: "John Doe",
+                email: "hello@test.com",
+                category: "Electricity",
+                phone: "1234567890",
+                address: "New York",
+                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            },
             complete: false,
             reviewed: false,
             location: "Hostel Part 2"
@@ -69,6 +85,14 @@ const HostelAdminDash = () => {
             category: "Electricity",
             visibility: "Public",
             assigned: false,
+            technician: {
+                name: "Debatreya Das",
+                email: "hello@test.com",
+                category: "Electricity",
+                phone: "1234567890",
+                address: "New York",
+                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            },
             complete: false,
             reviewed: false,
             location: "Hostel Part 3"
@@ -78,6 +102,7 @@ const HostelAdminDash = () => {
         const newIssues = [...issues];
         newIssues[idx].assigned = true;
         setIssues(newIssues);
+        
     }
     function handleReview(idx : number){
         const newIssues = [...issues];
