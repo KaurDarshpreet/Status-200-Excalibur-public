@@ -84,7 +84,7 @@ const HostelAdminDash = () => {
             media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c",
             category: "Electricity",
             visibility: "Public",
-            assigned: false,
+            assigned: false, 
             technician: {
                 name: "Debatreya Das",
                 email: "hello@test.com",

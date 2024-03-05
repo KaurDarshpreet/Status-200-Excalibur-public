@@ -46,6 +46,14 @@ const CollegeAdminDash = () => {
             media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c.png",
             category: "Electricity",
             visibility: "Public",
+            technician: {
+                name: "Debatreya Das",
+                email: "hello@test.com",
+                category: "Electricity",
+                phone: "1234567890",
+                address: "New York",
+                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            },
             assigned: false,
             complete: false,
             reviewed: false,
@@ -57,6 +65,14 @@ const CollegeAdminDash = () => {
             media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c.jpg",
             category: "Electricity",
             visibility: "Public",
+            technician: {
+                name: "Debatreya Das",
+                email: "hello@test.com",
+                category: "Electricity",
+                phone: "1234567890",
+                address: "New York",
+                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            },
             assigned: false,
             complete: false,
             reviewed: false,
@@ -68,6 +84,14 @@ const CollegeAdminDash = () => {
             media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c",
             category: "Electricity",
             visibility: "Public",
+            technician: {
+                name: "Debatreya Das",
+                email: "hello@test.com",
+                category: "Electricity",
+                phone: "1234567890",
+                address: "New York",
+                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            },
             assigned: false,
             complete: false,
             reviewed: false,
