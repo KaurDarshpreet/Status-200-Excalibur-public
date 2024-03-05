@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { BsCamera2 } from "react-icons/bs";
+import { TextField } from '@mui/material';
 
 const RadioInput = (props: {
     name: string;
@@ -21,7 +22,23 @@ const TextInput = (props: {
     required: boolean;
     placeholder: string;
 }) => (
-    <input type="text" {...props} className='border border-gray-300 rounded px-4 py-2 mt-2 text-black' />
+    <TextField
+        id="outlined-basic"
+        variant='outlined'
+        label={`${props.placeholder}`}
+        className='border bg-slate-200  rounded px-4 py-2 mt-2 text-black m-auto h-max'
+        style={{ height: 45 , textAlign: 'center' }}
+        InputProps={{
+          style: { height: 45,  textAlign: 'center', color: 'black' , fontSize: '1rem'},
+        }}
+        InputLabelProps={{
+            style: { 
+                textAlign: 'center', 
+                color: 'black',
+                fontSize: '1rem',
+            },
+        }}
+    />
 );
 
 const IssueForm = () => {
@@ -37,16 +54,16 @@ const IssueForm = () => {
         visibility: 'public',
         location: '',
     });
-    
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         setIssue({ ...issue, [e.target.name]: e.target.value });
     };
-    
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         console.log(issue);
     };
-    
+
     return (
         <>
             <label htmlFor="media" className='bg-slate-200 min-h-[94svh] min-w-[45svw] flex flex-col items-center justify-center rounded-lg'>
@@ -64,7 +81,7 @@ const IssueForm = () => {
                     </div>
                 )}
             </label>
-            <form onSubmit={handleSubmit} className='m-5 flex flex-col text-white font-semibold basis-[100%]'>
+            <form onSubmit={handleSubmit} className='m-5 flex flex-col text-white font-semibold basis-[100%] gap-3'>
                 <h1 className='text-center text-3xl font-bold text-blue-200'>Report Issue</h1>
                 <hr className='w-3/4 border-white border-1 self-center mb-5' />
                 {textInput.map((input) => (
@@ -89,7 +106,7 @@ const IssueForm = () => {
                     <div className='grid grid-cols-3 w-max'>
                         {category.map((cat) => (
                             <RadioInput
-                                key={cat}   
+                                key={cat}
                                 name="category"
                                 value={cat}
                                 checked={issue.category === cat}
@@ -115,6 +132,6 @@ const IssueForm = () => {
                 <button type="submit" className='bg-blue-500 text-white px-4 py-2 mt-4 rounded'>Submit</button>
             </form>
         </>
-    );  
+    );
 }
 export default IssueForm;
