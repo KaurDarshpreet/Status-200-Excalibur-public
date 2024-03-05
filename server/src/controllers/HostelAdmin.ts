@@ -242,7 +242,7 @@ export const checkHostelIssue = async (req: Request, res: Response) => {
     }
 }
 
-export const listTechnicians = async (req: Request, res: Response) => {
+export const technicianList = async (req: Request, res: Response) => {
     try {
         const { domain_id } = (req as AuthenticatedRequest).user;
         if (!domain_id) {
