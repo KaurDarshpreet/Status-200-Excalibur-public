@@ -192,7 +192,7 @@ export const reviewCollegeIssue = async (req: Request, res: Response) => {
         });
 
     } catch (error: any) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: 'Something went wrong'
         });
@@ -224,5 +224,18 @@ export const checkCollegeIssue = async (req: Request, res: Response) => {
             message: "Something went wrong"
         });
 
+    }
+}
+
+
+//route for edit collegeAdmin profile
+export const edit_profile=async(req:Request , res:Response)=>{
+    try {
+        const {domain_id} = (req as AuthenticatedRequest).user;
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Something went wrong"
+        })
     }
 }

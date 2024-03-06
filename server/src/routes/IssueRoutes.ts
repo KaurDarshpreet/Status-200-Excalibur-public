@@ -28,7 +28,7 @@ IssueRoutes.get('/hostel/checkIssues', authenticateToken, hostelAdminAuth, check
 
 //college admin routes
 IssueRoutes.put('/college/assign', authenticateToken, collegeAdminAuth, assignCollegeIssue);
-IssueRoutes.delete('/college/review', authenticateToken, hostelAdminAuth, reviewCollegeIssue);
+IssueRoutes.delete('/college/review', authenticateToken, collegeAdminAuth, reviewCollegeIssue);
 IssueRoutes.get('/college/checkIssues', authenticateToken, collegeAdminAuth, checkCollegeIssue);
 
 

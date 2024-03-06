@@ -211,7 +211,7 @@ export const resolveIssue = async (req: Request, res: Response) => {
 
     } catch (error: any) {
         console.log(error.message);
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: "Something went wrong"
         });
@@ -242,9 +242,21 @@ export const technicianList = async (req: Request, res: Response) => {
         });
     }
     catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: "Something went wrong"
         });
+    }
+}
+
+//route for edit Technician profile
+export const edit_profile=async(req:Request , res:Response)=>{
+    try {
+        const {email} = (req as AuthenticatedRequest).user;
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Something went wrong"
+        })
     }
 }
