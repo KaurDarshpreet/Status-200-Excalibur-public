@@ -4,12 +4,15 @@ import studentBG from '../../assets/student_background.jpg'
 import technicianBG from '../../assets/technician_background.jpg'
 import hostelAdminBG from '../../assets/hostel_admin_background.jpg'
 import collegeAdminBG from '../../assets/college_admin_background.jpg'
-import { Link } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { GoogleLogin } from '@react-oauth/google';
 
 interface SelectCollegeProps {
     college : string,
     handleSetCollege : (e: React.ChangeEvent<HTMLSelectElement>) => void
+}
+interface CollegeProps {
+    college : string
 }
 interface SelectRoleProps {
     handleRole : (role: {isStudent: boolean, isTechnician: boolean, isHostelAdmin: boolean, isCollegeAdmin: boolean}) => void
@@ -80,11 +83,16 @@ const Role = ({handleRole} : SelectRoleProps) => {
         </>
     )
 }
-const StudentLogin = () => {
+const StudentLogin = ({college} : CollegeProps) => {
     const [user, setUser] = useState({
         username: '',
         email: ''
     });
+    const navigate = useNavigate();
+    const data = {
+        college: college,
+        role: 'student'
+    }
     const responseMessage = async (response: any) => {
         console.log(response);
         const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
@@ -113,16 +121,26 @@ const StudentLogin = () => {
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">Student Login</h1>
             <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
             <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
-            <button className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border">Login</button>
+            <button 
+                className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
+                onClick={() => {navigate("/student", {state: {...data}})}}
+            >
+                Login
+            </button>
             {user ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
-            <a href="#" className="text-blue-500">Forgot Password?</a>
+            <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
-            <p className="text-yellow-500">Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link></p>
+            <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", {state: {...data}})} >Sign Up</span></p>
         </>
     )
 }
-const TechnicianLogin = () => {
-    const [user, setUser] = useState(null);
+const TechnicianLogin = ({college} : CollegeProps) => {
+    const [user, setUser] = useState<{username: string, email: string} | null>(null);
+    const data = {
+        college: college,
+        role: 'technician'
+    }
+    const navigate = useNavigate();
     const responseMessage = async (response: any) => {
         console.log(response);
         const res = await fetch("http://localhost:5000/api/login/technician/v1/google", {
@@ -151,15 +169,20 @@ const TechnicianLogin = () => {
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">Technician Login</h1>
             <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Email" />
             <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" /> 
-            <button className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border">Login</button>
+            <button 
+                className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
+                onClick={() => {navigate("/technician", {state: {...data}})}}    
+            >
+                Login
+            </button>
             {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
-            <a href="#" className="text-blue-500">Forgot Password?</a>
+            <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
-            <p className="text-yellow-500">Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link></p>
+            <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", {state: {...data}})} >Sign Up</span></p>
         </>
     )
 }
-const HostelAdminLogin = () => {
+const HostelAdminLogin = ({college} : CollegeProps) => {
     const [user, setUser] = useState(null);
     const responseMessage = async (response: any) => {
         console.log(response);
@@ -179,7 +202,11 @@ const HostelAdminLogin = () => {
           return data;
         });
       }
-
+        const data = {
+            college: college,
+            role: 'hostelAdmin'
+        }
+        const navigate = useNavigate();
       const errorMessage = (error: any) => {
         console.log(error);
       }
@@ -189,15 +216,20 @@ const HostelAdminLogin = () => {
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">Hostel Admin Login</h1>
             <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
             <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
-            <button className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border">Login</button>
+            <button 
+                className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
+                onClick={() => {navigate("/hosteladmin", {state: {...data}})}}  
+            >
+                Login
+            </button>
             {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
-            <a href="#" className="text-blue-500">Forgot Password?</a>
+            <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
-            <p className="text-yellow-500">Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link></p>
+            <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", {state: {...data}})} >Sign Up</span></p>
         </>
     )
 }
-const CollegeAdminLogin = () => {
+const CollegeAdminLogin = ({college} : CollegeProps) => {
     const [user, setUser] = useState(null);
     const responseMessage = async (response: any) => {
         console.log(response);
@@ -217,7 +249,11 @@ const CollegeAdminLogin = () => {
           return data;
         });
       }
-
+      const data = {
+        college: college,
+        role: 'collegeAdmin'
+    }
+    const navigate = useNavigate();
       const errorMessage = (error: any) => {
         console.log(error);
       }
@@ -227,11 +263,16 @@ const CollegeAdminLogin = () => {
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">College Admin Login</h1>
             <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
             <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
-            <button className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border">Login</button>
+            <button 
+                className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
+                onClick={() => {navigate("/collegeadmin", {state: {...data}})}}   
+            >
+                Login
+            </button>
             {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
-            <a href="#" className="text-blue-500">Forgot Password?</a>
+            <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
-            <p className="text-yellow-500">Don't have an account? <Link to="/signup" className="text-blue-500">Sign Up</Link></p>
+            <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", {state: {...data}})} >Sign Up</span></p>
         </>
     )
 }
@@ -252,10 +293,10 @@ const Login = () => {
     }
 
     return (
-        <div className="flex justify-evenly">
+        <div className="flex justify-evenly customSlideLeft">
             <div style={{backgroundImage: `url(${welcomeImg})`, backgroundSize: 'cover'}} className={`w-[60svw] h-screen flex items-center justify-center`}>
             </div> 
-            <div className="w-[40svw] h-screen overflow-hidden relative">
+            <div className="w-[40svw] h-screen overflow-hidden relative customFadeIn">
                 {/* <FaArrowUp className="fixed bottom-4 right-4 text-white rounded-full bg-slate-600 hover:scale-150 cursor-pointer text-3xl p-2 min-w-max min-h-max" onClick={handleGoBack} /> */}
                 <div className="w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#211709]">
                     <SelectCollege college={college} handleSetCollege={handleSetCollege} />
@@ -265,19 +306,19 @@ const Login = () => {
                 <div className="flex scroll-auto" id="login_view">
                     {role.isStudent && <div className="min-w-[40svw] relative min-h-screen flex flex-col items-center justify-center bg-[#0000009d]" id="studentLogin">
                         <img src={studentBG} alt="" className="absolute z-[-1]" />
-                        <StudentLogin />
+                        <StudentLogin college={college} />
                     </div>}
                     {role.isTechnician && <div className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d]" id="technicianLogin">
                         <img src={technicianBG} alt="" className="absolute z-[-1]" />
-                        <TechnicianLogin />
+                        <TechnicianLogin college={college} />
                     </div>}
                     {role.isHostelAdmin && <div className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d]" id="hostelAdminLogin">
                         <img src={hostelAdminBG} alt="" className="absolute z-[-1]" />
-                        <HostelAdminLogin />
+                        <HostelAdminLogin college={college} />
                     </div>}
                     {role.isCollegeAdmin && <div className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d]" id="collegeAdminLogin">
                         <img src={collegeAdminBG} alt="" className="absolute z-[-1] " />
-                        <CollegeAdminLogin />
+                        <CollegeAdminLogin college={college} />
                     </div>}
                 </div>
             </div>
