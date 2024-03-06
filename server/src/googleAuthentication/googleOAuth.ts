@@ -8,7 +8,6 @@ const client = new OAuth2Client(process.env.CLIENT_ID);
 
 const googleLogin = async (req: Request, res: Response) => {
     const token = req.body.token;
-    console.log(token);
     const ticket = await client.verifyIdToken({
         idToken: token,
         audience: process.env.CLIENT_ID
@@ -24,7 +23,7 @@ const googleLogin = async (req: Request, res: Response) => {
                 domain_id: email
             },
         });
-        console.log(student);
+       
         if (student != null || student != undefined) {
             const accessToken = jwt.sign({
                 domain_id: student?.domain_id,
@@ -35,7 +34,7 @@ const googleLogin = async (req: Request, res: Response) => {
                 expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
             };
-            res.cookie("token", token, options).status(200).json({
+            res.cookie("token", accessToken, options).status(200).json({
                 message: "Login successful",
                 student
             });

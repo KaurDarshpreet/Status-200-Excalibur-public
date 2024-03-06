@@ -101,22 +101,13 @@ const StudentLogin = ({ college }: CollegeProps) => {
         role: 'student'
     }
     const responseMessage = async (response: any) => {
-        console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/student/v1/google", {
-            method: "POST",
-            body: JSON.stringify({
-                token: response.credential
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        const data = await res.json();
-        console.log(data);
-        setUser(() => {
-            return data;
-        });
+        const res = await axios.post(`${hostname}/api/login/student/v1/google`, { token: response.credential });
+        console.log(res);
+        const { student } = res.data;
+        for(const field in student){
+            localStorage.setItem(field, student[field]);
+        }
+        navigate("/student", { state: { ...data } });
     }
 
     const errorMessage = (error: any) => {
@@ -134,7 +125,7 @@ const StudentLogin = ({ college }: CollegeProps) => {
         for(const key in student){
             localStorage.setItem(key, (student as any)[key]);
         }
-        navigate("/student", { state: { ...data } })
+        navigate("/student", { state: { ...data } });
     }
 
     return (
