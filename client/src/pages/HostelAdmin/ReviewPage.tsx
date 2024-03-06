@@ -31,16 +31,16 @@ type IssueCardProps = {
     handleOnClick: (index: number) => void;
 };
 
-const IssueCard = ({name, index, handleOnClick} : IssueCardProps) => {
+const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
     return (
-        <div className={`py-2 px-4 relative cursor-pointer flex items-center border border-white rounded-md`} onClick={() => handleOnClick(index)}>
-            <h1>{name}</h1>
+        <div className={`border:none mt-1 text-slate-700 font-semibold rounded bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] text-lg  transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none text-center py-2 px-4`} onClick={() => handleOnClick(index)}>
+            <h1 className="font-bold">{name}</h1>
         </div>
     );
 
 }
 
-export default function ReviewPage({issues, handleReview} : ReviewPageProps){
+export default function ReviewPage({ issues, handleReview }: ReviewPageProps) {
     const [notReviewed, setNotReviewed] = useState(issues.filter(issue => !issue.reviewed));
     useEffect(() => {
         setNotReviewed(issues.filter(issue => !issue.reviewed));
@@ -61,16 +61,16 @@ export default function ReviewPage({issues, handleReview} : ReviewPageProps){
                     )
                 })}
             </div>
-            {!issues[idx].reviewed &&  issues[idx].assigned &&<div className="bg-slate-200 min-h-[94svh] min-w-[40svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
-                <h1 className="profile_name text-slate-600 font-bold text-2xl mt-2 min-h-max">{issues[idx].category} : {issues[idx].title}</h1>
+            {!issues[idx].reviewed && issues[idx].assigned && <div className="bg-[#393E46] p-[5%] min-h-[94svh] min-w-[40svw] flex flex-col justify-evenly rounded-lg">
+                <h1 className="profile_name text-white font-bold text-2xl text-center mt-2 min-h-max">{issues[idx].category} : {issues[idx].title}</h1>
                 {issues[idx].media && (
-                    <div className="min-w-[30svw] min-h-[50svh] bg-slate-400 rounded-lg p-1 flex items-center justify-center">
+                    <div className="min-w-[30svw] min-h-[50svh] bg-[#222831] m-auto rounded-lg p-1 flex items-center justify-center">
                         {issues[idx].media.endsWith(".jpg") || issues[idx].media.endsWith(".jpeg") ||
                             issues[idx].media.endsWith(".png") || issues[idx].media.endsWith(".gif") ? <img src={issues[idx].media} alt="Issue Media" className="w-full h-full object-cover" /> : <video src={issues[idx].media} controls className="w-full h-full object-cover" />}
                     </div>
                 )}
-                <p className="text-slate-600">{issues[idx].description}</p>
-                <button onClick={() => handleReview(idx)} className="bg-green-600 text-white px-4 py-1 basis-[30%]  rounded-md font-bold">Review</button>
+                <p className="text-white">{issues[idx].description}</p>
+                <button onClick={() => handleReview(idx)} className="text-slate-700 font-semibold mt-auto rounded bg-[#00FFF5] px-4 py-1 basis-[30%]  ">Review</button>
             </div>}
         </>
     )

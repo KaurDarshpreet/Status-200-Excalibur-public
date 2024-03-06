@@ -32,19 +32,19 @@ type IssueCardProps = {
     handleOnClick: (index: number) => void;
 };
 
-const IssueCard = ({name,technician, category , index, handleOnClick} : IssueCardProps) => {
+const IssueCard = ({ name, technician, category, index, handleOnClick }: IssueCardProps) => {
     return (
-        <div className={`py-2 px-2 relative cursor-pointer flex gap-2  bg-slate-900 items-center border border-white rounded-md justify-between`} onClick={() => handleOnClick(index)}>
-            <span className="bg-gray-600 text-ellipsis overflow-hidden whitespace-nowrap px-2 rounded-md mr-auto">{name}</span>
-            <span className="bg-gray-600 min-w-max px-2 rounded-md">{category}</span>
-            <h1 className="bg-gray-600 min-w-max px-2 rounded-md">{technician}</h1>
-            
+        <div className={`relative cursor-pointer flex gap-2  bg-[#222831] items-center border border-white  justify-between rounded bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] text-lg  transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none text-center py-2 px-4`} onClick={() => handleOnClick(index)}>
+            <span className="bg-[#222831] text-ellipsis overflow-hidden whitespace-nowrap px-2 rounded-md mr-auto">{name}</span>
+            <span className="bg-[#222831] min-w-max px-2 rounded-md">{category}</span>
+            <h1 className="bg-[#222831] min-w-max px-2 rounded-md">{technician}</h1>
+
         </div>
     );
 
 }
 
-export default function AssignedPage({issues} : AssignedPageProps){
+export default function AssignedPage({ issues }: AssignedPageProps) {
     const [Assigned, setAssigned] = useState(issues.filter(issue => issue.assigned));
     const [idx, setIdx] = useState(0);
     const handleOnClick = (index: number) => {
@@ -58,13 +58,13 @@ export default function AssignedPage({issues} : AssignedPageProps){
                 {issues.map((issue, index) => {
                     return (
                         <>
-                            {issue.assigned && <IssueCard key={index} name={issue.title} technician={issue.technician.name} category = {issue.category} handleOnClick={handleOnClick} index={index} />}
+                            {issue.assigned && <IssueCard key={index} name={issue.title} technician={issue.technician.name} category={issue.category} handleOnClick={handleOnClick} index={index} />}
                         </>
                     )
                 })}
             </div>
-            {issues[idx].assigned && <div className="bg-slate-200 min-h-[94svh] w-max flex flex-col items-center justify-center rounded-lg gap-5 p-[10%]">
-                <TechnicianCard user={issues[idx].technician} />
+            {issues[idx].assigned && <div className="bg-[#393E46] min-h-[94svh] w-max flex flex-col items-center justify-center rounded-lg gap-5 p-[10%]">
+                <TechnicianCard user={issues[idx].technician} bgc={'#222831'} />
             </div>
             }
         </>

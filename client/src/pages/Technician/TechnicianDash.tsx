@@ -53,19 +53,19 @@ const issues = [
 const TechnicianDash = () => {
     const [user, setUser] = useState({
         profilePhoto: 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp',
-        name: 'John Doe', 
+        name: 'John Doe',
         email: 'exmple@test.com',
         phone: '1234567890',
         address: 'New York',
         category: 'Electricity'
     })
     return (
-        <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
-            <div className="profile flex flex-col items-center gap-[8rem] bg-slate-900 min-w-[23svw] min-h-[94svh] rounded-md">
-                <TechnicianProfile user={user} />
-                <button className="btn bg-blue-600 cursor-pointer text-white font-bold py-2 px-4 mt-auto mb-5 rounded-md">On Leave</button>
+        <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-700">
+            <div className="profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md">
+                <TechnicianProfile user={user} bgc='#393E46'/>
+                <button className="btn bg-[#00FFF5] cursor-pointer text-slate-700 font-bold py-2 px-4 mt-auto mb-5 rounded-md transition-all shadow-[0_0_10px_#00FFF5] hover:shadow-none">On Leave</button>
             </div>
-            <div className="post_issue min-h-[94svh] min-w-[73svw] bg-blue-950 rounded-md flex justify-between items-center">
+            <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
                 <ViewIssues issues={issues} />
             </div>
         </div>
