@@ -244,3 +244,16 @@ export const getAllIssues = async (req: Request, res: Response) => {
 }
 
 // generate a Notification once issue created preferably sms ( TODO :)
+
+
+//route for edit student profile
+export const edit_profile=async(req:Request , res:Response)=>{
+    try {
+        const {domain_id} = (req as AuthenticatedRequest).user;
+    } catch (error) {
+        return res.status(500).json({
+            success:false,
+            message:"Something went wrong"
+        })
+    }
+}
