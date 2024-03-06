@@ -172,7 +172,7 @@ const SignUp = () => {
         role: 'student'
     });
     const [studentPhoto, setStudentPhoto] = useState('');
-
+    const [profilePicture, setProfilePicture] = useState('');
     const submitStudent = useMutation<void, Error, FormData>({
         mutationFn: signupStudent,
         onSuccess: () => {
@@ -182,12 +182,12 @@ const SignUp = () => {
 
     function handleStudentChange(e: any) {
         if (e.target.name == 'profile_picture') {
+            setStudentPhoto(e.target.files[0]);
             const file = e.target.files[0];
-            setStudentPhoto(file);
             const reader = new FileReader();
             reader.onload = () => {
                 if (reader.readyState === 2) {
-                    setStudentPhoto(reader.result as string);
+                    setProfilePicture(reader.result as string);
                 }
             };
             reader.readAsDataURL(file);
@@ -288,7 +288,7 @@ const SignUp = () => {
                     {/* <h1 className="font-bold text-2xl text-center mb-2">Student Sign Up</h1> */}
                     <form action="" className="flex flex-col m-2 h-full">
                         <label htmlFor="photo">
-                            <img src={studentPhoto} className="w-[8rem] h-[8rem] rounded-full mx-auto my-1 bg-slate-500 cursor-pointer" />
+                            <img src={profilePicture} className="w-[8rem] h-[8rem] rounded-full mx-auto my-1 bg-slate-500 cursor-pointer" />
                         </label>
 
                         {studentSchema.map((input, index) => (

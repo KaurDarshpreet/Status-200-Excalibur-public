@@ -14,6 +14,7 @@ export const signup_student = async (req: Request, res: Response) => {
         req.body.profile_pic = cldRes;
     }
     catch (error: any) {
+        console.log(error);
         req.body.profile_pic = null;
     }
 
