@@ -196,7 +196,7 @@ export const createIssue = async (req: Request, res: Response) => {
         });
     } catch (error: any) {
         console.log(error);
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: "Something went wrong"
         });
@@ -236,7 +236,7 @@ export const getAllIssues = async (req: Request, res: Response) => {
         })
 
     } catch (error: any) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: "Something went wrong"
         });

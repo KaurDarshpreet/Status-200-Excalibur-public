@@ -192,7 +192,7 @@ export const reviewCollegeIssue = async (req: Request, res: Response) => {
         });
 
     } catch (error: any) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: 'Something went wrong'
         });
