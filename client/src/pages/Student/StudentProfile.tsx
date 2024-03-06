@@ -18,7 +18,7 @@ export default function StudentProfile() {
     return (
         <div className="profile flex flex-col justify-center gap-2 items-center bg-[#393E46] w-[20svw] mx-auto mt-5 rounded-lg shadow-slate-700 shadow-sm p-2 grow">
             <div className="profile_pic w-[100px] h-[100px] bg-slate-200 rounded-full mt-4">
-                <img src={(user as any).profile_picture} className='rounded-full' />
+                <img src={(user as any).profile_picture} className='rounded-full max-w-[90px] max-h-[90px] m-auto' />
             </div>
             <div className="profile_name text-white font-bold text-2xl mt-2 text-center">{(user as any).name}</div>
             <br />
