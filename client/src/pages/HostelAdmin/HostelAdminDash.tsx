@@ -29,7 +29,7 @@ const Button = ({ name, handleOnClick }: ButtonProps) => {
             break;
     }
     return (
-        <button onClick={handleOnClick} className={`${bg} text-white p-2 rounded-md font-semibold my-2 w-[95%]`}>{name}</button>
+        <button onClick={handleOnClick} className={` text-slate-900 p-2  my-2 w-[95%] font-bold rounded bg-[#00ADB5] text-lg  transition-all shadow-[0_0_2px_#00FFF5] hover:shadow-none`}>{name}</button>
     )
 }
 const HostelAdminDash = () => {
@@ -112,14 +112,14 @@ const HostelAdminDash = () => {
     }
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
-            <div className="profile flex flex-col items-center bg-slate-900 min-w-[23svw] min-h-[94svh] rounded-md">
+            <div className="profile flex flex-col items-center bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md p-4">
                 <HostelAdminProfile />
                     {!selected.AnalyticsPage && <Button name="Analytics" handleOnClick={() => setSelected({ 'AnalyticsPage': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
                     {!selected.NotAssignedPage && <Button name="Not Assigned" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
                     {!selected.AssignedPage && <Button name="Assigned" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
                     {!selected.ReviewPage && <Button name="Review" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
             </div>
-            <div className="post_issue min-h-[94svh] min-w-[73svw] bg-blue-950 rounded-md flex justify-between items-center">
+            <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
                 {selected.AnalyticsPage && <AnalyticsPage />}
                 {selected.NotAssignedPage && <NotAssignedPage issues={issues} handleAssign={handleAssign} />}
                 {selected.AssignedPage && <AssignedPage issues={issues} />}

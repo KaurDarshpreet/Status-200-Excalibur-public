@@ -58,24 +58,24 @@ const issues = [
 
 const Button = ({ name, handleOnClick }: ButtonProps) => {
     return (
-        <button onClick={handleOnClick} className="bg-blue-500 text-white p-2 rounded-md font-semibold">{name}</button>
+        <button onClick={handleOnClick} className="bg-[#00FFF5] text-slate-700 font-semibold rounded p-2 text-lg  transition-all shadow-[0_0_10px_#00FFF5] hover:shadow-none">{name}</button>
     )
 }
 
 const StudentDash = () => {
     const [viewIssues, setViewIssues] = useState(false)
     return (
-        <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
-            <div className="profile flex flex-col items-center gap-[8rem] bg-slate-900 min-w-[23svw] min-h-[94svh] rounded-md">
+        <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-[#000]">
+            <div className="profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md">
                 <StudentProfile />
                 <div className="flex flex-col items-center gap-4 mb-10 mt-auto">
-                    {viewIssues ? <Button name="Report Issue" handleOnClick={() => {setViewIssues(false)}} /> : <Button name="View Issues" handleOnClick={() => {setViewIssues(true)}} />}
+                    {viewIssues ? <Button name="Report Issue" handleOnClick={() => { setViewIssues(false) }} /> : <Button name="View Issues" handleOnClick={() => { setViewIssues(true) }} />}
                 </div>
             </div>
-            <div className="post_issue min-h-[94svh] min-w-[73svw] bg-blue-950 rounded-md flex justify-between items-center">
+            <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
                 {viewIssues ? <ViewIssues issues={issues} /> : <IssueForm />}
             </div>
         </div>
     )
 }
-export default StudentDash
+export default StudentDash 

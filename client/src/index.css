@@ -74,3 +74,21 @@
     @apply bg-background text-foreground;
   }
 }
+
+.customTextField .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline {
+  border-color: white;
+}
+.customTextField .MuiOutlinedInput.MuiInputLabel-root.Mui-focussed .MuiOutlinedInput-notchedOutline {
+  border-color: white;
+}
+.customTextField .MuiInputLabel-root.Mui-active .MuiOutlinedInput-notchedOutline {
+  border-color: white;
+}
+
+.customTextField .MuiInputLabel-root.Mui-focussed{
+  color: white;
+}
+
+.customTextField .MuiInputLabel-root.Mui-active{
+  color: white;
+}
