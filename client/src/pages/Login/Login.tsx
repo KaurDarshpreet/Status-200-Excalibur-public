@@ -103,6 +103,7 @@ const StudentLogin = ({ college }: CollegeProps) => {
     const responseMessage = async (response: any) => {
         const res = await axios.post(`${hostname}/api/login/student/v1/google`, { token: response.credential });
         console.log(res);
+        localStorage.clear();
         const { student } = res.data;
         for(const field in student){
             localStorage.setItem(field, student[field]);
@@ -118,9 +119,9 @@ const StudentLogin = ({ college }: CollegeProps) => {
         let domain_id = (domainID as any).current.value;
         let password = (student_password as any).current.value;
         let role = "student";
-        console.log(password);
         const { data } = await axios.post(`${hostname}/api/login/student`, { domain_id, password, role });
         const { student } = data;
+        localStorage.clear();
         console.log(student);
         for(const key in student){
             localStorage.setItem(key, (student as any)[key]);
@@ -151,46 +152,41 @@ const StudentLogin = ({ college }: CollegeProps) => {
 
 const TechnicianLogin = ({ college }: CollegeProps) => {
     const [user, setUser] = useState<{ username: string, email: string } | null>(null);
+    const email = useRef(null);
+    const password = useRef(null);
     const data = {
         college: college,
         role: 'technician'
     }
     const navigate = useNavigate();
-    const responseMessage = async (response: any) => {
+    
+    const handleTechnicianLogin = async ()=>{
+        const data: any = {};
+        data.email = (email as any).current.value;
+        data.password = (password as any).current.value
+        data.role = 'technician';
+        const response: any = await axios.post(`${hostname}/api/login/technician`, data);
+        const { technician } = response.data;
+        localStorage.clear();
         console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/technician/v1/google", {
-            method: "POST",
-            body: JSON.stringify({
-                token: response.credential
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        const data = await res.json();
-        console.log(data);
-        setUser(() => {
-            return data;
-        });
+        for(const key in technician){
+            localStorage.setItem(key, (technician as any)[key]);
+        }
+        navigate("/technician", { state: { ...data } })
     }
 
-    const errorMessage = (error: any) => {
-        console.log(error);
-    }
     return (
         <>
             {/* Asking Email and password from Technician to Login */}
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">Technician Login</h1>
-            <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Email" />
-            <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
+            <input type="email" ref={email} className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Email" />
+            <input type="password" ref={password} className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
             <button
                 className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
-                onClick={() => { navigate("/technician", { state: { ...data } }) }}
+                onClick={() => {handleTechnicianLogin()}}
             >
                 Login
             </button>
-            {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
             <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
             <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", { state: { ...data } })} >Sign Up</span></p>
@@ -199,45 +195,41 @@ const TechnicianLogin = ({ college }: CollegeProps) => {
 }
 const HostelAdminLogin = ({ college }: CollegeProps) => {
     const [user, setUser] = useState(null);
-    const responseMessage = async (response: any) => {
-        console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/admin/hostel/v1/google", {
-            method: "POST",
-            body: JSON.stringify({
-                token: response.credential
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+    const navigate = useNavigate();
 
-        const data = await res.json();
-        console.log(data);
-        setUser(() => {
-            return data;
-        });
-    }
+    const domain_id = useRef(null);
+    const password = useRef(null);
     const data = {
         college: college,
         role: 'hostelAdmin'
     }
-    const navigate = useNavigate();
-    const errorMessage = (error: any) => {
-        console.log(error);
+    
+    const handleHostelAdminLogin = async ()=>{
+        const data: any = {};
+        data.domain_id = (domain_id as any).current.value;
+        data.password = (password as any).current.value
+        data.role = 'hostel_admin';
+        const response: any = await axios.post(`${hostname}/api/login/admin/hostel`, data);
+        const { hostelAdmin } = response.data;
+        console.log(response);
+        localStorage.clear();
+        for(const key in hostelAdmin){
+            localStorage.setItem(key, (hostelAdmin as any)[key]);
+        }
+        navigate("/hosteladmin", { state: { ...data } })
     }
     return (
         <>
             {/* Hostel Admin login using domain id and password */}
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">Hostel Admin Login</h1>
-            <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
-            <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
+            <input type="email" ref={domain_id} className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
+            <input type="password" ref={password} className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
             <button
                 className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
-                onClick={() => { navigate("/hosteladmin", { state: { ...data } }) }}
+                onClick={() => { handleHostelAdminLogin() }}
             >
                 Login
             </button>
-            {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
             <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
             <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", { state: { ...data } })} >Sign Up</span></p>
@@ -246,45 +238,42 @@ const HostelAdminLogin = ({ college }: CollegeProps) => {
 }
 const CollegeAdminLogin = ({ college }: CollegeProps) => {
     const [user, setUser] = useState(null);
-    const responseMessage = async (response: any) => {
-        console.log(response);
-        const res = await fetch("http://localhost:5000/api/login/admin/college/v1/google", {
-            method: "POST",
-            body: JSON.stringify({
-                token: response.credential
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-
-        const data = await res.json();
-        console.log(data);
-        setUser(() => {
-            return data;
-        });
-    }
     const data = {
         college: college,
         role: 'collegeAdmin'
     }
     const navigate = useNavigate();
-    const errorMessage = (error: any) => {
-        console.log(error);
+
+    const domain_id = useRef(null);
+    const password = useRef(null);
+    
+    
+    const handleCollegeAdminLogin = async ()=>{
+        const data: any = {};
+        data.domain_id = (domain_id as any).current.value;
+        data.password = (password as any).current.value
+        data.role = 'college_admin';
+        const response: any = await axios.post(`${hostname}/api/login/admin/college`, data);
+        const { collegeAdmin } = response.data;
+        console.log(response);
+        localStorage.clear();
+        for(const key in collegeAdmin){
+            localStorage.setItem(key, (collegeAdmin as any)[key]);
+        }
+        navigate("/collegeadmin", { state: { ...data } })
     }
     return (
         <>
             {/* College Admin login using provided domain id and password */}
             <h1 className="text-3xl font-bold tracking-wider mb-5 text-blue-200 drop-shadow-[2px_2px_2px_rgba(0,0,0,0.3)]">College Admin Login</h1>
-            <input type="email" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
-            <input type="password" className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
+            <input type="email"ref={domain_id} className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="DomainID" />
+            <input type="password" ref={password} className="w-[20svw] p-2 mb-5 rounded-lg" placeholder="Password" />
             <button
                 className="px-[2%] py-1 mb-5 rounded-lg text-white text-center font-bold hover:bg-blue-800 hover:scale-[1.1] transition-all cursor-pointer border-white border"
-                onClick={() => { navigate("/collegeadmin", { state: { ...data } }) }}
+                onClick={() => { handleCollegeAdminLogin() }}
             >
                 Login
             </button>
-            {user === null ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
             <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
             <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", { state: { ...data } })} >Sign Up</span></p>

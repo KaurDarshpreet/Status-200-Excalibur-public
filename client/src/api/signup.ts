@@ -10,4 +10,23 @@ async function signupStudent(data: any){
     console.log(studentInfo);
 }
 
-export {signupStudent};
+async function signupTechnician(data: any){
+    data.role = 'technician';
+    const technicianInfo = await axios.post(`${hostname}/api/signup/technician`, data);
+    console.log(technicianInfo);
+}
+
+async function signupHostelAdmin(data: any){
+    data.role = 'hostel_admin';
+    const hostelAdminInfo = await axios.post(`${hostname}/api/signup/admin/hostel`, data);
+    console.log(hostelAdminInfo);
+}
+
+async function signupCollegeAdmin(data: any){
+    data.role = 'college_admin';
+    const collegeAdminInfo = await axios.post(`${hostname}/api/signup/admin/college`, data);
+    console.log(collegeAdminInfo);
+}
+
+
+export { signupStudent, signupTechnician, signupHostelAdmin, signupCollegeAdmin };

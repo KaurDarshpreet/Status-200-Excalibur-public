@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import TechnicianProfile from './TechnicianProfile'
 import ViewIssues from './ViewIssues'
 
@@ -51,14 +51,18 @@ const issues = [
 ]
 
 const TechnicianDash = () => {
-    const [user, setUser] = useState({
-        profilePhoto: 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp',
-        name: 'John Doe',
-        email: 'exmple@test.com',
-        phone: '1234567890',
-        address: 'New York',
-        category: 'Electricity'
-    })
+    const [user, setUser] = useState({});
+    
+    useEffect(() => {
+        let values: any = {};
+        const keys = ['category', 'email', 'name', 'phone_number', 'Address'];
+        keys.forEach((key) => {
+            values[key] = localStorage.getItem(key);
+        });
+        let rollNumber = 1234;
+        values.roll_number = rollNumber
+        setUser(values);
+    }, []);
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-700">
             <div className="profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md">

@@ -6,7 +6,7 @@ import technicianBG from '../../assets/technician_background.jpg'
 import hostelAdminBG from '../../assets/hostel_admin_background.jpg'
 import collegeAdminBG from '../../assets/college_admin_background.jpg'
 import { useMutation } from "@tanstack/react-query";
-import { signupStudent } from "../../api/signup";
+import { signupCollegeAdmin, signupHostelAdmin, signupStudent, signupTechnician } from "../../api/signup";
 const inputCSS = "bg-transparent my-2"
 
 const studentSchema = [
@@ -90,7 +90,7 @@ const technicianSchema = [
     {
         type: 'text',
         placeholder: "Address",
-        name: "address",
+        name: "Address",
         className: inputCSS
     }
 ];
@@ -98,8 +98,14 @@ const technicianSchema = [
 const hostelAdminSchema = [
     {
         type: 'text',
+        placeholder: "Name",
+        name: "name",
+        className: inputCSS
+    },
+    {
+        type: 'text',
         placeholder: "Hostel Name",
-        name: "hostel_name",
+        name: "hostel",
         className: inputCSS
     },
     {
@@ -159,8 +165,6 @@ const SignUp = () => {
     const navigator = useNavigate();
     const location = useLocation();
     const data = location.state;
-    console.log(data);
-    // Student Data
 
     const [student, setStudent] = useState({
         name: '',
@@ -175,6 +179,24 @@ const SignUp = () => {
     const [profilePicture, setProfilePicture] = useState('');
     const submitStudent = useMutation<void, Error, FormData>({
         mutationFn: signupStudent,
+        onSuccess: () => {
+            navigator('/login');
+        },
+    });
+    const submitTechnician = useMutation<void, Error, FormData>({
+        mutationFn: signupTechnician,
+        onSuccess: () => {
+            navigator('/login');
+        },
+    });
+    const submitHostelAdmin = useMutation<void, Error, FormData>({
+        mutationFn: signupHostelAdmin,
+        onSuccess: () => {
+            navigator('/login');
+        },
+    });
+    const submitCollegeAdmin = useMutation<void, Error, FormData>({
+        mutationFn: signupCollegeAdmin,
         onSuccess: () => {
             navigator('/login');
         },
@@ -217,24 +239,25 @@ const SignUp = () => {
         password: '',
         category: '',
         phone_number: '',
-        address: ''
+        Address: ''
     });
     function handleTechnicianChange(e: any) {
         setTechnician({
             ...technician,
             [e.target.name]: e.target.value
-        })
+        });
     }
     function handleOnTechnicianSubmit(e: any) {
         e.preventDefault();
-        console.log(technician);
+        submitTechnician.mutate((technician as any));
         navigator('/login');
     }
 
     // Hostel Admin Data
 
     const [hostelAdmin, setHostelAdmin] = useState({
-        hostel_name: '',
+        name: '',
+        hostel: '',
         domain_id: '',
         password: '',
         phone_number: ''
@@ -247,7 +270,7 @@ const SignUp = () => {
     }
     function handleOnHostelAdminSubmit(e: any) {
         e.preventDefault();
-        console.log(hostelAdmin);
+        submitHostelAdmin.mutate((hostelAdmin as any));
         navigator('/login');
     }
 
@@ -267,7 +290,7 @@ const SignUp = () => {
     }
     function handleOnCollegeAdminSubmit(e: any) {
         e.preventDefault();
-        console.log(collegeAdmin);
+        submitCollegeAdmin.mutate((collegeAdmin as any));
         navigator('/login');
     }
 

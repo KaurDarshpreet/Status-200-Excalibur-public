@@ -5,7 +5,7 @@ export default function StudentProfile() {
 
     useEffect(() => {
         let values: any = {};
-        const keys = ['domain_id', 'name', 'hostel', 'phone_number', 'profile_picture', 'password', 'room_number',];
+        const keys = ['domain_id', 'name', 'hostel', 'phone_number', 'profile_picture', 'password', 'room_number'];
         keys.forEach((key) => {
             values[key] = localStorage.getItem(key);
         });
