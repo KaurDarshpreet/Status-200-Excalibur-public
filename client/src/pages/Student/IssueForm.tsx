@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
 import { BsCamera2 } from "react-icons/bs";
-import { TextField } from '@mui/material';
-import {blue} from '@mui/material/colors';
-
-const primary = blue[50];
 
 const RadioInput = (props: {
     name: string;
@@ -24,23 +20,14 @@ const TextInput = (props: {
     required: boolean;
     placeholder: string;
 }) => (
-    <TextField
-        id="outlined-basic"
-        variant='outlined'
-        color='primary'
-        label={`${props.placeholder}`}
-        className='customTextField border bg-slate-200  rounded px-4 py-2 mt-2 text-black m-auto h-max'
-        style={{ height: 45 , textAlign: 'center' ,backgroundColor:'#393E46', borderColor: 'white', color: 'white' }}
-        InputProps={{
-          style: { height: 45,  textAlign: 'center', color: 'white' , fontSize: '1rem'},
-        }}
-        InputLabelProps={{
-            style: { 
-                textAlign: 'center', 
-                color: 'white',
-                fontSize: '1rem',
-            },
-        }}
+    <input
+        type="text"
+        name={props.name}
+        value={props.value}
+        onChange={props.onChange}
+        required={props.required}
+        placeholder={props.placeholder}
+        className='p-2 rounded-lg bg-[#393E46] text-white'
     />
 );
 
@@ -69,14 +56,14 @@ const IssueForm = () => {
 
     return (
         <>
-            <label htmlFor="media" className='bg-[#393E46] min-h-[94svh] min-w-[45svw] flex flex-col items-center justify-center rounded-lg'>
+            <label htmlFor="media" className='bg-[#393E46] min-h-[94svh] min-w-[45svw] flex flex-col items-center justify-center rounded-lg max-sm:min-w-[80svw] max-sm:mt-2 max-sm:min-h-[50svh] '>
                 {!media && <BsCamera2 className='bg-[#00FFF5] w-[100px] h-[100px] rounded-full p-5 hover:p-4 cursor-pointer transition-all shadow-[0_0_30px_#00FFF5] hover:shadow-none' />}
                 {media && (
                     <div className='m-4 flex flex-col items-center justify-center'>
                         {media.type.includes('image') ? (
-                            <img src={URL.createObjectURL(media)} alt="Uploaded Image" className='max-w-[40svw] max-h-[80svh]' />
+                            <img src={URL.createObjectURL(media)} alt="Uploaded Image" className='max-w-[40svw] max-h-[80svh] max-sm:max-w-[80svw] max-sm:max-h-[40svh]' />
                         ) : (
-                            <video className='max-w-[40svw] max-h-[80svh]' controls>
+                            <video className='max-w-[40svw] max-h-[80svh] max-sm:max-w-[80svw] max-sm:max-h-[40svh]' controls>
                                 <source src={URL.createObjectURL(media)} type={media.type} />
                             </video>
                         )}
