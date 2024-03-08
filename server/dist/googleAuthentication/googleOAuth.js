@@ -19,7 +19,6 @@ const index_1 = require("../index");
 const client = new google_auth_library_1.OAuth2Client(process.env.CLIENT_ID);
 const googleLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const token = req.body.token;
-    console.log(token);
     const ticket = yield client.verifyIdToken({
         idToken: token,
         audience: process.env.CLIENT_ID
@@ -33,7 +32,6 @@ const googleLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 domain_id: email
             },
         });
-        console.log(student);
         if (student != null || student != undefined) {
             const accessToken = jsonwebtoken_1.default.sign({
                 domain_id: student === null || student === void 0 ? void 0 : student.domain_id,
@@ -43,7 +41,7 @@ const googleLogin = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
                 httpOnly: true,
             };
-            res.cookie("token", token, options).status(200).json({
+            res.cookie("token", accessToken, options).status(200).json({
                 message: "Login successful",
                 student
             });

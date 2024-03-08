@@ -25,6 +25,6 @@ IssueRoutes.delete('/hostel/review', jwtVerification_1.default, roleAuthenticati
 IssueRoutes.get('/hostel/checkIssues', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, HostelAdmin_1.checkHostelIssue);
 //college admin routes
 IssueRoutes.put('/college/assign', jwtVerification_1.default, roleAuthentication_1.collegeAdminAuth, CollegeAdmin_1.assignCollegeIssue);
-IssueRoutes.delete('/college/review', jwtVerification_1.default, roleAuthentication_1.hostelAdminAuth, CollegeAdmin_1.reviewCollegeIssue);
+IssueRoutes.delete('/college/review', jwtVerification_1.default, roleAuthentication_1.collegeAdminAuth, CollegeAdmin_1.reviewCollegeIssue);
 IssueRoutes.get('/college/checkIssues', jwtVerification_1.default, roleAuthentication_1.collegeAdminAuth, CollegeAdmin_1.checkCollegeIssue);
 exports.default = IssueRoutes;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkCollegeIssue = exports.reviewCollegeIssue = exports.assignCollegeIssue = exports.login_collegeAdmin = exports.signup_collegeAdmin = void 0;
+exports.edit_profile = exports.checkCollegeIssue = exports.reviewCollegeIssue = exports.assignCollegeIssue = exports.login_collegeAdmin = exports.signup_collegeAdmin = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -187,7 +187,7 @@ const reviewCollegeIssue = (req, res) => __awaiter(void 0, void 0, void 0, funct
         });
     }
     catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: 'Something went wrong'
         });
@@ -222,3 +222,16 @@ const checkCollegeIssue = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.checkCollegeIssue = checkCollegeIssue;
+//route for edit collegeAdmin profile
+const edit_profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { domain_id } = req.user;
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+});
+exports.edit_profile = edit_profile;

@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.technicianList = exports.resolveIssue = exports.Issuelist = exports.login_technician = exports.signup_technician = void 0;
+exports.edit_profile = exports.technicianList = exports.resolveIssue = exports.Issuelist = exports.login_technician = exports.signup_technician = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -70,6 +70,7 @@ const signup_technician = (req, res) => __awaiter(void 0, void 0, void 0, functi
 });
 exports.signup_technician = signup_technician;
 const login_technician = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(req.body);
     try {
         const { email, password } = req.body;
         if (!email || !password) {
@@ -197,7 +198,7 @@ const resolveIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.log(error.message);
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: "Something went wrong"
         });
@@ -226,10 +227,23 @@ const technicianList = (req, res) => __awaiter(void 0, void 0, void 0, function*
         });
     }
     catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: "Something went wrong"
         });
     }
 });
 exports.technicianList = technicianList;
+//route for edit Technician profile
+const edit_profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { email } = req.user;
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+});
+exports.edit_profile = edit_profile;

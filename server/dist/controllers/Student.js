@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllIssues = exports.createIssue = exports.login_student = exports.signup_student = void 0;
+exports.edit_profile = exports.getAllIssues = exports.createIssue = exports.login_student = exports.signup_student = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -25,6 +25,7 @@ const signup_student = (req, res) => __awaiter(void 0, void 0, void 0, function*
         req.body.profile_pic = cldRes;
     }
     catch (error) {
+        console.log(error);
         req.body.profile_pic = null;
     }
     try {
@@ -192,7 +193,7 @@ const createIssue = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
     catch (error) {
         console.log(error);
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             error: "Something went wrong"
         });
@@ -227,7 +228,7 @@ const getAllIssues = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: "Something went wrong"
         });
@@ -235,3 +236,16 @@ const getAllIssues = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 exports.getAllIssues = getAllIssues;
 // generate a Notification once issue created preferably sms ( TODO :)
+//route for edit student profile
+const edit_profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { domain_id } = req.user;
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+});
+exports.edit_profile = edit_profile;

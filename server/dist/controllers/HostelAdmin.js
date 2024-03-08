@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.checkHostelIssue = exports.reviewHostelIssue = exports.assignHostelIssue = exports.login_hostelAdmin = exports.signup_hostelAdmin = void 0;
+exports.edit_profile = exports.checkHostelIssue = exports.reviewHostelIssue = exports.assignHostelIssue = exports.login_hostelAdmin = exports.signup_hostelAdmin = void 0;
 const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -202,7 +202,7 @@ const reviewHostelIssue = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
     }
     catch (error) {
-        return res.status(400).json({
+        return res.status(500).json({
             success: false,
             message: 'Something went wrong'
         });
@@ -250,3 +250,16 @@ const checkHostelIssue = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.checkHostelIssue = checkHostelIssue;
+//route for edit HostelAdmin profile
+const edit_profile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { domain_id } = req.user;
+    }
+    catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: "Something went wrong"
+        });
+    }
+});
+exports.edit_profile = edit_profile;
