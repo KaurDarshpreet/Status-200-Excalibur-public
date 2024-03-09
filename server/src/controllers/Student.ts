@@ -126,7 +126,7 @@ export const login_student = async (req: Request, res: Response) => {
             httpOnly: true,
         };
 
-        return res.cookie("token", token, options).status(200).json({
+        return res.cookie("token",  token, options).status(200).json({
             success: true,
             message: "Login successful",
             token,

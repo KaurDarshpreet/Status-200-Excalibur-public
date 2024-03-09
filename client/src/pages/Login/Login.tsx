@@ -108,6 +108,10 @@ const StudentLogin = ({ college }: CollegeProps) => {
         for(const field in student){
             localStorage.setItem(field, student[field]);
         }
+        const time = new Date();
+        time.setTime(time.getTime() + 30 * 24 * 60 * 60 * 1000);
+        const expires = 'expires=' + time.toUTCString();
+        document.cookie = `token=${res.data.token}; expires=${expires}`;
         navigate("/student", { state: { ...data } });
     }
 
@@ -126,6 +130,7 @@ const StudentLogin = ({ college }: CollegeProps) => {
         for(const key in student){
             localStorage.setItem(key, (student as any)[key]);
         }
+        document.cookie = `token=${data.token}`;
         navigate("/student", { state: { ...data } });
     }
 

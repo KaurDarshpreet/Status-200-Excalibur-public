@@ -1,5 +1,9 @@
+import axios from 'axios';
+import { hostname } from '../../api/server';
 import React, { useState } from 'react';
 import { BsCamera2 } from "react-icons/bs";
+import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
+import { createStudentIssue } from '@/api/queries';
 
 const RadioInput = (props: {
     name: string;
@@ -34,9 +38,17 @@ const TextInput = (props: {
 const IssueForm = () => {
     const textInput = ['title', 'description', 'location'];
     const visibility = ['public', 'private'];
-    const category = ['Electricity', 'Internet', 'Mess', 'Washroom', 'Carpentry', 'Miscellaneous'];
-    const [media, setMedia] = useState<File | null>(null);
+    const category = ['carpentry', 'electrician', 'plumber', 'laundry', 'mason', 'sweeper'];
+    const [media, setMedia] = useState<any>('');
     type IssueType = { [key: string]: string };
+    const queryClient: QueryClient = useQueryClient();
+    const createIssue = useMutation<void, Error, FormData>({
+        mutationFn: createStudentIssue,
+        onSuccess: () => {
+            console.log(createIssue.data);
+            queryClient.invalidateQueries({ queryKey : ['studentIssues']});
+        },
+    });
     const [issue, setIssue] = useState<IssueType>({
         title: '',
         description: '',
@@ -49,9 +61,18 @@ const IssueForm = () => {
         setIssue({ ...issue, [e.target.name]: e.target.value });
     };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(issue);
+        const data = new FormData();
+        
+        data.append("file", media);
+        for(const key in issue){
+            if(key == 'visibility'){
+                data.append('is_public', issue[key] === 'public'? 'true' : 'false');
+            }
+            data.append(key, issue[key]);
+        }
+        createIssue.mutate(data);
     };
 
     return (
@@ -87,6 +108,7 @@ const IssueForm = () => {
                 <input
                     id='media'
                     type="file"
+                    name = 'issue_file'
                     onChange={(e) => setMedia(e.target.files![0])}
                     required
                     className='hidden'

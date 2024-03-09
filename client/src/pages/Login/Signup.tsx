@@ -217,7 +217,7 @@ const SignUp = () => {
         setStudent({
             ...student,
             [e.target.name]: e.target.value
-        })
+        });
     }
     function handleOnStudentSubmit(e: any) {
         e.preventDefault();
