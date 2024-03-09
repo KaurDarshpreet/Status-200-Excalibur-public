@@ -229,6 +229,7 @@ const SignUp = () => {
                 data.append(key, (student as any)[key]);
             }
         }
+        console.log(data)
         submitStudent.mutate(data);
     }
 

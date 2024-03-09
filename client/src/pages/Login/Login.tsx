@@ -146,7 +146,7 @@ const StudentLogin = ({ college }: CollegeProps) => {
             >
                 Login
             </button>
-            {user ? <GoogleLogin onSuccess={responseMessage} onError={errorMessage as any} /> : <div id="google_login"><p>{user?.username}</p><p>{user?.email}</p></div>}
+            <GoogleLogin onSuccess={responseMessage} onError={errorMessage as any} />
             <a href="#" className="text-blue-200">Forgot Password?</a>
             {/* Havenot Signed Up Do sign up */}
             <p className="text-yellow-500">Don't have an account? <span className="text-blue-300 cursor-pointer hover:text-white hover:font-semibold" onClick={() => navigate("/signup", { state: { ...data } })} >Sign Up</span></p>
