@@ -31,6 +31,9 @@ const IssueCard = ({name, isAssigned, index, handleOnClick} : IssueCardProps) =>
 }
 
 export default function ViewIssues({ issues }: ViewIssuesProps) {
+  if(issues == undefined || issues == null){
+    return (<h1>No Issues Found</h1>)
+  }
   const [idx, setIdx] = useState(0);
   const handleOnClick = (index: number) => {
     setIdx(index);

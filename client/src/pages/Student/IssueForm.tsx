@@ -1,5 +1,3 @@
-import axios from 'axios';
-import { hostname } from '../../api/server';
 import React, { useState } from 'react';
 import { BsCamera2 } from "react-icons/bs";
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
