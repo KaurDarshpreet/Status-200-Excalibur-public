@@ -3,6 +3,7 @@ import { hostname } from "./server";
 
 const createStudentIssue = async (data: any) => {
     const decodedCookie = decodeURIComponent(document.cookie);
+    console.log(decodedCookie);
     const authToken = decodedCookie.split('=')[1];
     const res = await axios.post(`${hostname}/api/issue/create`, data, {
         headers: {
