@@ -1,8 +1,8 @@
+import sampleDP from '../../assets/profile.png';
 // import { useState } from 'react'
 
 type TechnicianProfileProps = {
     user: {
-        profilePhoto: string;
         name: string;
         email: string;
         phone: string;
@@ -12,12 +12,11 @@ type TechnicianProfileProps = {
     bgc?: string
 }
 
-export default function TechnicianProfile({ user, bgc }: TechnicianProfileProps) {
-
+export default function TechnicianProfile({ user, bgc }: TechnicianProfileProps) {    
     return (
         <div className={`profile flex flex-col items-center gap-2 bg-${`[${bgc}]` || '[#393E46]'} min-w-[20svw] h-max mb-auto mt-5 rounded-md p-4`}>
             <div className="profile_pic w-[150px] h-[150px] rounded-full bg-slate-700 flex items-center justify-center">
-                <img src={user.profilePhoto} className='rounded-full' />
+                <img src={sampleDP} className='rounded-full' />
             </div>
             <div className="profile_info flex flex-col items-center gap-4">
                 <h1 className="text-3xl text-white">{user.name}</h1>
@@ -32,12 +31,12 @@ export default function TechnicianProfile({ user, bgc }: TechnicianProfileProps)
                 </p>
                 <p className="text-lg text-[#fff]">Phone:
                     <span className="text-[#fff] font-semibold ml-2">
-                        {user.phone_number}
+                        {user.phone}
                     </span>
                 </p>
                 <p className="text-lg text-[#fff]">Address:
                     <span className="text-white ml-2">
-                        {user.Address}
+                        {user.address}
                     </span>
                 </p>
             </div>
