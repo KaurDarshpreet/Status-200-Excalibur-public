@@ -179,7 +179,7 @@ const TechnicianLogin = ({ college }: CollegeProps) => {
         for(const key in technician){
             localStorage.setItem(key, (technician as any)[key]);
         }
-        const authToken = data.token;
+        const authToken = response.data.token;
         sessionStorage.setItem('authToken', authToken);    
         navigate("/technician", { state: { ...data } })
     }
@@ -226,7 +226,7 @@ const HostelAdminLogin = ({ college }: CollegeProps) => {
         for(const key in hostelAdmin){
             localStorage.setItem(key, (hostelAdmin as any)[key]);
         }
-        const authToken = data.token;
+        const authToken = response.data.token;
         sessionStorage.setItem('authToken', authToken);    
         navigate("/hosteladmin", { state: { ...data } })
     }
@@ -273,7 +273,7 @@ const CollegeAdminLogin = ({ college }: CollegeProps) => {
         for(const key in collegeAdmin){
             localStorage.setItem(key, (collegeAdmin as any)[key]);
         }
-        const authToken = data.token;
+        const authToken = response.data.token;
         sessionStorage.setItem('authToken', authToken);    
         navigate("/collegeadmin", { state: { ...data } })
     }

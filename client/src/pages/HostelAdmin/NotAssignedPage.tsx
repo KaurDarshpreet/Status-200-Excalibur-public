@@ -41,7 +41,10 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 }
 
 export default function NotAssignedPage({ issues, handleAssign }: ViewIssuesProps) {
-  const [notAssigned, setNotAssigned] = useState(issues.filter(issue => !issue.assigned));
+  const [notAssigned, setNotAssigned] = useState<any>(issues.filter(issue => !issue.assigned));
+  if(issues == null || issues == undefined){
+    return (<p>No issues found</p>);
+  }
   useEffect(() => {
     setNotAssigned(issues.filter(issue => !issue.assigned));
   }, [issues]);

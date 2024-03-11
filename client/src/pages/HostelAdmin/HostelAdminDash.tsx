@@ -4,6 +4,8 @@ import AnalyticsPage from "./Rebate";
 import NotAssignedPage from "./NotAssignedPage";
 import AssignedPage from "./AssignedPage";
 import ReviewPage from "./ReviewPage";
+import { useQuery } from "@tanstack/react-query";
+import { getNotAssignedIssues } from "@/api/hostelAdminQueries";
 
 interface ButtonProps {
     name: string;
@@ -39,76 +41,26 @@ const HostelAdminDash = () => {
         'AssignedPage': false,
         'ReviewPage': false
     })
-    const [issues, setIssues] = useState([
-        {
-            title: "Issue 1",
-            description: "This is issue 1",
-            media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c.png",
-            category: "Electricity",
-            visibility: "Public",
-            assigned: false,
-            technician: {
-                name: "John Doe",
-                email: "hello@test.com",
-                category: "Electricity",
-                phone: "1234567890",
-                address: "New York",
-                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-            },
-            complete: false,
-            reviewed: false,
-            location: "Hostel Part 1"
-        },
-        {
-            title: "Issue 2",
-            description: "This is issue 2",
-            media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c.jpg",
-            category: "Electricity",
-            visibility: "Public",
-            assigned: false,
-            technician: {
-                name: "John Doe",
-                email: "hello@test.com",
-                category: "Electricity",
-                phone: "1234567890",
-                address: "New York",
-                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-            },
-            complete: false,
-            reviewed: false,
-            location: "Hostel Part 2"
-        },
-        {
-            title: "Issue 3",
-            description: "This is issue 3",
-            media: "https://images.unsplash.com/photo-1631579162913-8d5d9a6b7e1c",
-            category: "Electricity",
-            visibility: "Public",
-            assigned: false, 
-            technician: {
-                name: "Debatreya Das",
-                email: "hello@test.com",
-                category: "Electricity",
-                phone: "1234567890",
-                address: "New York",
-                profilePhoto: "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
-            },
-            complete: false,
-            reviewed: false,
-            location: "Hostel Part 3"
-        }
-    ]) // [Issue, Issue, Issue, ...]
+    const notAssignedIssueQuery = useQuery({
+        queryKey: ['notAssignedIssues'],
+        queryFn: getNotAssignedIssues
+    });
+
+    const issues = notAssignedIssueQuery.data.issues;
+    if(notAssignedIssueQuery.isLoading){
+        return (<h1>Fetching Not assigned issues</h1>)
+    }
     function handleAssign(idx : number){
         const newIssues = [...issues];
         newIssues[idx].assigned = true;
-        setIssues(newIssues);
+        // setIssues(newIssues);
         
     }
     function handleReview(idx : number){
         const newIssues = [...issues];
         newIssues[idx].reviewed = true;
         // axios call to update the issue
-        setIssues(newIssues);
+        // setIssues(newIssues);
     }
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
