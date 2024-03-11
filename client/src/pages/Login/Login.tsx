@@ -104,14 +104,13 @@ const StudentLogin = ({ college }: CollegeProps) => {
         const res = await axios.post(`${hostname}/api/login/student/v1/google`, { token: response.credential });
         console.log(res);
         localStorage.clear();
+        sessionStorage.clear();
         const { student } = res.data;
         for(const field in student){
             localStorage.setItem(field, student[field]);
         }
-        const time = new Date();
-        time.setTime(time.getTime() + 30 * 24 * 60 * 60 * 1000);
-        const expires = 'expires=' + time.toUTCString();
-        document.cookie = `token=${res.data.token}; expires=${expires}`;
+        const authToken = res.data.accessToken;
+        sessionStorage.setItem('authToken', authToken); 
         navigate("/student", { state: { ...data } });
     }
 
@@ -126,11 +125,13 @@ const StudentLogin = ({ college }: CollegeProps) => {
         const { data } = await axios.post(`${hostname}/api/login/student`, { domain_id, password, role });
         const { student } = data;
         localStorage.clear();
+        sessionStorage.clear();
         console.log(student);
         for(const key in student){
             localStorage.setItem(key, (student as any)[key]);
         }
-        document.cookie = `token=${data.token}`;
+        const authToken = data.token;
+        sessionStorage.setItem('authToken', authToken);     
         navigate("/student", { state: { ...data } });
     }
 
@@ -173,10 +174,13 @@ const TechnicianLogin = ({ college }: CollegeProps) => {
         const response: any = await axios.post(`${hostname}/api/login/technician`, data);
         const { technician } = response.data;
         localStorage.clear();
+        sessionStorage.clear();
         console.log(response);
         for(const key in technician){
             localStorage.setItem(key, (technician as any)[key]);
         }
+        const authToken = data.token;
+        sessionStorage.setItem('authToken', authToken);    
         navigate("/technician", { state: { ...data } })
     }
 
@@ -218,9 +222,12 @@ const HostelAdminLogin = ({ college }: CollegeProps) => {
         const { hostelAdmin } = response.data;
         console.log(response);
         localStorage.clear();
+        sessionStorage.clear();
         for(const key in hostelAdmin){
             localStorage.setItem(key, (hostelAdmin as any)[key]);
         }
+        const authToken = data.token;
+        sessionStorage.setItem('authToken', authToken);    
         navigate("/hosteladmin", { state: { ...data } })
     }
     return (
@@ -262,9 +269,12 @@ const CollegeAdminLogin = ({ college }: CollegeProps) => {
         const { collegeAdmin } = response.data;
         console.log(response);
         localStorage.clear();
+        sessionStorage.clear();
         for(const key in collegeAdmin){
             localStorage.setItem(key, (collegeAdmin as any)[key]);
         }
+        const authToken = data.token;
+        sessionStorage.setItem('authToken', authToken);    
         navigate("/collegeadmin", { state: { ...data } })
     }
     return (
