@@ -4,7 +4,7 @@ import StudentProfile from './StudentProfile'
 import ViewIssues from './ViewIssues'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useQuery } from "@tanstack/react-query";
-import { getStudentIssues } from "@/api/queries";
+import { getStudentIssues } from "../../api/studentQueries";
 
 interface ButtonProps {
     name: string;
@@ -59,7 +59,7 @@ const StudentDash = () => {
                 </div>
             </div>
             <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex max-sm:flex-col justify-between max-sm:justify-evenly items-center max-sm:max-w-[100svw] overflow-hidden">
-                {viewIssues ? issueQuery.isLoading ? <h1>Fetching Issues</h1> : <ViewIssues issues={issues} /> : <IssueForm />}
+                {viewIssues ? issueQuery.isLoading ? <h1>Fetching Issues</h1> : <ViewIssues issues={issues} /> : <IssueForm setViewIssues={setViewIssues}/>}
                 
             </div>
         </div>

@@ -2,9 +2,7 @@ import axios from "axios";
 import { hostname } from "./server";
 
 const createStudentIssue = async (data: any) => {
-    const decodedCookie = decodeURIComponent(document.cookie);
-    console.log(decodedCookie);
-    const authToken = decodedCookie.split('=')[1];
+    const authToken = sessionStorage.getItem('authToken');
     const res = await axios.post(`${hostname}/api/issue/create`, data, {
         headers: {
             'Content-Type': 'multipart/form-data',
@@ -15,8 +13,7 @@ const createStudentIssue = async (data: any) => {
 }
 
 const getStudentIssues = async () => {
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const authToken = decodedCookie.split('=')[1];
+    const authToken = sessionStorage.getItem('authToken');
     const res = await axios.get(`${hostname}/api/issue/studentIssues`, {
         headers: {
             'Authorization': `Bearer ${authToken}`
