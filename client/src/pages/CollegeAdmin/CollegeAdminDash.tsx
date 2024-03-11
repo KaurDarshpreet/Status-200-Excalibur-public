@@ -113,11 +113,11 @@ const CollegeAdminDash = () => {
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
             <div className="profile flex flex-col items-center bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md p-4">
-                <CollegeAdminProfile />
-                    {!selected.AssignAdmins && <Button name="Assign Hostel Admins" handleOnClick={() => setSelected({ 'AssignAdmins': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
-                    {!selected.NotAssignedPage && <Button name="Not Assigned" handleOnClick={() => setSelected({ 'AssignAdmins': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
-                    {!selected.AssignedPage && <Button name="Assigned" handleOnClick={() => setSelected({ 'AssignAdmins': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
-                    {!selected.ReviewPage && <Button name="Review" handleOnClick={() => setSelected({ 'AssignAdmins': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
+                    <CollegeAdminProfile />
+                    {<Button name="Assign Hostel Admins" handleOnClick={() => setSelected({ 'AssignAdmins': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Not Assigned" handleOnClick={() => setSelected({ 'AssignAdmins': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Assigned" handleOnClick={() => setSelected({ 'AssignAdmins': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
+                    {<Button name="Review" handleOnClick={() => setSelected({ 'AssignAdmins': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
             </div>
             <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
                 {selected.AssignAdmins && <AssignAdmins />}

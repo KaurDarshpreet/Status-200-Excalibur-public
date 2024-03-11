@@ -1,6 +1,6 @@
 import { useState } from "react";
 import HostelAdminProfile from "./HostelAdminProfile"
-import AnalyticsPage from "./AnalyticsPage";
+import AnalyticsPage from "./Rebate";
 import NotAssignedPage from "./NotAssignedPage";
 import AssignedPage from "./AssignedPage";
 import ReviewPage from "./ReviewPage";
@@ -10,7 +10,7 @@ interface ButtonProps {
     handleOnClick: () => void;
 }
 const Button = ({ name, handleOnClick }: ButtonProps) => {
-    let bg
+    let bg;
     switch (name) {
         case "Analytics":
             bg = "bg-blue-500"
@@ -113,11 +113,11 @@ const HostelAdminDash = () => {
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
             <div className="profile flex flex-col items-center bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md p-4">
-                <HostelAdminProfile />
-                    {!selected.AnalyticsPage && <Button name="Analytics" handleOnClick={() => setSelected({ 'AnalyticsPage': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
-                    {!selected.NotAssignedPage && <Button name="Not Assigned" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
-                    {!selected.AssignedPage && <Button name="Assigned" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
-                    {!selected.ReviewPage && <Button name="Review" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
+                    <HostelAdminProfile />
+                    {<Button name="Analytics" handleOnClick={() => setSelected({ 'AnalyticsPage': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Not Assigned" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Assigned" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
+                    {<Button name="Review" handleOnClick={() => setSelected({ 'AnalyticsPage': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
             </div>
             <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
                 {selected.AnalyticsPage && <AnalyticsPage />}

@@ -51,7 +51,13 @@ const issues = [
 ]
 
 const TechnicianDash = () => {
-    const [user, setUser] = useState({});
+    const [user, setUser] = useState({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        category: ''
+    });
     
     useEffect(() => {
         let values: any = {};
