@@ -1,11 +1,11 @@
 import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-  } from "@/components/ui/dialog"
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -14,43 +14,54 @@ import { Button } from "@/components/ui/button"
 
 import { useState } from "react";
 import { DialogClose } from "@radix-ui/react-dialog"
-  
+import { useMutation } from "@tanstack/react-query"
+import { submitRebate } from "../../api/studentQueries"
+
 interface ButtonProps {
-   name: string;
-   handleOnClick: () => void;
+  name: string;
+  handleOnClick: () => void;
 }
 
 const MyButton = ({ name, handleOnClick }: ButtonProps) => {
   return (
-      <button onClick={handleOnClick} className="bg-[#00FFF5] text-slate-700 font-semibold rounded p-2 text-lg  transition-all shadow-[0_0_10px_#00FFF5] hover:shadow-none">{name}</button>
+    <button onClick={handleOnClick} className="bg-[#00FFF5] text-slate-700 font-semibold rounded p-2 text-lg  transition-all shadow-[0_0_10px_#00FFF5] hover:shadow-none">{name}</button>
   )
 }
 
 export const RebateForm = () => {
-    const [rebate, setRebate] = useState({
-        from: Date.now(),
-        to: Date.now(),
-        reason: ''
-    })
-    function handleOnChange(e: any) {
-        setRebate({ ...rebate, [e.target.id]: e.target.value })
+  const [rebate, setRebate] = useState({
+    from: Date.now(),
+    to: Date.now(),
+    reason: ''
+  });
+
+  function handleOnChange(e: any) {
+    setRebate({ ...rebate, [e.target.id]: e.target.value })
+  }
+
+  const createRebate = useMutation({
+    mutationFn: submitRebate,
+    onSuccess: (data) => {
+      console.log(data.messRebate)
     }
-    function handleSubmit() {
-        // Axios request to submit rebate form
-        console.log(rebate)
-    }
+  });
+
+  function handleSubmit() {
+    const data: any = rebate;
+    createRebate.mutate(data);
+  }
   return (
     <Dialog>
-        <DialogTrigger>
-            <MyButton 
-                name="Rebate Form" 
-                handleOnClick={() => {}}
-            />
-        </DialogTrigger>
+      <DialogTrigger>
+        <MyButton
+          name="Rebate Form"
+          handleOnClick={() => { }}
+        />
+      </DialogTrigger>
       <DialogContent className="bg-black text-white">
         <DialogHeader>
-            <DialogTitle className="sm:text-4xl text-3xl mb-4">Request a Mess Rebate</DialogTitle>
-            <DialogDescription>
+          <DialogTitle className="sm:text-4xl text-3xl mb-4">Request a Mess Rebate</DialogTitle>
+          <DialogDescription>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="from" className="text-xl">From</Label>
@@ -66,11 +77,11 @@ export const RebateForm = () => {
               <Textarea className="min-h-[100px]" id="reason" placeholder="Enter your message" onChange={handleOnChange} />
             </div>
             <div className="flex justify-end mt-2">
-                <DialogClose>
+              <DialogClose>
                 <Button size="sm" className="outline hover:bg-white hover:text-black" onClick={handleSubmit}>Submit</Button>
-                </DialogClose>
+              </DialogClose>
             </div>
-            </DialogDescription>
+          </DialogDescription>
         </DialogHeader>
       </DialogContent>
     </Dialog>

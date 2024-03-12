@@ -42,8 +42,8 @@ const IssueForm = (props: any) => {
     const queryClient: QueryClient = useQueryClient();
     const createIssue = useMutation<void, Error, FormData>({
         mutationFn: createStudentIssue,
-        onSuccess: () => {
-            console.log(createIssue.data);
+        onSuccess: (data) => {
+            console.log(data);
             queryClient.invalidateQueries({ queryKey : ['studentIssues']});
             props.setViewIssues(true);
         },
