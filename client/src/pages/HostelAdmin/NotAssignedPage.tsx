@@ -1,7 +1,17 @@
 import { getTechnicians } from "@/api/hostelAdminQueries";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
+
+type PopOverProps = {
+  handleAssign: (index: number) => void;
+  idx: number;
+};
 type Issue = {
   issue_id: number
   title: string,
@@ -41,6 +51,26 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
     </div>
   );
 
+}
+
+const PopOver = ({handleAssign, idx}: PopOverProps) => {
+  return (
+    <Popover>
+      <PopoverTrigger>
+          <button onClick={() => {
+            handleAssign(idx)
+          }
+          }
+            className="bg-[#00FFF5] text-slate-700  px-2 py-1 basis-[30%] rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none"
+          >
+            Assign
+          </button>
+      </PopoverTrigger>
+      <PopoverContent>
+        <div>Content</div>
+      </PopoverContent>
+    </Popover>
+  )
 }
 
 export default function NotAssignedPage({ issues }: ViewIssuesProps) {
@@ -107,12 +137,7 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
           >
             Prev
           </button>
-          <button onClick={() => {
-            handleAssign(idx)
-          }
-          }
-            className="bg-[#00FFF5] text-slate-700  px-2 py-1 basis-[30%] rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none"
-          >Assign</button>
+            <PopOver handleAssign={handleAssign} idx={idx} />
           <button
             onClick={() => setIdx((idx + 1) % issues.length)}
             className="bg-[#00FFF5] text-slate-700 px-2 py-1 mx-5 rounded-md font-bold"
