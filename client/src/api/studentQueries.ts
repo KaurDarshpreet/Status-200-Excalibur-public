@@ -23,6 +23,15 @@ const getStudentIssues = async () => {
     return res.data.issues;
 }
 
+const submitRebate = async (data: any) => {
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.post(`${hostname}/api/student/rebate`, data, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`
+        }
+    });
+    return res.data;
+}
 
 
-export { getStudentIssues, createStudentIssue };
+export { getStudentIssues, createStudentIssue, submitRebate };
