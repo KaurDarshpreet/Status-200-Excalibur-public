@@ -5,6 +5,7 @@ import ViewIssues from './ViewIssues'
 import { GiHamburgerMenu } from "react-icons/gi";
 import { useQuery } from "@tanstack/react-query";
 import { getStudentIssues } from "../../api/studentQueries";
+import { RebateForm } from "./RebateForm";
 
 interface ButtonProps {
     name: string;
@@ -33,7 +34,6 @@ const StudentDash = () => {
     const hidden = "max-sm:hidden"
     const [viewIssues, setViewIssues] = useState(false)
 
-
     return (
         <div className={`container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-[#000] relative ${toggle ? 'max-h-[100svh] overflow-hidden' : ''}`}>
             <GiHamburgerMenu className="text-[#ffffff] text-4xl cursor-pointer self-start fixed top-2 left-2 sm:hidden" onClick={handleToggle} />
@@ -41,6 +41,7 @@ const StudentDash = () => {
                 <GiHamburgerMenu className="text-[#ffffff] text-4xl cursor-pointer self-start absolute top-2 left-2 sm:hidden" onClick={handleToggle} />
                 <StudentProfile />
                 <div className="flex flex-col items-center gap-4 mb-10 mt-auto">
+                    <RebateForm />
                     {viewIssues ? 
                         <Button 
                             name="Report Issue" 
