@@ -2,7 +2,13 @@ import { useEffect, useState } from "react"
 
 
 const HostelAdminProfile = () => {
-    const [hostelDetails, setHostelDetails] = useState({});
+    const [hostelDetails, setHostelDetails] = useState({
+        hostel: '',
+        domain_id: '',
+        name: '',
+        phone_number: '',
+        roll_number: ''
+    });
 
     useEffect(() => {
         let values: any = {};
@@ -17,9 +23,9 @@ const HostelAdminProfile = () => {
 
     return (
         <div className="profile flex flex-col items-center gap-2 bg-[#393E46]  min-w-[20svw] h-max mb-auto mt-2 rounded-lg p-4">
-            <div className="profile_pic w-[150px] h-[150px] rounded-full bg-slate-700 flex items-center justify-center">
+            {/* <div className="profile_pic w-[150px] h-[150px] rounded-full bg-slate-700 flex items-center justify-center">
                 <img src={hostelDetails?.profilePhoto} className='rounded-full' />
-            </div>
+            </div> */}
             <div className="profile_info flex flex-col items-center gap-4">
                 <h1 className="text-3xl text-white text-center font-semibold">{hostelDetails.name}</h1>
                 <hr className='border-white border w-[15svw]' />
