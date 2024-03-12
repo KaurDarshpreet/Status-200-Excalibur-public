@@ -1,28 +1,31 @@
+import { getTechnicians } from "@/api/hostelAdminQueries";
+import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 type Issue = {
-  title: string;
-  description: string;
-  media: string;
-  category: string;
-  visibility: string;
-  assigned: boolean;
+  issue_id: number
+  title: string,
+  description: string,
+  is_public: boolean,
+  is_resolved: boolean,
+  issue_media: string,
+  location: string,
+  created_at: Date,
+  category: string,
+
   technician: {
-    name: string;
-    email: string;
-    category: string;
-    phone: string;
-    address: string;
-    profilePhoto: string;
+    technician_id: string,
+    password: string,
+    name: string,
+    email: string,
+    category: string,
+    phone_number: string,
+    address: string
   }
-  complete: boolean;
-  reviewed: boolean;
-  location: string;
 };
 
 type ViewIssuesProps = {
   issues: Issue[];
-  handleAssign: (idx: number) => void;
 };
 
 type IssueCardProps = {
@@ -40,39 +43,58 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 
 }
 
-export default function NotAssignedPage({ issues, handleAssign }: ViewIssuesProps) {
-  const [notAssigned, setNotAssigned] = useState<any>(issues.filter(issue => !issue.assigned));
-  if(issues == null || issues == undefined){
+export default function NotAssignedPage({ issues }: ViewIssuesProps) {
+  if (issues == null || issues == undefined) {
     return (<p>No issues found</p>);
   }
+  const [notAssigned, setNotAssigned] = useState<any>(issues.filter(issue => (issue.technician == null)));
+
   useEffect(() => {
-    setNotAssigned(issues.filter(issue => !issue.assigned));
+    setNotAssigned(issues.filter(issue => (issue.technician == null)));
   }, [issues]);
+
+  const technicianQuery = useQuery({
+    queryKey: ["listTechnicians"],
+    queryFn: getTechnicians
+  });
+
+
+
   const [idx, setIdx] = useState(0);
   const handleOnClick = (index: number) => {
     setIdx(index);
   }
+
+  const handleAssign = async (index: number)=>{
+    const issue = issues[index];
+    console.log(issue);
+    if(!technicianQuery.isLoading){
+      console.log(technicianQuery.data)
+    }
+  }
+
+
   return (
     <>
       {notAssigned.length == 0 && <div className="bg-[#222831] min-h-[94svh] min-w-[73svw] flex flex-col items-center  text-white justify-evenly rounded-lg font-bold text-5xl font-sans">ALL ISSUES ASSIGNED 🎊</div>}
       <div className="flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
         {issues.map((issue, index) => {
           return (
-            <>
-              {!issue.assigned && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />}
-            </>
+            <div key={issue.issue_id}>
+              {(issue.technician == null) && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />}
+            </div>
           )
         })}
       </div>
-      {!issues[idx].assigned && <div className="bg-[#222831] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
+      {(issues[idx].technician == null) && <div className="bg-[#222831] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
         <h1 className="profile_name text-white font-bold text-2xl mt-2 min-h-max">{issues[idx].category} : {issues[idx].title}</h1>
-        {issues[idx].media && (
+        {issues[idx].issue_media && (
           <div className="min-w-[45svw] min-h-[50svh] bg-[#393E46] rounded-lg p-1 flex items-center justify-center">
-            {issues[idx].media.endsWith(".jpg") || issues[idx].media.endsWith(".jpeg") ||
-              issues[idx].media.endsWith(".png") ? (
-              <img src={issues[idx].media} alt="Issue Media" className="max-w-[43svw] max-h-[47svh]" />
+            {issues[idx].issue_media.endsWith(".jpg") || issues[idx].issue_media.endsWith(".jpeg") ||
+              issues[idx].issue_media.endsWith(".png") ? (
+              <img src={issues[idx].issue_media} alt="Issue Media" className="max-w-[43svw] max-h-[47svh]" />
             ) : (
-              <video src={issues[idx].media} controls className="max-w-[43svw] max-h-[47svh]" />
+              <video src={issues[idx].issue_media} controls className="max-w-[43svw] max-h-[47svh]" />
             )}
           </div>
         )}
@@ -87,7 +109,6 @@ export default function NotAssignedPage({ issues, handleAssign }: ViewIssuesProp
           </button>
           <button onClick={() => {
             handleAssign(idx)
-            setIdx((idx + 1) % issues.length)
           }
           }
             className="bg-[#00FFF5] text-slate-700  px-2 py-1 basis-[30%] rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none"

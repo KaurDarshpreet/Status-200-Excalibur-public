@@ -12,4 +12,16 @@ const getNotAssignedIssues = async ()=>{
     return res.data;
 }
 
-export { getNotAssignedIssues };
+const getTechnicians = async () =>{
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.get(`${hostname}/api/issue/listTechnicians`, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        }
+    });
+    console.log(res.data);
+    return res.data;
+}
+ 
+
+export { getNotAssignedIssues, getTechnicians };

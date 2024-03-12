@@ -43,19 +43,15 @@ const HostelAdminDash = () => {
     })
     const notAssignedIssueQuery = useQuery({
         queryKey: ['notAssignedIssues'],
-        queryFn: getNotAssignedIssues
+        queryFn: getNotAssignedIssues,
+        
     });
-
-    const issues = notAssignedIssueQuery.data.issues;
+    
     if(notAssignedIssueQuery.isLoading){
         return (<h1>Fetching Not assigned issues</h1>)
     }
-    function handleAssign(idx : number){
-        const newIssues = [...issues];
-        newIssues[idx].assigned = true;
-        // setIssues(newIssues);
-        
-    }
+    const issues = notAssignedIssueQuery.data.issues;
+    
     function handleReview(idx : number){
         const newIssues = [...issues];
         newIssues[idx].reviewed = true;
@@ -73,7 +69,7 @@ const HostelAdminDash = () => {
             </div>
             <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
                 {selected.AnalyticsPage && <AnalyticsPage />}
-                {selected.NotAssignedPage && <NotAssignedPage issues={issues} handleAssign={handleAssign} />}
+                {selected.NotAssignedPage && <NotAssignedPage issues={issues} />}
                 {selected.AssignedPage && <AssignedPage issues={issues} />}
                 {selected.ReviewPage && <ReviewPage issues={issues} handleReview={handleReview} />}
             </div>

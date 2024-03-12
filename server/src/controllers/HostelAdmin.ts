@@ -240,9 +240,11 @@ export const checkHostelIssue = async (req: Request, res: Response) => {
     const hostel = hostelAdmin.hostel;
     const issues = await prisma.issue.findMany({
       where: {
-        location: hostel,
-        is_resolved: false,
+        location: hostel
       },
+      include: {
+        technician: true
+      }
     });
     return res.status(200).json({
       success: true,
