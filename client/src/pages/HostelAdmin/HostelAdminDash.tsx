@@ -1,6 +1,6 @@
 import { useState } from "react";
 import HostelAdminProfile from "./HostelAdminProfile"
-import AnalyticsPage from "./Rebate";
+import AnalyticsPage from "./RebateList";
 import NotAssignedPage from "./NotAssignedPage";
 import AssignedPage from "./AssignedPage";
 import ReviewPage from "./ReviewPage";
