@@ -306,6 +306,9 @@ export const checkRebates = async (req: Request, res: Response) => {
           },
         },
       },
+      include: {
+        student: true
+      }
     });
     if (rebates.length === 0) {
       return res.status(200).json({

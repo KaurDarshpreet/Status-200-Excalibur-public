@@ -372,6 +372,7 @@ export const getMessRebate = async (req: Request, res: Response) => {
 };
 
 export const initiateBillpayment = async (req: Request, res: Response) => {
+  console.log("initiating payment")
   try {
     const { domain_id } = (req as AuthenticatedRequest).user;
     const { role } = (req as AuthenticatedRequest).user;
@@ -394,16 +395,16 @@ export const initiateBillpayment = async (req: Request, res: Response) => {
     const options = {
       amount: Number(amount * 100),
       currency: "INR",
-      receipt: "order_rcptid_11",
-    }
+    };
 
     const order = await instance.orders.create(options);
     console.log(order);
 
+
     return res.status(200).json({
       success: true,
       message: "Bill payment initiated",
-      order,
+      order
     });
 
   } catch (error: any) {
@@ -415,6 +416,7 @@ export const initiateBillpayment = async (req: Request, res: Response) => {
 };
 
 export const completePayment = async (req: Request, res: Response) => {
+  console.log("finishing payment")
   try {
     const {razorpay_order_id,razorpay_payment_id,razorpay_signature} = req.body;
 
@@ -448,6 +450,40 @@ export const completePayment = async (req: Request, res: Response) => {
         });
       }
   } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: "Something went wrong",
+    });
+  }
+};
+
+export const getkey = async (req: Request, res: Response) => {
+  console.log("asking for razorpay key")
+  try {
+    const { domain_id } = (req as AuthenticatedRequest).user;
+    const { role } = (req as AuthenticatedRequest).user;
+
+    if(!domain_id){
+      return res.status(400).json({
+        success: false,
+        message: "Invalid access to this route. Please sign in as a student.",
+      });
+    }
+    if (role !== "student") {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid access to this route. Please sign in as a student.",
+      });
+    }
+
+    const key = process.env.RAZORPAY_KEY_ID;
+
+    return res.status(200).json({
+      success : true,
+      key
+    });
+
+  } catch (error:any) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

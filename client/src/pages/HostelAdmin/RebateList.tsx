@@ -4,77 +4,19 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {Table, TableBody, TableCell, TableHead, TableHeader, TableRow} from "@/components/ui/table"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { getRebates } from "../../api/hostelAdminQueries"
+import DashboardLoader from "@/Loader/DashboardLoader"
 
 export default function RebatePage(){
-  const [rebateDetails, setRebateDetails] = useState([
-    {
-      studentName: "John Doe",
-      roomNumber: "101",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Jane Smith",
-      roomNumber: "102",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Mike Johnson",
-      roomNumber: "103",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "Amy Lee",
-      roomNumber: "104",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    },
-    {
-      studentName: "David Brown",
-      roomNumber: "105",
-      rebateStartDate: "2024-04-01",
-      rebateEndDate: "2024-04-15"
-    }
-  ])
+  const rebateQuery = useQuery({
+    queryKey: ['adminRebates'],
+    queryFn: getRebates
+  });
+  if(rebateQuery.isLoading){
+    return (<DashboardLoader/>)
+  }
+  const rebateDetails = rebateQuery.data;
     return (
         <div className="w-[98%] overflow-hidden customScrollbar min-h-[91svh] max-h-[91svh] bg-[#222831] text-white rounded-lg mx-auto my-auto overflow-y-auto overflow-x-hidden">
         <div className="grid grid-cols-2">
@@ -120,10 +62,10 @@ export default function RebatePage(){
                   <TableBody>
                     {rebateDetails.map((rebate: any, index: any) => (
                       <TableRow key={index}>
-                        <TableCell>{rebate.studentName}</TableCell>
-                        <TableCell>{rebate.roomNumber}</TableCell>
-                        <TableCell>{rebate.rebateStartDate}</TableCell>
-                        <TableCell>{rebate.rebateEndDate}</TableCell>
+                        <TableCell>{rebate.student.name}</TableCell>
+                        <TableCell>{rebate.student.room_number}</TableCell>
+                        <TableCell>{new Date(rebate.from).toLocaleDateString('en-IN')}</TableCell>
+                        <TableCell>{new Date(rebate.to).toLocaleDateString('en-IN')}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
