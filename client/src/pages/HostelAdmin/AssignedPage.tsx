@@ -53,15 +53,18 @@ export default function AssignedPage({ issues }: AssignedPageProps) {
         setIdx(index);
         console.log(index);
     }
+    if(issues == null || issues == undefined){
+        return (<p>No issues found</p>);
+    }
+    if(Assigned.length == 0){
+        return (<div className="bg-slate-200 min-h-[94svh] min-w-[73svw] flex flex-col items-center justify-evenly rounded-lg font-bold text-5xl font-sans">Haven't Assigned any Issues yet 😔</div>);
+    }
     return (
         <>
-            {Assigned.length == 0 && <div className="bg-slate-200 min-h-[94svh] min-w-[73svw] flex flex-col items-center justify-evenly rounded-lg font-bold text-5xl font-sans">Haven't Assigned any Issues yet 😔</div>}
             <div className="flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
                 {issues.map((issue, index) => {
                     return (
-                        <>
-                            {(issue.technician != null) && <IssueCard key={index} name={issue.title} technician={issue.technician.name} category={issue.category} handleOnClick={handleOnClick} index={index} />}
-                        </>
+                            (issue.technician != null) && <IssueCard key={index} name={issue.title} technician={issue.technician.name} category={issue.category} handleOnClick={handleOnClick} index={index} />
                     )
                 })}
             </div>

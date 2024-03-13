@@ -44,4 +44,13 @@ const getRebates = async () =>{
     return res.data.rebates;
 }
 
-export { getNotAssignedIssues, getTechnicians, assignTechnician, getRebates };
+const reviewIssues = async (issue_id : number)=>{
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.delete(`${hostname}/api/issue/hostel/review/${issue_id}`, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        }
+    });
+    console.log(res.data.issue);
+}
+export { getNotAssignedIssues, getTechnicians, assignTechnician, getRebates, reviewIssues };

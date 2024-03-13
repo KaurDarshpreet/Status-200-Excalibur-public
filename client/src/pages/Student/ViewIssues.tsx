@@ -1,13 +1,16 @@
 import { useState } from "react";
 
 type Issue = {
-  title: string;
-  description: string;
-  media: string;
-  category: string;
-  visibility: string;
-  assigned: boolean;
-  location: string;
+  issue_id: number
+  title: string,
+  description: string,
+  is_public: boolean,
+  is_resolved: boolean,
+  issue_media: string,
+  location: string,
+  created_at: Date,
+  category: string,
+  technician_id: string
 };
 
 type ViewIssuesProps = {
@@ -31,7 +34,7 @@ const IssueCard = ({name, isAssigned, index, handleOnClick} : IssueCardProps) =>
 }
 
 export default function ViewIssues({ issues }: ViewIssuesProps) {
-  if(issues == undefined || issues == null){
+  if(issues == undefined || issues == null || issues?.length == 0){
     return (<h1>No Issues Found</h1>)
   }
   const [idx, setIdx] = useState(0);
@@ -42,7 +45,7 @@ export default function ViewIssues({ issues }: ViewIssuesProps) {
     <>
       <div className="flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
         {issues.map((issue, index) => (
-          <IssueCard key={index} name={issue.title} isAssigned={issue.assigned} handleOnClick={handleOnClick} index={index} />
+          <IssueCard key={index} name={issue.title} isAssigned={(issue.technician_id != null)} handleOnClick={handleOnClick} index={index} />
         ))}
       </div>
       <div className="bg-[#393E46] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5 max-sm:min-w-[80svw] max-sm:mt-2 max-sm:min-h-[50svh]">

@@ -190,7 +190,7 @@ export const assignHostelIssue = async (req: Request, res: Response) => {
 export const reviewHostelIssue = async (req: Request, res: Response) => {
   try {
     const { domain_id } = (req as AuthenticatedRequest).user;
-    const { issue_id } = req.body;
+    const issue_id = parseInt(req.params.issue_id);
 
     if (!domain_id) {
       return res.status(400).json({

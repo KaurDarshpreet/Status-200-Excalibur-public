@@ -62,7 +62,7 @@ const IssueCard = ({ name, status, index, handleOnClick, issueID }: IssueCardPro
 
 export default function ViewIssues({ issues }: ViewIssuesProps) {
   const [idx, setIdx] = useState(0);
-  if(issues == null || issues == undefined){
+  if(issues == null || issues == undefined || issues?.length == 0){
     return (<p>No issues found</p>);
   }
   const handleOnClick = (index: number) => {

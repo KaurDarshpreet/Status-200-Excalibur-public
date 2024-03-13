@@ -6,7 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import DashboardLoader from "@/Loader/DashboardLoader";
 
 
 
@@ -72,7 +71,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
     queryFn: getTechnicians,
   });
   if (technicianQuery.isLoading) {
-    return (<DashboardLoader />)
+    return (<p>Loading Technicians</p>)
   }
   const technicians = technicianQuery.data.technicians;
 
@@ -116,13 +115,17 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
 
 export default function NotAssignedPage({ issues }: ViewIssuesProps) {
 
+  const [notAssigned, setNotAssigned] = useState<any>(issues.filter(issue => (issue.technician == null)));
+  const [idx, setIdx] = useState(0);
+  
+  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
+
   if (issues == null || issues == undefined) {
     return (<p>No issues found</p>);
   }
-  const [notAssigned, setNotAssigned] = useState<any>(issues.filter(issue => (issue.technician == null)));
-  const [idx, setIdx] = useState(0);
-
-  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
+  if(notAssigned.length == 0){
+    return (<div className="bg-[#222831] min-h-[94svh] min-w-[73svw] flex flex-col items-center  text-white justify-evenly rounded-lg font-bold text-5xl font-sans">ALL ISSUES ASSIGNED 🎊</div>);
+  }
   const togglePopover = () => {
     setIsPopoverOpen(!isPopoverOpen);
   };
@@ -133,7 +136,6 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
 
   return (
     <>
-      {notAssigned.length == 0 && <div className="bg-[#222831] min-h-[94svh] min-w-[73svw] flex flex-col items-center  text-white justify-evenly rounded-lg font-bold text-5xl font-sans">ALL ISSUES ASSIGNED 🎊</div>}
       <div className="customScrollbar flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
         {issues.map((issue, index) => {
           return (
