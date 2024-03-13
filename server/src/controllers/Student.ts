@@ -372,11 +372,10 @@ export const getMessRebate = async (req: Request, res: Response) => {
 };
 
 export const initiateBillpayment = async (req: Request, res: Response) => {
-  console.log("initiating payment")
   try {
     const { domain_id } = (req as AuthenticatedRequest).user;
     const { role } = (req as AuthenticatedRequest).user;
-    const {amount} = req.body;
+    const { amount } = req.body;
 
     if(!domain_id){
       return res.status(400).json({
@@ -416,7 +415,6 @@ export const initiateBillpayment = async (req: Request, res: Response) => {
 };
 
 export const completePayment = async (req: Request, res: Response) => {
-  console.log("finishing payment")
   try {
     const {razorpay_order_id,razorpay_payment_id,razorpay_signature} = req.body;
 
