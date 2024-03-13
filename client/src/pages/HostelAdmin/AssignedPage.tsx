@@ -5,22 +5,24 @@ type AssignedPageProps = {
     issues: Issue[];
 }
 type Issue = {
-    title: string;
-    description: string;
-    media: string;
-    category: string;
-    visibility: string;
-    assigned: boolean;
-    complete: boolean;
-    reviewed: boolean;
-    location: string;
+    issue_id: number
+    title: string,
+    description: string,
+    is_public: boolean,
+    is_resolved: boolean,
+    issue_media: string,
+    location: string,
+    created_at: Date,
+    category: string,
+
     technician: {
-        name: string;
-        email: string;
-        category: string;
-        phone: string;
-        address: string;
-        profilePhoto: string;
+        technician_id: string,
+        password: string,
+        name: string,
+        email: string,
+        category: string,
+        phone_number: string,
+        Address: string
     }
 };
 
@@ -45,7 +47,7 @@ const IssueCard = ({ name, technician, category, index, handleOnClick }: IssueCa
 }
 
 export default function AssignedPage({ issues }: AssignedPageProps) {
-    const [Assigned, setAssigned] = useState(issues.filter(issue => issue.assigned));
+    const [Assigned, setAssigned] = useState(issues.filter(issue => (issue.technician != null)));
     const [idx, setIdx] = useState(0);
     const handleOnClick = (index: number) => {
         setIdx(index);
@@ -58,12 +60,12 @@ export default function AssignedPage({ issues }: AssignedPageProps) {
                 {issues.map((issue, index) => {
                     return (
                         <>
-                            {issue.assigned && <IssueCard key={index} name={issue.title} technician={issue.technician.name} category={issue.category} handleOnClick={handleOnClick} index={index} />}
+                            {(issue.technician != null) && <IssueCard key={index} name={issue.title} technician={issue.technician.name} category={issue.category} handleOnClick={handleOnClick} index={index} />}
                         </>
                     )
                 })}
             </div>
-            {issues[idx].assigned && <div className="bg-[#393E46] min-h-[94svh] w-max flex flex-col items-center justify-center rounded-lg gap-5 p-[10%]">
+            {(issues[idx].technician != null) && <div className="bg-[#393E46] min-h-[94svh] w-max flex flex-col items-center justify-center rounded-lg gap-5 p-[10%]">
                 <TechnicianCard user={issues[idx].technician} bgc={'#222831'} />
             </div>
             }

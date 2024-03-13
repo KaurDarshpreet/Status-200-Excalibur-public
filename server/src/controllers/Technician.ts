@@ -66,7 +66,6 @@ export const signup_technician = async (req: Request, res: Response) => {
 }
 
 export const login_technician = async (req: Request, res: Response) => {
-    console.log(req.body);
     try {
         const { email, password } = req.body;
 
