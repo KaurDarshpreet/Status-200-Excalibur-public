@@ -1,6 +1,7 @@
 import { assignTechnician, getTechnicians } from "../../api/hostelAdminQueries";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   Popover,
   PopoverContent,
@@ -80,7 +81,15 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
     console.log(issue);
     const issue_id = issue.issue_id;
     const technician_id = technician.technician_id;
-    assigntechnician.mutate({ issue_id, technician_id });
+    try {
+      toast.promise(assigntechnician.mutateAsync({ issue_id, technician_id }), {
+        loading: 'Assigning Technician...',
+        success: 'Technician Assigned Successfully',
+        error: 'Error Assigning Technician',
+      });
+    } catch (error: any) {
+      toast.error('Error Assigning Technician ' + error.response.data.error);
+    }
   }
 
   return (

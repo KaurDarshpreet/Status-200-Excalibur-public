@@ -51,6 +51,6 @@ const reviewIssues = async (issue_id : number)=>{
             'Authorization': `Bearer ${authToken}`,
         }
     });
-    console.log(res.data.issue);
+    return res.data.issue;
 }
 export { getNotAssignedIssues, getTechnicians, assignTechnician, getRebates, reviewIssues };
