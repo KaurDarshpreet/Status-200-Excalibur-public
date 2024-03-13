@@ -49,18 +49,12 @@ const HostelAdminDash = () => {
         queryFn: getNotAssignedIssues, 
     });
     
-    
+    // causing page issue
     if(notAssignedIssueQuery.isLoading){
         return (<DasboardLoader />)
     }
     const issues = notAssignedIssueQuery.data.issues;
     
-    function handleReview(idx : number){
-        const newIssues = [...issues];
-        newIssues[idx].reviewed = true;
-        // axios call to update the issue
-        // setIssues(newIssues);
-    }
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
             <div className="profile flex flex-col items-center bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md p-4">
@@ -76,7 +70,7 @@ const HostelAdminDash = () => {
                 {selected.RebatePage && <RebatePage />}
                 {selected.NotAssignedPage && <NotAssignedPage issues={issues} />}
                 {selected.AssignedPage && <AssignedPage issues={issues} />}
-                {selected.ReviewPage && <ReviewPage issues={issues} handleReview={handleReview} />}
+                {selected.ReviewPage && <ReviewPage issues={issues}/>}
             </div>
         </div>
     )

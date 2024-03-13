@@ -22,7 +22,7 @@ IssueRoutes.get('/listTechnicians', authenticateToken, adminAuth, technicianList
 
 //hostel admin routes
 IssueRoutes.put('/hostel/assign', authenticateToken, hostelAdminAuth, assignHostelIssue);
-IssueRoutes.delete('/hostel/review', authenticateToken, hostelAdminAuth, reviewHostelIssue);
+IssueRoutes.delete('/hostel/review/:issue_id', authenticateToken, hostelAdminAuth, reviewHostelIssue);
 IssueRoutes.get('/hostel/checkIssues', authenticateToken, hostelAdminAuth, checkHostelIssue);
 
 
