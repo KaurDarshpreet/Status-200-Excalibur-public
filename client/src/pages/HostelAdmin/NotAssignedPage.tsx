@@ -11,6 +11,7 @@ import {
 type PopOverProps = {
   handleAssign: (index: number) => void;
   idx: number;
+  technicians: any;
 };
 type Issue = {
   issue_id: number
@@ -53,7 +54,7 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 
 }
 
-const PopOver = ({handleAssign, idx}: PopOverProps) => {
+const PopOver = ({handleAssign, idx, technicians}: PopOverProps) => {
   return (
     <Popover>
       <PopoverTrigger>
@@ -67,7 +68,22 @@ const PopOver = ({handleAssign, idx}: PopOverProps) => {
           </button>
       </PopoverTrigger>
       <PopoverContent>
-        <div>Content</div>
+        <div>
+          <h1>List Of Technicians</h1>
+          <div className="flex flex-col gap-2">
+            {/* {technicians.map((technician: any) => {
+              return (
+                <div key={technician.technician_id} className="flex justify-between items-center">
+                  <h1>{technician.name}</h1>
+                  <button onClick={handleAssign}
+                  className="bg-black text-white outline px-2 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
+                    Assign
+                  </button>
+                </div>
+              )
+            })} */}
+          </div>
+        </div>
       </PopoverContent>
     </Popover>
   )
@@ -88,8 +104,6 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
     queryFn: getTechnicians
   });
 
-
-
   const [idx, setIdx] = useState(0);
   const handleOnClick = (index: number) => {
     setIdx(index);
@@ -107,7 +121,7 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
   return (
     <>
       {notAssigned.length == 0 && <div className="bg-[#222831] min-h-[94svh] min-w-[73svw] flex flex-col items-center  text-white justify-evenly rounded-lg font-bold text-5xl font-sans">ALL ISSUES ASSIGNED 🎊</div>}
-      <div className="flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
+      <div className="customScrollbar flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
         {issues.map((issue, index) => {
           return (
             <div key={issue.issue_id}>
@@ -137,7 +151,7 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
           >
             Prev
           </button>
-            <PopOver handleAssign={handleAssign} idx={idx} />
+            <PopOver handleAssign={handleAssign} idx={idx} technicians={[]} />
           <button
             onClick={() => setIdx((idx + 1) % issues.length)}
             className="bg-[#00FFF5] text-slate-700 px-2 py-1 mx-5 rounded-md font-bold"
