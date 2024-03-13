@@ -7,6 +7,7 @@ import ReviewPage from "./ReviewPage";
 import { useQuery } from "@tanstack/react-query";
 import { getNotAssignedIssues } from "@/api/hostelAdminQueries";
 import DasboardLoader from '../../Loader/DashboardLoader'
+import { StudentBills } from "./StudentBills";
 
 interface ButtonProps {
     name: string;
@@ -37,6 +38,7 @@ const Button = ({ name, handleOnClick }: ButtonProps) => {
 }
 const HostelAdminDash = () => {
     const [selected, setSelected] = useState({
+        'StudentBills': false,
         'RebatePage': true,
         'NotAssignedPage': false,
         'AssignedPage': false,
@@ -64,12 +66,14 @@ const HostelAdminDash = () => {
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-600">
             <div className="profile flex flex-col items-center bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md p-4">
                     <HostelAdminProfile />
-                    {<Button name="Rebate List" handleOnClick={() => setSelected({ 'RebatePage': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
-                    {<Button name="Not Assigned" handleOnClick={() => setSelected({ 'RebatePage': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
-                    {<Button name="Assigned" handleOnClick={() => setSelected({ 'RebatePage': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
-                    {<Button name="Review" handleOnClick={() => setSelected({ 'RebatePage': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
+                    {<Button name="Student Bills" handleOnClick={() => setSelected({ 'StudentBills': true, 'RebatePage': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Rebate List" handleOnClick={() => setSelected({'StudentBills': false, 'RebatePage': true, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Not Assigned" handleOnClick={() => setSelected({'StudentBills': false, 'RebatePage': false, 'NotAssignedPage': true, 'AssignedPage': false, 'ReviewPage': false })} />}
+                    {<Button name="Assigned" handleOnClick={() => setSelected({'StudentBills': false, 'RebatePage': false, 'NotAssignedPage': false, 'AssignedPage': true, 'ReviewPage': false })} />}
+                    {<Button name="Review" handleOnClick={() => setSelected({'StudentBills': false, 'RebatePage': false, 'NotAssignedPage': false, 'AssignedPage': false, 'ReviewPage': true })} />}
             </div>
             <div className="post_issue min-h-[94svh] min-w-[73svw] bg-[#222831] rounded-md flex justify-between items-center">
+                {selected.StudentBills && <StudentBills />}
                 {selected.RebatePage && <RebatePage />}
                 {selected.NotAssignedPage && <NotAssignedPage issues={issues} />}
                 {selected.AssignedPage && <AssignedPage issues={issues} />}
