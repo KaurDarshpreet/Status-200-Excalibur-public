@@ -57,13 +57,13 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 }
 
 const PopOver = ({ issue, togglePopover }: PopOverProps) => {
-  
+
   const queryClient: QueryClient = useQueryClient();
   const assigntechnician = useMutation({
     mutationFn: assignTechnician,
-    onSuccess: (data)=>{
+    onSuccess: (data) => {
       console.log(data);
-      queryClient.invalidateQueries({queryKey: ['notAssignedIssues']});
+      queryClient.invalidateQueries({ queryKey: ['notAssignedIssues'] });
       togglePopover();
     }
   });
@@ -137,11 +137,9 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
       <div className="customScrollbar flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
         {issues.map((issue, index) => {
           return (
-            <div key={issue.issue_id}>
-              {(issue.technician == null) && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />}
-            </div>
+              (issue.technician == null) && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />
           )
-        })}
+          })}
       </div>
       {(issues[idx].technician == null) && <div className="bg-[#222831] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
         <h1 className="profile_name text-white font-bold text-2xl mt-2 min-h-max">{issues[idx].category} : {issues[idx].title}</h1>
@@ -164,7 +162,7 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
           >
             Prev
           </button>
-          {isPopoverOpen ? <PopOver issue={issues[idx]} togglePopover={togglePopover}/> : <p>Issue Assigned</p>}
+          {isPopoverOpen ? <PopOver issue={issues[idx]} togglePopover={togglePopover} /> : <p>Issue Assigned</p>}
           <button
             onClick={() => setIdx((idx + 1) % issues.length)}
             className="bg-[#00FFF5] text-slate-700 px-2 py-1 mx-5 rounded-md font-bold"

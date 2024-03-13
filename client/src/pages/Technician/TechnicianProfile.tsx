@@ -3,11 +3,13 @@ import sampleDP from '../../assets/profile.png';
 
 type TechnicianProfileProps = {
     user: {
-        name: string;
-        email: string;
-        phone: string;
-        address: string;
-        category: string;
+        technician_id: string,
+        password: string,
+        name: string,
+        email: string,
+        category: string,
+        phone_number: string,
+        Address: string
     },
     bgc?: string
 }

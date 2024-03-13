@@ -33,4 +33,15 @@ const assignTechnician = async (data: any)=>{
     return res.data;
 }
 
-export { getNotAssignedIssues, getTechnicians, assignTechnician };
+const getRebates = async () =>{
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.get(`${hostname}/api/admin/hostel/checkRebates`, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        }
+    });
+    console.log(res.data);
+    return res.data.rebates;
+}
+
+export { getNotAssignedIssues, getTechnicians, assignTechnician, getRebates };
