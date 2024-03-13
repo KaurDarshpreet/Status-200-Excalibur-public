@@ -440,6 +440,15 @@ export const completePayment = async (req: Request, res: Response) => {
             }
           }
         });
+
+        await prisma.student.update({
+          where: {
+            domain_id: (req as AuthenticatedRequest).user.domain_id,
+          },
+          data: {
+            mess_due: "0",
+          },
+        });
       }
       else{
         return res.status(400).json({
