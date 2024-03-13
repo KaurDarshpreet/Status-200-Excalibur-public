@@ -62,26 +62,27 @@ const PopOver = ({handleAssign, idx, technicians}: PopOverProps) => {
             handleAssign(idx)
           }
           }
-            className="bg-[#00FFF5] text-slate-700  px-2 py-1 basis-[30%] rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none"
+            className="bg-[#00FFF5] text-slate-700  px-10 py-1 w-max rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none"
           >
             Assign
           </button>
       </PopoverTrigger>
-      <PopoverContent>
-        <div>
-          <h1>List Of Technicians</h1>
+      <PopoverContent className="w-max p-2 bg-black">
+        <div className="min-w-[380px] p-2 bg-black text-white">
+          <h1 className="text-2xl mb-2 text-center">List Of Technicians</h1>
           <div className="flex flex-col gap-2">
-            {/* {technicians.map((technician: any) => {
+            {technicians.map((technician: any) => {
               return (
                 <div key={technician.technician_id} className="flex justify-between items-center">
-                  <h1>{technician.name}</h1>
-                  <button onClick={handleAssign}
-                  className="bg-black text-white outline px-2 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
+                  <h1 className="text-xl font-semibold">{technician.name}</h1>
+                  <h2 className="ml-auto mr-2 bg-black text-white outline px-2 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5]">{technician.category}</h2>
+                  <button onClick={() => handleAssign}
+                  className="bg-[#00FFF5] text-slate-700 outline px-1 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
                     Assign
                   </button>
                 </div>
               )
-            })} */}
+            })}
           </div>
         </div>
       </PopoverContent>
@@ -103,6 +104,9 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
     queryKey: ["listTechnicians"],
     queryFn: getTechnicians
   });
+
+const technicians = technicianQuery.data?.technicians;
+console.log(technicians);
 
   const [idx, setIdx] = useState(0);
   const handleOnClick = (index: number) => {
@@ -151,7 +155,7 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
           >
             Prev
           </button>
-            <PopOver handleAssign={handleAssign} idx={idx} technicians={[]} />
+            <PopOver handleAssign={handleAssign} idx={idx} technicians={technicians} />
           <button
             onClick={() => setIdx((idx + 1) % issues.length)}
             className="bg-[#00FFF5] text-slate-700 px-2 py-1 mx-5 rounded-md font-bold"

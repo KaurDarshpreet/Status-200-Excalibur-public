@@ -48,6 +48,7 @@ const HostelAdminDash = () => {
         
     });
     
+    
     if(notAssignedIssueQuery.isLoading){
         return (<DasboardLoader />)
     }
