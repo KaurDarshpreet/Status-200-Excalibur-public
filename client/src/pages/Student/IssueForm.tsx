@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { BsCamera2 } from "react-icons/bs";
 import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import { createStudentIssue } from '../../api/studentQueries';
+import toast from 'react-hot-toast';
 
 const RadioInput = (props: {
     name: string;
@@ -34,7 +35,8 @@ const TextInput = (props: {
 );
 
 const IssueForm = (props: any) => {
-    const textInput = ['title', 'description', 'location'];
+    const textInput = ['title', 'description'];
+    const location = [ localStorage.getItem('hostel') ,'College']
     const visibility = ['public', 'private'];
     const category = ['carpentry', 'electrician', 'plumber', 'laundry', 'mason', 'sweeper'];
     const [media, setMedia] = useState<any>('');
@@ -57,10 +59,14 @@ const IssueForm = (props: any) => {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+        console.log(e.target.name, e.target.value);
+        
         setIssue({ ...issue, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        console.log(issue);
+        
         e.preventDefault();
         const data = new FormData();
         
@@ -71,7 +77,16 @@ const IssueForm = (props: any) => {
             }
             data.append(key, issue[key]);
         }
-        createIssue.mutate(data);
+        try {
+            toast.promise(createIssue.mutateAsync(data), {
+                loading: 'Creating Issue...',
+                success: 'Issue Created Successfully',
+                error: 'Error Creating Issue',
+            });
+        } catch (error: any) {
+            console.log(error);
+            toast.error('Error Creating Issue '+ error.response.data.error);
+        }
     };
 
     return (
@@ -104,6 +119,25 @@ const IssueForm = (props: any) => {
                         placeholder={input}
                     />
                 ))}
+                {
+                    // Making Dropdown for Location
+                    <select
+                        name="location"
+                        value={issue.location}
+                        onChange={handleChange}
+                        required
+                        className='p-2 rounded-lg bg-[#393E46] text-white'
+                    >
+                        <option value="" disabled>
+                            Location
+                        </option>
+                        {location.map((loc) => (
+                            <option value={loc} key={loc}>
+                                {loc}
+                            </option>
+                        ))}
+                    </select>
+                }
                 <input
                     id='media'
                     type="file"
