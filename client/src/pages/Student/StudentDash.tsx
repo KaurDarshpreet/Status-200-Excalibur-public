@@ -4,7 +4,7 @@ declare global {
   }
 }
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import IssueForm from "./IssueForm";
 import StudentProfile from "./StudentProfile";
 import ViewIssues from "./ViewIssues";
@@ -30,38 +30,42 @@ const Button = ({ name, handleOnClick }: ButtonProps) => {
     </button>
   );
 };
-const MessPaymentHandler = async () => {
-  const amount = 30000; // do api call here to get mess amount
+const MessPaymentHandler = async (user:any) => {
+  const amount = parseFloat(user.mess_due) || 34000; // do api call here to get mess amount
   const data = { amount };
   const authToken = sessionStorage.getItem("authToken");
-  const { data: { key } } = await axios.get(`${hostname}/api/student/payment/getkey`, {
-    headers: {
-      Authorization: `Bearer ${authToken}`,
-    },
-  });
-  
-  const { data: { order } } = await axios.post(`${hostname}/api/student/initialisePayment`, data, {
+  const {
+    data: { key },
+  } = await axios.get(`${hostname}/api/student/payment/getkey`, {
     headers: {
       Authorization: `Bearer ${authToken}`,
     },
   });
 
+  const {
+    data: { order },
+  } = await axios.post(`${hostname}/api/student/initialisePayment`, data, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
   const options = {
     key,
     amount: order.amount,
     currency: "INR",
-    name: "Name", // student name
+    name: user.name, // student name
     description: "Mess Bill Payment",
-    image: "https://avatars.githubusercontent.com/u/25058652?v=4", // add student image from api call
+    image: user.profile_pic, 
     order_id: order.id,
     callback_url: `${hostname}/api/student/finishPayment`,
     prefill: {
-      name: "Gaurav Kumar", // student name
-      email: "gaurav.kumar@example.com", // student email
-      contact: "9999999999", //student contact
+      name: user.name, // student name
+      email: user.domain_id, // student email
+      contact: user.phone_number, //student contact
     },
     notes: {
-      address: "Hostel H10", // hostel address
+      address: user.hostel, // hostel address
+      room_no : user.room_number // room number
     },
     theme: {
       color: "#121212",
@@ -72,10 +76,28 @@ const MessPaymentHandler = async () => {
 };
 const StudentDash = () => {
   const [toggle, setToggle] = useState(true);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    let values: any = {};
+    const keys = [
+      "domain_id",
+      "name",
+      "hostel",
+      "phone_number",
+      "profile_picture",
+      "mess_due",
+      "room_number",
+    ];
+    keys.forEach((key) => {
+      values[key] = localStorage.getItem(key);
+    });
+    let rollNumber = 1234;
+    values.roll_number = rollNumber;
+    setUser(values);
+  }, []);
   function handleToggle() {
     setToggle(!toggle);
   }
-
   const issueQuery = useQuery({
     queryKey: ["studentIssues"],
     queryFn: getStudentIssues,
@@ -88,16 +110,18 @@ const StudentDash = () => {
 
   return (
     <div
-      className={`container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-[#000] relative ${toggle ? "max-h-[100svh] overflow-hidden" : ""
-        }`}
+      className={`container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-[#000] relative ${
+        toggle ? "max-h-[100svh] overflow-hidden" : ""
+      }`}
     >
       <GiHamburgerMenu
         className="text-[#ffffff] text-4xl cursor-pointer self-start fixed top-2 left-2 sm:hidden"
         onClick={handleToggle}
       />
       <div
-        className={`profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md ${toggle ? visible : hidden
-          }`}
+        className={`profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md ${
+          toggle ? visible : hidden
+        }`}
       >
         <GiHamburgerMenu
           className="text-[#ffffff] text-4xl cursor-pointer self-start absolute top-2 left-2 sm:hidden"
@@ -106,7 +130,7 @@ const StudentDash = () => {
         <StudentProfile />
         <div className="flex flex-col items-center gap-4 mb-10 mt-auto">
           <RebateForm />
-          <Button name="Pay Mess Dues" handleOnClick={MessPaymentHandler} />
+          <Button name="Pay Mess Dues" handleOnClick={()=>MessPaymentHandler(user)} />
           {viewIssues ? (
             <Button
               name="Report Issue"
