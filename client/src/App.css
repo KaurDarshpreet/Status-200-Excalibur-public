@@ -13,6 +13,24 @@ google_login > p{
     color: white;
 }
 
+.noScrollbar::-webkit-scrollbar-track{
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
+	border-radius: 10px;
+	background: transparent;
+}
+.noScrollbar::-webkit-scrollbar{
+	width: 0;
+	background: transparent;
+    /* backdrop-filter: blur(20px); */
+    border-radius: 10px;
+}
+.noScrollbar::-webkit-scrollbar-thumb{
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.608);
+	background-color: transparent;
+    backdrop-filter: blur(20px);
+}
+
 .customScrollbar::-webkit-scrollbar-track{
 	-webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0);
 	border-radius: 10px;
