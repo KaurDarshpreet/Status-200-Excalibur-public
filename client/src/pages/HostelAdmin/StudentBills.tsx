@@ -2,52 +2,69 @@ import {Card, CardContent} from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
 import { useState } from 'react'
-import {Dialog, DialogContent, DialogTitle, DialogClose, DialogTrigger} from '@/components/ui/dialog'
+import {Dialog, DialogContent, DialogClose, DialogTrigger} from '@/components/ui/dialog'
 
 export const StudentBills = () => {
 
   const [bills, setBills] = useState([
     {
-      id: 1,
       name: "Ankit Kumar",
-      rollNo: "12287890",
-      amount: "1000",
+      rollNo: 12287890,
+      amount: 1000,
       status: "Paid"
     },
     {
-      id: 2,
-      name: "Ankit Kumar",
-      rollNo: "12287890",
-      amount: "1000",
+      name: "Bobby Kumar",
+      rollNo: 12287891,
+      amount: 1000,
       status: "Pending"
     },
     {
-      id: 3,
-      name: "Ankit Kumar",
-      rollNo: "12287890",
-      amount: "1000",
+      name: "Dinesh Kumar",
+      rollNo: 12287892,
+      amount: 1000,
       status: "Pending"
     }
   ])
   
+  const [newBill, setNewBill] = useState({
+    name: '',
+    rollNo: 0,
+    amount: 0,
+  })
+
   function handleOnChange(e: any) {
-    setBills((prev) => {
-      return {
-        ...prev,
-        [e.target.name]: e.target.value
-      }
+    setNewBill({
+      ...newBill,
+      [e.target.name]: e.target.value
+    
     })
   }
-
+  function handleOnSubmit() {
+    // If a bill is already issued on that roll no, then update that bill, else add a new bill
+    let index = bills.findIndex(bill => bill.rollNo == newBill.rollNo)
+    if(index > -1) {
+      let newBills = [...bills]
+      newBills[index] = {
+        ...newBills[index],
+        amount: newBill.amount,
+        status: 'Pending'
+      }
+      setBills(newBills)
+    } else {
+      setBills([...bills, {...newBill, status: 'Pending'}])
+    }
+  }
+  
   return (
     <div className='w-[90%] min-h-[90svh] mx-auto my-auto flex flex-col justify-cente'>
-      <h1 className='text-2xl font-bold m-2 text-center text-white'>Student Bills</h1>
+      <h1 className='text-2xl font-bold m-2 text-center text-white'>Pending Student Bills</h1>
       <div className='flex flex-col mb-auto justify-between items-center ml-auto w-full max-h-[70svh] overflow-y-auto customScrollbar'>
         {
-          bills.map((bill, index) => (
+          bills.map((bill, index) => (bill.status === 'Pending' &&
             <Card key={index} className='flex w-3/4'>
               <CardContent className='flex items-center pb-0 p-2 justify-center w-full'>
-                <div className='flex justify-between items-center'>
+                <div className='flex justify-between items-center gap-2'>
                   <Avatar>
                     <AvatarImage src='https://randomuser.me/api/portraits/m' />
                     <AvatarFallback>
@@ -75,16 +92,15 @@ export const StudentBills = () => {
         <DialogTrigger>
           <Button className='mt-auto' variant={'outline'}>Add Bill</Button>
         </DialogTrigger>
-        <DialogContent>
+        <DialogContent className='bg-black text-white'>
           <div className='flex flex-col'>
             <h1 className='text-2xl font-bold m-2 text-center text-white'>Add Bill</h1>
-            <form className='flex flex-col items-center'>
+            <div className='flex flex-col items-center text-black'>
               <input type='text' name='name' placeholder='Name' className='w-3/4 p-2 m-2 rounded-md' onChange={handleOnChange} />
-              <input type='text' name='rollno' placeholder='Roll No' className='w-3/4 p-2 m-2 rounded-md'onChange={handleOnChange} />
-              <input type='text' name='amount' placeholder='Amount' className='w-3/4 p-2 m-2 rounded-md' onChange={handleOnChange} />
-              <input type='text' name='status' placeholder='Status' className='w-3/4 p-2 m-2 rounded-md' onChange={handleOnChange} />
-              <Button className='w-3/4 m-2'>Add Bill</Button>
-            </form>
+              <input type='number' name='rollNo' placeholder='Roll No' className='w-3/4 p-2 m-2 rounded-md'onChange={handleOnChange} />
+              <input type='number' name='amount' placeholder='Amount (in Rs.)' className='w-3/4 p-2 m-2 rounded-md' onChange={handleOnChange} />
+              <DialogClose><Button className='w-3/4 m-2' onClick={handleOnSubmit}>Add Bill</Button></DialogClose>
+            </div>
           </div>
         </DialogContent>
       </Dialog>
