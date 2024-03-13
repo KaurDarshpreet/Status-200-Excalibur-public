@@ -161,8 +161,9 @@ export const assignHostelIssue = async (req: Request, res: Response) => {
     });
 
     if (issue?.category !== technician?.category) {
-      return res.json({
-        message: "please select technician with matching category",
+      return res.status(400).json({
+        success: false,
+        error: "please select technician with matching category",
       });
     }
     const updatedIssue = await prisma.issue.update({
