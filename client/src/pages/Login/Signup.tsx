@@ -7,7 +7,26 @@ import hostelAdminBG from '../../assets/hostel_admin_background.jpg'
 import collegeAdminBG from '../../assets/college_admin_background.jpg'
 import { useMutation } from "@tanstack/react-query";
 import { signupCollegeAdmin, signupHostelAdmin, signupStudent, signupTechnician } from "../../api/signup";
+import toast from "react-hot-toast";
+
 const inputCSS = "bg-transparent my-2"
+const Hostels = [
+    'H-1',
+    'H-2',
+    'H-3',
+    'H-4',
+    'H-5',
+    'H-6',
+    'H-7',
+    'H-8',
+    'H-9',
+    'H-10',
+    'H-11',
+    'Kalpana Chawla',
+    'Bhagirathi Bhawan',
+    'Cauvery Bhawan',
+    'Alaknanda Bhawan'
+]
 
 const studentSchema = [
     {
@@ -33,12 +52,6 @@ const studentSchema = [
         type: 'password',
         placeholder: "Password",
         name: "password",
-        className: inputCSS
-    },
-    {
-        type: 'text',
-        placeholder: "Hostel",
-        name: "hostel",
         className: inputCSS
     },
     {
@@ -104,12 +117,6 @@ const hostelAdminSchema = [
     },
     {
         type: 'text',
-        placeholder: "Hostel Name",
-        name: "hostel",
-        className: inputCSS
-    },
-    {
-        type: 'text',
         placeholder: "Domain ID",
         name: "domain_id",
         className: inputCSS
@@ -124,6 +131,12 @@ const hostelAdminSchema = [
         type: 'text',
         placeholder: "Phone Number",
         name: "phone_number",
+        className: inputCSS
+    },
+    {
+        type: 'text',
+        placeholder: 'Authentication Key',
+        name: 'auth_key',
         className: inputCSS
     }
 ];
@@ -230,7 +243,12 @@ const SignUp = () => {
             }
         }
         console.log(data)
-        submitStudent.mutate(data);
+        try {
+            submitStudent.mutate(data);
+            toast.success('Student Registered Successfully');
+        } catch (error : any) {
+            toast.error(error.response.data.error)
+        }
     }
 
     // Technician Data
@@ -250,8 +268,13 @@ const SignUp = () => {
     }
     function handleOnTechnicianSubmit(e: any) {
         e.preventDefault();
-        submitTechnician.mutate((technician as any));
-        navigator('/login');
+        try {
+            submitTechnician.mutate((technician as any));
+            toast.success('Technician Registered Successfully');
+            navigator('/login');
+        } catch (error : any) {
+            toast.error(error.response.data.error)
+        }
     }
 
     // Hostel Admin Data
@@ -261,7 +284,8 @@ const SignUp = () => {
         hostel: '',
         domain_id: '',
         password: '',
-        phone_number: ''
+        phone_number: '',
+        auth_key: ''
     });
     function handleHostelAdminChange(e: any) {
         setHostelAdmin({
@@ -271,8 +295,13 @@ const SignUp = () => {
     }
     function handleOnHostelAdminSubmit(e: any) {
         e.preventDefault();
-        submitHostelAdmin.mutate((hostelAdmin as any));
-        navigator('/login');
+        try {
+            submitHostelAdmin.mutate((hostelAdmin as any));
+            toast.success('Hostel Admin Registered Successfully');
+            navigator('/login');
+        } catch (error : any) {
+            toast.error(error.response.data.error)
+        }
     }
 
     // College Admin Data
@@ -281,7 +310,8 @@ const SignUp = () => {
         domain_id: '',
         password: '',
         college_name: '',
-        phone_number: ''
+        phone_number: '',
+        auth_key: ''
     });
     function handleCollegeAdminChange(e: any) {
         setCollegeAdmin({
@@ -291,8 +321,13 @@ const SignUp = () => {
     }
     function handleOnCollegeAdminSubmit(e: any) {
         e.preventDefault();
-        submitCollegeAdmin.mutate((collegeAdmin as any));
-        navigator('/login');
+        try {
+            submitCollegeAdmin.mutate((collegeAdmin as any));
+            toast.success('College Admin Registered Successfully');
+            navigator('/login');   
+        } catch (error : any) {
+            toast.error(error.response.data.error)
+        }
     }
 
     // Conditional Content
@@ -318,6 +353,12 @@ const SignUp = () => {
                         {studentSchema.map((input, index) => (
                             <Input key={index} {...input} onChange={handleStudentChange} required />
                         ))}
+                        <select name="hostel" id="hostel" className={inputCSS+'text-black'} onChange={handleStudentChange}>
+                            <option value="" disabled selected>Select Hostel</option>
+                            {Hostels.map((hostel, index) => (
+                                <option value={hostel} key={index}>{hostel}</option>
+                            ))}
+                        </select>
                         <button type="submit" className="bg-[#20BFA9] shadow-sm shadow-[#58a399] hover:shadow-none text-white font-bold py-2 px-4 rounded-lg w-[100px] mt-auto transition-all mx-auto" onClick={handleOnStudentSubmit}>Sign Up</button>
                     </form>
                 </>;
@@ -341,6 +382,12 @@ const SignUp = () => {
                         {hostelAdminSchema.map((input, index) => (
                             <Input key={index} {...input} onChange={handleHostelAdminChange} required />
                         ))}
+                        <select name="hostel" id="hostel" className={inputCSS+'bg-black'} onChange={handleHostelAdminChange}>
+                            <option value="" disabled selected>Select Hostel</option>
+                            {Hostels.map((hostel, index) => (
+                                <option value={hostel} key={index} className="text-black">{hostel}</option>
+                            ))}
+                        </select>
                         <button type="submit" className="bg-[#20BFA9] shadow-sm shadow-[#58a399] hover:shadow-none text-white font-bold py-2 px-4 rounded-lg w-[100px] mt-auto transition-all mx-auto" onClick={handleOnHostelAdminSubmit}>Sign Up</button>
                     </form>
                 </>;
