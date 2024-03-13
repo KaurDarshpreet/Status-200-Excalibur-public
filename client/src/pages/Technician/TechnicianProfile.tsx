@@ -31,12 +31,12 @@ export default function TechnicianProfile({ user, bgc }: TechnicianProfileProps)
                 </p>
                 <p className="text-lg text-[#fff]">Phone:
                     <span className="text-[#fff] font-semibold ml-2">
-                        {user.phone}
+                        {user.phone_number}
                     </span>
                 </p>
                 <p className="text-lg text-[#fff]">Address:
                     <span className="text-white ml-2">
-                        {user.address}
+                        {user.Address}
                     </span>
                 </p>
             </div>

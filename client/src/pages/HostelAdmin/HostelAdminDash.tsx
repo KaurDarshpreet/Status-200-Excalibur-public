@@ -46,8 +46,7 @@ const HostelAdminDash = () => {
     })
     const notAssignedIssueQuery = useQuery({
         queryKey: ['notAssignedIssues'],
-        queryFn: getNotAssignedIssues,
-        
+        queryFn: getNotAssignedIssues, 
     });
     
     

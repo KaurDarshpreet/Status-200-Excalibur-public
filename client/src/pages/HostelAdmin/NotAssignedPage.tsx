@@ -1,18 +1,15 @@
-import { getTechnicians } from "@/api/hostelAdminQueries";
-import { useQuery } from "@tanstack/react-query";
+import { assignTechnician, getTechnicians } from "../../api/hostelAdminQueries";
+import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import DashboardLoader from "@/Loader/DashboardLoader";
 
 
-type PopOverProps = {
-  handleAssign: (index: number) => void;
-  idx: number;
-  technicians: any;
-};
+
 type Issue = {
   issue_id: number
   title: string,
@@ -31,8 +28,13 @@ type Issue = {
     email: string,
     category: string,
     phone_number: string,
-    address: string
+    Address: string
   }
+};
+
+type PopOverProps = {
+  issue: Issue;
+  togglePopover: any;
 };
 
 type ViewIssuesProps = {
@@ -54,18 +56,40 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 
 }
 
-const PopOver = ({handleAssign, idx, technicians}: PopOverProps) => {
+const PopOver = ({ issue, togglePopover }: PopOverProps) => {
+  
+  const assigntechnician = useMutation({
+    mutationFn: assignTechnician,
+    onSuccess: (data)=>{
+      console.log(data);
+      queryClient.invalidateQueries({queryKey: ['notAssignedIssues']});
+      togglePopover();
+    }
+  });
+  const technicianQuery = useQuery({
+    queryKey: ["listTechnicians"],
+    queryFn: getTechnicians,
+  });
+  const queryClient: QueryClient = useQueryClient();
+  if (technicianQuery.isLoading) {
+    return (<DashboardLoader />)
+  }
+  const technicians = technicianQuery.data.technicians;
+
+  const handleAssign = (technician: any) => {
+    console.log(technician);
+    console.log(issue);
+    const issue_id = issue.issue_id;
+    const technician_id = technician.technician_id;
+    assigntechnician.mutate({ issue_id, technician_id });
+  }
+
   return (
     <Popover>
       <PopoverTrigger>
-          <button onClick={() => {
-            handleAssign(idx)
-          }
-          }
-            className="bg-[#00FFF5] text-slate-700  px-10 py-1 w-max rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none"
-          >
-            Assign
-          </button>
+        <button className="bg-[#00FFF5] text-slate-700  px-10 py-1 w-max rounded-md font-bold bg-gradient-to-r from-[#00FFF5] to-[#00ADB5] transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
+          Assign
+        </button>
       </PopoverTrigger>
       <PopoverContent className="w-max p-2 bg-black">
         <div className="min-w-[380px] p-2 bg-black text-white">
@@ -76,8 +100,8 @@ const PopOver = ({handleAssign, idx, technicians}: PopOverProps) => {
                 <div key={technician.technician_id} className="flex justify-between items-center">
                   <h1 className="text-xl font-semibold">{technician.name}</h1>
                   <h2 className="ml-auto mr-2 bg-black text-white outline px-2 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5]">{technician.category}</h2>
-                  <button onClick={() => handleAssign}
-                  className="bg-[#00FFF5] text-slate-700 outline px-1 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
+                  <button onClick={(e: any) => handleAssign(technician)}
+                    className="bg-[#00FFF5] text-slate-700 outline px-1 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
                     Assign
                   </button>
                 </div>
@@ -91,36 +115,21 @@ const PopOver = ({handleAssign, idx, technicians}: PopOverProps) => {
 }
 
 export default function NotAssignedPage({ issues }: ViewIssuesProps) {
+
   if (issues == null || issues == undefined) {
     return (<p>No issues found</p>);
   }
   const [notAssigned, setNotAssigned] = useState<any>(issues.filter(issue => (issue.technician == null)));
-
-  useEffect(() => {
-    setNotAssigned(issues.filter(issue => (issue.technician == null)));
-  }, [issues]);
-
-  const technicianQuery = useQuery({
-    queryKey: ["listTechnicians"],
-    queryFn: getTechnicians
-  });
-
-const technicians = technicianQuery.data?.technicians;
-console.log(technicians);
-
   const [idx, setIdx] = useState(0);
+
+  const [isPopoverOpen, setIsPopoverOpen] = useState(true);
+  const togglePopover = () => {
+    setIsPopoverOpen(!isPopoverOpen);
+  };
+
   const handleOnClick = (index: number) => {
     setIdx(index);
   }
-
-  const handleAssign = async (index: number)=>{
-    const issue = issues[index];
-    console.log(issue);
-    if(!technicianQuery.isLoading){
-      console.log(technicianQuery.data)
-    }
-  }
-
 
   return (
     <>
@@ -155,7 +164,7 @@ console.log(technicians);
           >
             Prev
           </button>
-            <PopOver handleAssign={handleAssign} idx={idx} technicians={technicians} />
+          {isPopoverOpen ? <PopOver issue={issues[idx]} togglePopover={togglePopover}/> : <p>Issue Assigned</p>}
           <button
             onClick={() => setIdx((idx + 1) % issues.length)}
             className="bg-[#00FFF5] text-slate-700 px-2 py-1 mx-5 rounded-md font-bold"
