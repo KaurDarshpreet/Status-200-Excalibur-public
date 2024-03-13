@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { completePayment, edit_profile, fileMessRebate, getMessRebate, initiateBillpayment } from "../controllers/Student";
+import { completePayment, edit_profile, fileMessRebate, getMessRebate, getkey, initiateBillpayment } from "../controllers/Student";
 import authenticateToken from "../middlewares/jwtVerification";
 import { studentAuth } from "../middlewares/roleAuthentication";
 import upload from "../utilities/multerInitialize";
@@ -10,5 +10,6 @@ StudentRoutes.post("/rebate", authenticateToken, studentAuth , fileMessRebate);
 StudentRoutes.get("/rebate", authenticateToken, studentAuth , getMessRebate);
 StudentRoutes.post("/initialisePayment", authenticateToken, studentAuth , initiateBillpayment);
 StudentRoutes.post("/finishPayment", authenticateToken, studentAuth , completePayment);
+StudentRoutes.get("/payment/getkey",authenticateToken, studentAuth , getkey)
 
 export default StudentRoutes;
