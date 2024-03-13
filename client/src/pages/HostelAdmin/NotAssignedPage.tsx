@@ -58,6 +58,7 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 
 const PopOver = ({ issue, togglePopover }: PopOverProps) => {
   
+  const queryClient: QueryClient = useQueryClient();
   const assigntechnician = useMutation({
     mutationFn: assignTechnician,
     onSuccess: (data)=>{
@@ -70,7 +71,6 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
     queryKey: ["listTechnicians"],
     queryFn: getTechnicians,
   });
-  const queryClient: QueryClient = useQueryClient();
   if (technicianQuery.isLoading) {
     return (<DashboardLoader />)
   }

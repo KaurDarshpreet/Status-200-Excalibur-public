@@ -1,3 +1,5 @@
+import { resolveIssue } from "../../api/technicianQueries";
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 
 type Issue = {
@@ -32,17 +34,27 @@ type IssueCardProps = {
   status: string;
   index: number;
   handleOnClick: (index: number) => void;
+  issueID: number;
 };
 
-const IssueCard = ({ name, status, index, handleOnClick }: IssueCardProps) => {
-  const handleIssueStatus = (e: any)=>{
-    console.log(e.target.value)
+const IssueCard = ({ name, status, index, handleOnClick, issueID }: IssueCardProps) => {
+  const queryClient: QueryClient = useQueryClient();
+  
+  const resolveTechnicianIssue = useMutation({
+    mutationFn: resolveIssue,
+    onSuccess: ()=>{
+      queryClient.invalidateQueries({queryKey : ['technicianIssues']});
+    }
+  });
+
+  const handleIssueStatus = ()=>{
+    resolveTechnicianIssue.mutate(issueID);
   }
   return (
     // change the css here
     <div className={`py-2 text-slate-700 px-4 relative cursor-pointer flex items-center justify-between ${status == 'pending' ? `bg-gradient-to-r from-[#00FFF5] to-[#00ADB5]` : `bg-[#00ADB5]`} rounded-md transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none text-center mt-2`} onClick={() => handleOnClick(index)}>
       <h1 className="font-bold">{name}</h1>
-      <input type="checkbox" name="status" id="" onChange={handleIssueStatus}/>
+      <input type="checkbox" name="status" id="" value={name} checked={status == 'resolved' ? true : false} onChange={handleIssueStatus}/>
     </div>
   );
 
@@ -60,7 +72,7 @@ export default function ViewIssues({ issues }: ViewIssuesProps) {
     <>
       <div className="flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
         {issues.map((issue, index) => (
-          <IssueCard key={index} name={issue.title} status={issue.is_resolved ? 'resolved' : 'pending'} handleOnClick={handleOnClick} index={index} />
+          <IssueCard key={index} name={issue.title} status={issue.is_resolved ? 'resolved' : 'pending'} handleOnClick={handleOnClick} index={index} issueID = {issue.issue_id}/>
         ))}
       </div>
       <div className="bg-[#222831] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">

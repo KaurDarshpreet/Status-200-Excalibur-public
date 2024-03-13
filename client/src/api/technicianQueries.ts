@@ -12,4 +12,14 @@ const getAssignedIssues = async () => {
     return res.data.issues;
 }
 
-export { getAssignedIssues };
+const resolveIssue = async (issue_id: number) => {
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.put(`${hostname}/api/issue/resolve/${issue_id}`, issue_id, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        }
+    });
+    console.log(res.data);
+}
+
+export { getAssignedIssues, resolveIssue };
