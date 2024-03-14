@@ -356,7 +356,7 @@ const SignUp = () => {
                         <select name="hostel" id="hostel" className={inputCSS+'text-black'} onChange={handleStudentChange}>
                             <option value="" disabled selected>Select Hostel</option>
                             {Hostels.map((hostel, index) => (
-                                <option value={hostel} key={index}>{hostel}</option>
+                                <option value={hostel} key={index} className="text-black">{hostel}</option>
                             ))}
                         </select>
                         <button type="submit" className="bg-[#20BFA9] shadow-sm shadow-[#58a399] hover:shadow-none text-white font-bold py-2 px-4 rounded-lg w-[100px] mt-auto transition-all mx-auto" onClick={handleOnStudentSubmit}>Sign Up</button>
