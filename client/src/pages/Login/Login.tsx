@@ -42,7 +42,7 @@ const SelectCollege = ({ handleSetCollege }: SelectCollegeProps) => {
 				Select College
 			</h1>
 			<select
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				name="college"
 				id="college"
 				onChange={handleSetCollege}
@@ -228,13 +228,13 @@ const StudentLogin = ({ college }: CollegeProps) => {
 			<input
 				type="email"
 				ref={domainID}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="DomainID"
 			/>
 			<input
 				type="password"
 				ref={student_password}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="Password"
 			/>
 			<button
@@ -308,13 +308,13 @@ const TechnicianLogin = ({ college }: CollegeProps) => {
 			<input
 				type="email"
 				ref={email}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="Email"
 			/>
 			<input
 				type="password"
 				ref={password}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="Password"
 			/>
 			<button
@@ -388,13 +388,13 @@ const HostelAdminLogin = ({ college }: CollegeProps) => {
 			<input
 				type="email"
 				ref={domain_id}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="DomainID"
 			/>
 			<input
 				type="password"
 				ref={password}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="Password"
 			/>
 			<button
@@ -468,13 +468,13 @@ const CollegeAdminLogin = ({ college }: CollegeProps) => {
 			<input
 				type="email"
 				ref={domain_id}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="DomainID"
 			/>
 			<input
 				type="password"
 				ref={password}
-				className="w-[20svw] p-2 mb-5 rounded-lg"
+				className="min-w-[20svw] p-2 mb-5 rounded-lg"
 				placeholder="Password"
 			/>
 			<button
@@ -526,11 +526,11 @@ const Login = () => {
 					backgroundImage: `url(${welcomeImg})`,
 					backgroundSize: "cover",
 				}}
-				className={`w-[60svw] h-screen flex items-center justify-center`}
+				className={`w-[60svw] h-screen flex items-center justify-center max-sm:hidden bg-[#0000009d] customFadeIn`}
 			></div>
-			<div className="w-[40svw] h-screen overflow-hidden relative customFadeIn">
+			<div className="sm:w-[40svw] h-screen overflow-hidden relative customFadeIn">
 				{/* <FaArrowUp className="fixed bottom-4 right-4 text-white rounded-full bg-slate-600 hover:scale-150 cursor-pointer text-3xl p-2 min-w-max min-h-max" onClick={handleGoBack} /> */}
-				<div className="w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#211709]">
+				<div className="sm:w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#211709] max-sm:w-screen">
 					<SelectCollege
 						college={college}
 						handleSetCollege={handleSetCollege}
@@ -541,7 +541,7 @@ const Login = () => {
 				<div className="flex scroll-auto" id="login_view">
 					{role.isStudent && (
 						<div
-							className="min-w-[40svw] relative min-h-screen flex flex-col items-center justify-center bg-[#0000009d]"
+							className="min-w-[40svw] relative min-h-screen flex flex-col items-center justify-center bg-[#0000009d] max-sm:w-screen"
 							id="studentLogin"
 						>
 							<img src={studentBG} alt="" className="absolute z-[-1]" />
@@ -550,7 +550,7 @@ const Login = () => {
 					)}
 					{role.isTechnician && (
 						<div
-							className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d]"
+							className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d] max-sm:w-screen"
 							id="technicianLogin"
 						>
 							<img src={technicianBG} alt="" className="absolute z-[-1]" />
@@ -559,7 +559,7 @@ const Login = () => {
 					)}
 					{role.isHostelAdmin && (
 						<div
-							className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d]"
+							className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d] max-sm:w-screen"
 							id="hostelAdminLogin"
 						>
 							<img src={hostelAdminBG} alt="" className="absolute z-[-1]" />
@@ -568,7 +568,7 @@ const Login = () => {
 					)}
 					{role.isCollegeAdmin && (
 						<div
-							className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d]"
+							className="min-w-[40svw] min-h-screen flex flex-col items-center justify-center bg-[#0000009d] max-sm:w-screen"
 							id="collegeAdminLogin"
 						>
 							<img src={collegeAdminBG} alt="" className="absolute z-[-1] " />
