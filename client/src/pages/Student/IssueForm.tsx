@@ -59,8 +59,6 @@ const IssueForm = (props: any) => {
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        console.log(e.target.name, e.target.value);
-        
         setIssue({ ...issue, [e.target.name]: e.target.value });
     };
 
@@ -131,7 +129,7 @@ const IssueForm = (props: any) => {
                         <option value="" disabled>
                             Location
                         </option>
-                        {location.map((loc) => (
+                        {(location).map((loc) => (
                             <option value={loc} key={loc}>
                                 {loc}
                             </option>

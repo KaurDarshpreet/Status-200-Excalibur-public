@@ -53,4 +53,28 @@ const reviewIssues = async (issue_id : number)=>{
     });
     return res.data.issue;
 }
-export { getNotAssignedIssues, getTechnicians, assignTechnician, getRebates, reviewIssues };
+
+const getBills = async () =>{
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.get(`${hostname}/api/admin/hostel/listStudents`, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        }
+    });
+    console.log(res.data);
+    return res.data;
+}
+
+const submitNewBill = async (data: any)=>{
+    console.log(data)
+    const authToken = sessionStorage.getItem('authToken');
+    const res = await axios.put(`${hostname}/api/admin/hostel/messDues`, data, {
+        headers: {
+            'Authorization': `Bearer ${authToken}`,
+        }
+    });
+    return res.data;
+}
+
+
+export { getNotAssignedIssues, getTechnicians, assignTechnician, getRebates, reviewIssues, getBills, submitNewBill };

@@ -5,9 +5,8 @@ import jwt from "jsonwebtoken";
 import AuthenticatedRequest from "../interfaces/authenticatedRequest";
 
 export const signup_hostelAdmin = async (req: Request, res: Response) => {
-  console.log(req.body);
   try {
-    const { domain_id, name, role, hostel, password, phone_number } = req.body;
+    const { domain_id, name, role, hostel, password, phone_number, auth_key } = req.body;
 
     if (!domain_id || !name || !hostel || !password || !phone_number) {
       return res.status(400).json({
@@ -21,6 +20,20 @@ export const signup_hostelAdmin = async (req: Request, res: Response) => {
         success: false,
         message:
           "Invalid access to this route. Please sign up as a hostel admin.",
+      });
+    }
+    const authInfo = await prisma.authKey.findFirst({
+      where: {
+        role,
+      },
+      select: {
+        key: true
+      }
+    });
+    if (authInfo?.key != auth_key) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid Auth Key"
       });
     }
 
@@ -356,9 +369,15 @@ export const getStudents = async (req: Request, res: Response) => {
     const students = await prisma.student.findMany({
       where: {
         hostel: admin?.hostel,
+        AND:{
+          mess_due: {
+             not: {
+              equals: '0'
+             }
+          }
+        }
       },
     });
-
     if (students.length === 0) {
       return res.status(200).json({
         success: true,

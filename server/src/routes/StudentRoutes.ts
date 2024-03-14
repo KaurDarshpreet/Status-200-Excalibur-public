@@ -9,7 +9,7 @@ StudentRoutes.put("/edit_profile", upload.single("file"), authenticateToken, stu
 StudentRoutes.post("/rebate", authenticateToken, studentAuth , fileMessRebate);
 StudentRoutes.get("/rebate", authenticateToken, studentAuth , getMessRebate);
 StudentRoutes.post("/initialisePayment", authenticateToken, studentAuth , initiateBillpayment);
-StudentRoutes.post("/finishPayment", authenticateToken, studentAuth , completePayment);
+StudentRoutes.post("/finishPayment", authenticateToken, studentAuth, completePayment);
 StudentRoutes.get("/payment/getkey",authenticateToken, studentAuth , getkey)
 
 export default StudentRoutes;

@@ -53,9 +53,6 @@ export default function ReviewPage({ issues }: ReviewPageProps) {
 	const [notReviewed, setNotReviewed] = useState(
 		issues.filter((issue) => issue.is_resolved)
 	);
-	useEffect(() => {
-		setNotReviewed(issues.filter((issue) => issue.is_resolved));
-	}, [issues]);
 	const [idx, setIdx] = useState(0);
 	const queryClient: QueryClient = useQueryClient();
 	const reviewStudentIssue = useMutation({
@@ -81,7 +78,7 @@ export default function ReviewPage({ issues }: ReviewPageProps) {
 	};
 	const handleReview = (index: number) => {
 		try {
-			const issue_id = issues[index].issue_id;
+			const issue_id = issues[index]?.issue_id;
             toast.promise(reviewStudentIssue.mutateAsync(issue_id), {
                 loading: "Reviewing Issue...",
                 success: "Issue Reviewed Successfully",
@@ -109,32 +106,32 @@ export default function ReviewPage({ issues }: ReviewPageProps) {
 					);
 				})}
 			</div>
-			{issues[idx].is_resolved && issues[idx].technician != null && (
+			{issues[idx]?.is_resolved && issues[idx]?.technician != null && (
 				<div className="bg-[#393E46] p-[5%] min-h-[94svh] min-w-[40svw] flex flex-col justify-evenly rounded-lg">
 					<h1 className="profile_name text-white font-bold text-2xl text-center mt-2 min-h-max">
-						{issues[idx].category} : {issues[idx].title}
+						{issues[idx]?.category} : {issues[idx]?.title}
 					</h1>
 					{issues[idx].issue_media && (
 						<div className="min-w-[30svw] min-h-[50svh] bg-[#222831] m-auto rounded-lg p-1 flex items-center justify-center">
-							{issues[idx].issue_media.endsWith(".jpg") ||
-							issues[idx].issue_media.endsWith(".jpeg") ||
-							issues[idx].issue_media.endsWith(".png") ||
-							issues[idx].issue_media.endsWith(".gif") ? (
+							{issues[idx]?.issue_media.endsWith(".jpg") ||
+							issues[idx]?.issue_media.endsWith(".jpeg") ||
+							issues[idx]?.issue_media.endsWith(".png") ||
+							issues[idx]?.issue_media.endsWith(".gif") ? (
 								<img
-									src={issues[idx].issue_media}
+									src={issues[idx]?.issue_media}
 									alt="Issue Media"
 									className="w-full h-full object-cover"
 								/>
 							) : (
 								<video
-									src={issues[idx].issue_media}
+									src={issues[idx]?.issue_media}
 									controls
 									className="w-full h-full object-cover"
 								/>
 							)}
 						</div>
 					)}
-					<p className="text-white">{issues[idx].description}</p>
+					<p className="text-white">{issues[idx]?.description}</p>
 					<button
 						onClick={() => handleReview(idx)}
 						className="text-slate-700 font-semibold mt-auto rounded bg-[#00FFF5] px-4 py-1 basis-[30%]"

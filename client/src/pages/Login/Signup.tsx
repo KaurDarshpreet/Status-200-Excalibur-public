@@ -278,7 +278,6 @@ const SignUp = () => {
                 success: 'Technician Registered Successfully',
                 error: "Error Registering Technician"
             });
-            navigator('/login');
         } catch (error: any) {
             toast.error(error.response.data.error)
         }
@@ -309,9 +308,8 @@ const SignUp = () => {
                 success: 'Hostel Admin Registered Successfully',
                 error: "Error Registering Hostel Admin"
             });
-            navigator('/login');
         } catch (error: any) {
-            toast.error(error.response.data.error)
+            toast.error(error.response.message)
         }
     }
 
@@ -338,9 +336,8 @@ const SignUp = () => {
                 success: 'College Admin Registered Successfully',
                 error: "Error Registering College Admin"
             });
-            navigator('/login');
         } catch (error: any) {
-            toast.error(error.response.data.error)
+            toast.error(error.response.message);
         }
     }
 

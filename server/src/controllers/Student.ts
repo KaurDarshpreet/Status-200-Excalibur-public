@@ -375,30 +375,34 @@ export const initiateBillpayment = async (req: Request, res: Response) => {
   try {
     const { domain_id } = (req as AuthenticatedRequest).user;
     const { role } = (req as AuthenticatedRequest).user;
-    const { amount } = req.body;
 
-    if(!domain_id){
+    if (!domain_id) {
       return res.status(400).json({
         success: false,
         message: "Invalid access to this route. Please sign in as a student.",
       });
     }
-    
+
     if (role !== "student") {
       return res.status(400).json({
         success: false,
         message: "Invalid access to this route. Please sign in as a student.",
       });
     }
+    const student = await prisma.student.findUnique({
+      where: {
+        domain_id,
+      }
+    });
+
+    const billAmount: any = student?.mess_due;
 
     const options = {
-      amount: Number(amount * 100),
+      amount: Number(billAmount * 100),
       currency: "INR",
     };
 
     const order = await instance.orders.create(options);
-    console.log(order);
-
 
     return res.status(200).json({
       success: true,
@@ -416,46 +420,51 @@ export const initiateBillpayment = async (req: Request, res: Response) => {
 
 export const completePayment = async (req: Request, res: Response) => {
   try {
-    const {razorpay_order_id,razorpay_payment_id,razorpay_signature} = req.body;
+    const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = req.body;
 
     const body = razorpay_order_id + "|" + razorpay_payment_id;
 
-      const expectedSignature = crypto
-        .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
-        .update(body.toString())
-        .digest("hex");
+    const expectedSignature = crypto
+      .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET!)
+      .update(body.toString())
+      .digest("hex");
 
-      const isAuthentic = expectedSignature === razorpay_signature;
+    const isAuthentic = expectedSignature === razorpay_signature;
 
-      if(isAuthentic){
-        await prisma.payment.create({
-          data:{
-            razorpay_order_id,
-            razorpay_payment_id,
-            razorpay_signature,
-            student : {
-              connect : {
-                domain_id : (req as AuthenticatedRequest).user.domain_id
-              }
+    if (isAuthentic) {
+      await prisma.payment.create({
+        data: {
+          razorpay_order_id,
+          razorpay_payment_id,
+          razorpay_signature,
+          student: {
+            connect: {
+              domain_id: (req as AuthenticatedRequest).user.domain_id
             }
           }
-        });
+        }
+      });
 
-        await prisma.student.update({
-          where: {
-            domain_id: (req as AuthenticatedRequest).user.domain_id,
-          },
-          data: {
-            mess_due: "0",
-          },
-        });
-      }
-      else{
-        return res.status(400).json({
-          success: false,
-          message: "Payment verification failed",
-        });
-      }
+      const student = await prisma.student.update({
+        where: {
+          domain_id: (req as AuthenticatedRequest).user.domain_id,
+        },
+        data: {
+          mess_due: "0",
+        },
+      });
+
+      return res.status(200).json({
+        message: "Payment successful",
+        student
+      });
+    }
+    else {
+      return res.status(400).json({
+        success: false,
+        message: "Payment verification failed",
+      });
+    }
   } catch (error: any) {
     return res.status(500).json({
       success: false,
@@ -465,12 +474,11 @@ export const completePayment = async (req: Request, res: Response) => {
 };
 
 export const getkey = async (req: Request, res: Response) => {
-  console.log("asking for razorpay key")
   try {
     const { domain_id } = (req as AuthenticatedRequest).user;
     const { role } = (req as AuthenticatedRequest).user;
 
-    if(!domain_id){
+    if (!domain_id) {
       return res.status(400).json({
         success: false,
         message: "Invalid access to this route. Please sign in as a student.",
@@ -486,11 +494,11 @@ export const getkey = async (req: Request, res: Response) => {
     const key = process.env.RAZORPAY_KEY_ID;
 
     return res.status(200).json({
-      success : true,
+      success: true,
       key
     });
 
-  } catch (error:any) {
+  } catch (error: any) {
     return res.status(500).json({
       success: false,
       message: "Something went wrong",

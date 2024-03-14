@@ -103,7 +103,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
         <div className="min-w-[380px] p-2 bg-black text-white">
           <h1 className="text-2xl mb-2 text-center">List Of Technicians</h1>
           <div className="flex flex-col gap-2">
-            {technicians.map((technician: any) => {
+            {technicians?.map((technician: any) => {
               return (
                 <div key={technician.technician_id} className="flex justify-between items-center">
                   <h1 className="text-xl font-semibold">{technician.name}</h1>
@@ -146,26 +146,26 @@ export default function NotAssignedPage({ issues }: ViewIssuesProps) {
   return (
     <>
       <div className="customScrollbar flex flex-col text-white font-semibold h-[94svh] overflow-auto basis-[100%] p-2 gap-1">
-        {issues.map((issue, index) => {
+        {issues?.map((issue, index) => {
           return (
-              (issue.technician == null) && <IssueCard key={index} name={issue.title} handleOnClick={handleOnClick} index={index} />
+              (issue?.technician == null) && <IssueCard key={index} name={issue?.title} handleOnClick={handleOnClick} index={index} />
           )
           })}
       </div>
-      {(issues[idx].technician == null) && <div className="bg-[#222831] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
-        <h1 className="profile_name text-white font-bold text-2xl mt-2 min-h-max">{issues[idx].category} : {issues[idx].title}</h1>
-        {issues[idx].issue_media && (
+      {(issues[idx]?.technician == null) && <div className="bg-[#222831] min-h-[94svh] min-w-[50svw] flex flex-col items-center justify-evenly rounded-lg gap-5">
+        <h1 className="profile_name text-white font-bold text-2xl mt-2 min-h-max">{issues[idx]?.category} : {issues[idx]?.title}</h1>
+        {issues[idx]?.issue_media && (
           <div className="min-w-[45svw] min-h-[50svh] bg-[#393E46] rounded-lg p-1 flex items-center justify-center">
-            {issues[idx].issue_media.endsWith(".jpg") || issues[idx].issue_media.endsWith(".jpeg") ||
-              issues[idx].issue_media.endsWith(".png") ? (
-              <img src={issues[idx].issue_media} alt="Issue Media" className="max-w-[43svw] max-h-[47svh]" />
+            {issues[idx]?.issue_media.endsWith(".jpg") || issues[idx]?.issue_media.endsWith(".jpeg") ||
+              issues[idx]?.issue_media.endsWith(".png") ? (
+              <img src={issues[idx]?.issue_media} alt="Issue Media" className="max-w-[43svw] max-h-[47svh]" />
             ) : (
-              <video src={issues[idx].issue_media} controls className="max-w-[43svw] max-h-[47svh]" />
+              <video src={issues[idx]?.issue_media} controls className="max-w-[43svw] max-h-[47svh]" />
             )}
           </div>
         )}
-        <h3 className="text-left block text-white font-semibold  basis-[100%] p-2 h-max min-w-[45svw]">Location: {issues[idx].location}</h3>
-        <p className="text-left block text-white font-semibold overflow-auto customScrollbar min-w-[45svw] p-2 min-h-max max-h-[20svh]">{issues[idx].description}</p>
+        <h3 className="text-left block text-white font-semibold  basis-[100%] p-2 h-max min-w-[45svw]">Location: {issues[idx]?.location}</h3>
+        <p className="text-left block text-white font-semibold overflow-auto customScrollbar min-w-[45svw] p-2 min-h-max max-h-[20svh]">{issues[idx]?.description}</p>
         <div className="flex justify-between w-full items-center gap-4 mt-auto mb-8">
           <button
             onClick={() => setIdx((idx - 1 + issues.length) % issues.length)}
