@@ -215,7 +215,7 @@ const StudentLogin = ({ college }: CollegeProps) => {
 			sessionStorage.setItem("authToken", authToken);
 			navigate("/student", { state: { ...data } });
 		} catch (error: any) {
-			toast.error(error.response.data.error);
+			toast.error(error?.response?.data?.error);
 		}
 	};
 
