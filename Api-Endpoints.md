@@ -25,9 +25,9 @@
 /api/issue/hostel/checkIssues GET ok
 
 # College Admin functionality
-/api/college/assign PUT
-/api/college/review DELETE
-/api/college/checkIssues GET
+/api/issue/college/assign PUT
+/api/issue/college/review DELETE
+/api/issue/college/checkIssues GET
 
 # College Admin or Hostel Admin functionality
 /api/issue/listTechnicians GET ok

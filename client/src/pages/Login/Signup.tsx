@@ -171,6 +171,12 @@ const collegeAdminSchema = [
         placeholder: "Phone Number",
         name: "phone_number",
         className: inputCSS
+    },
+    {
+        type: 'text',
+        placeholder: 'Authentication Key',
+        name: 'auth_key',
+        className: inputCSS
     }
 ];
 

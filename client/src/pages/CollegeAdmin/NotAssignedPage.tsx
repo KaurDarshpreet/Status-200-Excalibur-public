@@ -1,4 +1,4 @@
-import { assignTechnician, getTechnicians } from "../../api/hostelAdminQueries";
+import { assignTechnician2, getTechnicians2 } from "../../api/collegeAdminQueries";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
@@ -59,17 +59,17 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 const PopOver = ({ issue, togglePopover }: PopOverProps) => {
 
   const queryClient: QueryClient = useQueryClient();
-  const assigntechnician = useMutation({
-    mutationFn: assignTechnician,
+  const assigntechnician2 = useMutation({
+    mutationFn: assignTechnician2,
     onSuccess: (data) => {
       console.log(data);
-      queryClient.invalidateQueries({ queryKey: ['notAssignedIssues'] });
+      queryClient.invalidateQueries({ queryKey: ['collegeIssues'] });
       togglePopover();
     }
   });
   const technicianQuery = useQuery({
     queryKey: ["listTechnicians"],
-    queryFn: getTechnicians,
+    queryFn: getTechnicians2,
   });
   if (technicianQuery.isLoading) {
     return (<p>Loading Technicians</p>)
@@ -82,7 +82,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
     const issue_id = issue.issue_id;
     const technician_id = technician.technician_id;
     try {
-      toast.promise(assigntechnician.mutateAsync({ issue_id, technician_id }), {
+      toast.promise(assigntechnician2.mutateAsync({ issue_id, technician_id }), {
         loading: 'Assigning Technician...',
         success: 'Technician Assigned Successfully',
         error: 'Error Assigning Technician',
