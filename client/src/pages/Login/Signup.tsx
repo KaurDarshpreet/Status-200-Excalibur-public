@@ -28,6 +28,17 @@ const Hostels = [
     'Alaknanda_Bhawan'
 ];
 
+const category = [
+    'carpentry', 
+    'electrician', 
+    'plumber', 
+    'laundry', 
+    'mason', 
+    'sweeper', 
+    'mess_staff', 
+    'internet_service'
+];
+
 const studentSchema = [
     {
         type: 'text',
@@ -86,12 +97,6 @@ const technicianSchema = [
         type: 'password',
         placeholder: "Password",
         name: "password",
-        className: inputCSS
-    },
-    {
-        type: 'text',
-        placeholder: "Category",
-        name: "category",
         className: inputCSS
     },
     {
@@ -387,6 +392,12 @@ const SignUp = () => {
                         {technicianSchema.map((input, index) => (
                             <Input key={index} {...input} onChange={handleTechnicianChange} required />
                         ))}
+                        <select name="category" id="category" className={inputCSS + 'text-black'} onChange={handleTechnicianChange}>
+                            <option value="" disabled selected>Select Category</option>
+                            {category.map((cat, index) => (
+                                <option value={cat} key={index} className="text-black">{cat}</option>
+                            ))}
+                        </select>
                         <button type="submit" className="bg-[#20BFA9] shadow-sm shadow-[#58a399] hover:shadow-none text-white font-bold py-2 px-4 rounded-lg w-[100px] mt-auto transition-all mx-auto" onClick={handleOnTechnicianSubmit}>Sign Up</button>
                     </form>
                 </>;
