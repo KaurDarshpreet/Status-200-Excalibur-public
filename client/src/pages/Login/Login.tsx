@@ -28,13 +28,13 @@ interface SelectRoleProps {
 const SelectCollege = ({ handleSetCollege }: SelectCollegeProps) => {
 	const collegeArray = [
 		"NIT Kurukshetra",
-		"NIT Delhi",
-		"NIT Jalandhar",
-		"NIT Patna",
-		"NIT Jamshedpur",
-		"NIT Durgapur",
-		"NIT Rourkela",
-		"NIT Agartala",
+		// "NIT Delhi",
+		// "NIT Jalandhar",
+		// "NIT Patna",
+		// "NIT Jamshedpur",
+		// "NIT Durgapur",
+		// "NIT Rourkela",
+		// "NIT Agartala",
 	];
 	return (
 		<>

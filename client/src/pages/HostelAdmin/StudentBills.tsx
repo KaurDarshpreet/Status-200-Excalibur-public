@@ -37,7 +37,9 @@ export const StudentBills = () => {
   if (bills == null || bills == undefined || bills?.length == 0) {
     return (
       <div className='w-[90%] min-h-[90svh] mx-auto my-auto flex flex-col justify-center'>
-        <p>No Bills Found</p>
+        <div className="bg-slate-200 flex flex-col items-center justify-evenly my-10 rounded-lg font-bold text-5xl font-sans">
+				  NO BILLS FOUND 🎊
+			  </div> 
         {/* Add new Bill */}
         <Dialog>
           <DialogTrigger>
