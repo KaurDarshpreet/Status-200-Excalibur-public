@@ -133,7 +133,7 @@ const StudentDash = () => {
         onClick={handleToggle}
       />
       <div
-        className={`profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md ${toggle ? visible : hidden
+        className={`profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] pt-5 rounded-md ${toggle ? visible : hidden
           }`}
       >
         <GiHamburgerMenu

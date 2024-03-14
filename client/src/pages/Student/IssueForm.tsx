@@ -38,7 +38,7 @@ const IssueForm = (props: any) => {
     const textInput = ['title', 'description'];
     const location = [ localStorage.getItem('hostel') ,'College']
     const visibility = ['public', 'private'];
-    const category = ['carpentry', 'electrician', 'plumber', 'laundry', 'mason', 'sweeper', 'internet_service', 'mess_staff'];
+    const category = ['carpentry', 'electrician', 'plumber', 'laundry', 'mason', 'sweeper', 'mess_staff', 'internet_service'];
     const [media, setMedia] = useState<any>('');
     type IssueType = { [key: string]: string };
     const queryClient: QueryClient = useQueryClient();
@@ -145,7 +145,7 @@ const IssueForm = (props: any) => {
                 />
                 <fieldset className='mt-4 border border-[#fff] rounded-lg'>
                     <legend className='text-2xl px-2 text-center text-[white]'>Category</legend>
-                    <div className='grid grid-cols-3 w-max m-auto'>
+                    <div className='grid grid-cols-3 max-w-full m-auto'>
                         {category.map((cat) => (
                             <RadioInput
                                 key={cat}

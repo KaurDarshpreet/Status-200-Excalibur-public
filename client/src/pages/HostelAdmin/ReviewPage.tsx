@@ -64,7 +64,11 @@ export default function ReviewPage({ issues }: ReviewPageProps) {
 		},
 	});
 	if (issues == null || issues == undefined) {
-		return <p>Issues not found</p>;
+		return (
+			<div className="bg-slate-200 min-h-[94svh] min-w-[73svw] flex flex-col items-center justify-evenly rounded-lg font-bold text-5xl font-sans">
+				ALL ISSUES REVIEWED 🎊
+			</div>
+		);
 	}
 	if (notReviewed.length == 0) {
 		return (
@@ -120,7 +124,7 @@ export default function ReviewPage({ issues }: ReviewPageProps) {
 								<img
 									src={issues[idx]?.issue_media}
 									alt="Issue Media"
-									className="w-full h-full object-cover"
+									className="max-w-[30svw] max-h-[50svh]"
 								/>
 							) : (
 								<video
