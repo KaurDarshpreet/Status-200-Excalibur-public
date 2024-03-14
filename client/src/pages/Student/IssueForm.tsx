@@ -38,7 +38,7 @@ const IssueForm = (props: any) => {
     const textInput = ['title', 'description'];
     const location = [ localStorage.getItem('hostel') ,'College']
     const visibility = ['public', 'private'];
-    const category = ['carpentry', 'electrician', 'plumber', 'laundry', 'mason', 'sweeper'];
+    const category = ['carpentry', 'electrician', 'plumber', 'laundry', 'mason', 'sweeper', 'internet_service', 'mess_staff'];
     const [media, setMedia] = useState<any>('');
     type IssueType = { [key: string]: string };
     const queryClient: QueryClient = useQueryClient();
@@ -64,7 +64,6 @@ const IssueForm = (props: any) => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         console.log(issue);
-        
         e.preventDefault();
         const data = new FormData();
         
