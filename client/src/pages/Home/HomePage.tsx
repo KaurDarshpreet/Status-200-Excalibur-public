@@ -75,11 +75,11 @@ const HomePage = () => {
                             </p>
                         </div>
                         <div className="mx-auto w-full max-w-3xl space-y-12">
-                            <div className="grid gap-6 sm:grid-cols-2">
+                            <div className="grid gap-10 sm:grid-cols-2">
                                 <div className="flex flex-col items-center space-y-2">
                                     <img
                                         alt="Image"
-                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse"
+                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse bg-gray-400"
                                         height="225"
                                         src="/placeholder.svg"
                                         width="400"
@@ -96,7 +96,7 @@ const HomePage = () => {
                                 <div className="flex flex-col items-center space-y-2">
                                     <img
                                         alt="Image"
-                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse"
+                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse bg-gray-400"
                                         height="225"
                                         src="/placeholder.svg"
                                         width="400"
@@ -113,7 +113,7 @@ const HomePage = () => {
                                 <div className="flex flex-col items-center space-y-2">
                                     <img
                                         alt="Image"
-                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse"
+                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse bg-gray-400"
                                         height="225"
                                         src="/placeholder.svg"
                                         width="400"
@@ -130,7 +130,7 @@ const HomePage = () => {
                                 <div className="flex flex-col items-center space-y-2">
                                     <img
                                         alt="Image"
-                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse"
+                                        className="mx-auto aspect-video overflow-hidden rounded-xl object-cover object-center animate-pulse bg-gray-400"
                                         height="225"
                                         src="/placeholder.svg"
                                         width="400"
