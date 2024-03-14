@@ -17,6 +17,9 @@ export default function RebatePage(){
     return (<DashboardLoader/>)
   }
   const rebateDetails = rebateQuery.data;
+  if(rebateDetails.length == 0){
+    return (<p>No Rebates found</p>);
+  }
     return (
         <div className="w-[98%] overflow-hidden customScrollbar min-h-[91svh] max-h-[91svh] bg-[#222831] text-white rounded-lg mx-auto my-auto overflow-y-auto overflow-x-hidden">
         <div className="grid grid-cols-2">

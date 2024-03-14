@@ -11,22 +11,22 @@ import toast from "react-hot-toast";
 
 const inputCSS = "bg-transparent my-2"
 const Hostels = [
-    'H-1',
-    'H-2',
-    'H-3',
-    'H-4',
-    'H-5',
-    'H-6',
-    'H-7',
-    'H-8',
-    'H-9',
-    'H-10',
-    'H-11',
-    'Kalpana Chawla',
-    'Bhagirathi Bhawan',
-    'Cauvery Bhawan',
-    'Alaknanda Bhawan'
-]
+    'H1',
+    'H2',
+    'H3',
+    'H4',
+    'H5',
+    'H6',
+    'H7',
+    'H8',
+    'H9',
+    'H10',
+    'H11',
+    'Kalpana_Chawla_Bhawan',
+    'Bhagirathi_Bhawan',
+    'Cauvery_Bhawan',
+    'Alaknanda_Bhawan'
+];
 
 const studentSchema = [
     {
@@ -188,6 +188,7 @@ const SignUp = () => {
         room_number: '',
         role: 'student'
     });
+
     const [studentPhoto, setStudentPhoto] = useState('');
     const [profilePicture, setProfilePicture] = useState('');
     const submitStudent = useMutation<void, Error, FormData>({
@@ -196,19 +197,19 @@ const SignUp = () => {
             navigator('/login');
         },
     });
-    const submitTechnician = useMutation<void, Error, FormData>({
+    const submitTechnician = useMutation<void, Error, object>({
         mutationFn: signupTechnician,
         onSuccess: () => {
             navigator('/login');
         },
     });
-    const submitHostelAdmin = useMutation<void, Error, FormData>({
+    const submitHostelAdmin = useMutation<void, Error, object>({
         mutationFn: signupHostelAdmin,
         onSuccess: () => {
             navigator('/login');
         },
     });
-    const submitCollegeAdmin = useMutation<void, Error, FormData>({
+    const submitCollegeAdmin = useMutation<void, Error, object>({
         mutationFn: signupCollegeAdmin,
         onSuccess: () => {
             navigator('/login');
@@ -217,8 +218,8 @@ const SignUp = () => {
 
     function handleStudentChange(e: any) {
         if (e.target.name == 'profile_picture') {
-            setStudentPhoto(e.target.files[0]);
-            const file = e.target.files[0];
+            setStudentPhoto(e.target.files![0]);
+            const file = e.target.files![0];
             const reader = new FileReader();
             reader.onload = () => {
                 if (reader.readyState === 2) {
@@ -242,11 +243,14 @@ const SignUp = () => {
                 data.append(key, (student as any)[key]);
             }
         }
-        console.log(data)
+        console.log(data);
         try {
-            submitStudent.mutate(data);
-            toast.success('Student Registered Successfully');
-        } catch (error : any) {
+            toast.promise(submitStudent.mutateAsync(data), {
+                loading: 'Registering Student...',
+                success: 'Student Registered Successfully',
+                error: "Error Registering Student"
+            });
+        } catch (error: any) {
             toast.error(error.response.data.error)
         }
     }
@@ -269,10 +273,13 @@ const SignUp = () => {
     function handleOnTechnicianSubmit(e: any) {
         e.preventDefault();
         try {
-            submitTechnician.mutate((technician as any));
-            toast.success('Technician Registered Successfully');
+            toast.promise(submitTechnician.mutateAsync(technician), {
+                loading: 'Registering Technician...',
+                success: 'Technician Registered Successfully',
+                error: "Error Registering Technician"
+            });
             navigator('/login');
-        } catch (error : any) {
+        } catch (error: any) {
             toast.error(error.response.data.error)
         }
     }
@@ -285,21 +292,25 @@ const SignUp = () => {
         domain_id: '',
         password: '',
         phone_number: '',
-        auth_key: ''
+        auth_key: '',
+        role: 'hostel_admin'
     });
     function handleHostelAdminChange(e: any) {
         setHostelAdmin({
             ...hostelAdmin,
             [e.target.name]: e.target.value
-        })
+        });
     }
     function handleOnHostelAdminSubmit(e: any) {
         e.preventDefault();
         try {
-            submitHostelAdmin.mutate((hostelAdmin as any));
-            toast.success('Hostel Admin Registered Successfully');
+            toast.promise(submitHostelAdmin.mutateAsync(hostelAdmin), {
+                loading: 'Registering Hostel Admin...',
+                success: 'Hostel Admin Registered Successfully',
+                error: "Error Registering Hostel Admin"
+            });
             navigator('/login');
-        } catch (error : any) {
+        } catch (error: any) {
             toast.error(error.response.data.error)
         }
     }
@@ -322,10 +333,13 @@ const SignUp = () => {
     function handleOnCollegeAdminSubmit(e: any) {
         e.preventDefault();
         try {
-            submitCollegeAdmin.mutate((collegeAdmin as any));
-            toast.success('College Admin Registered Successfully');
-            navigator('/login');   
-        } catch (error : any) {
+            toast.promise(submitCollegeAdmin.mutateAsync(collegeAdmin), {
+                loading: 'Registering College Admin...',
+                success: 'College Admin Registered Successfully',
+                error: "Error Registering College Admin"
+            });
+            navigator('/login');
+        } catch (error: any) {
             toast.error(error.response.data.error)
         }
     }
@@ -353,10 +367,10 @@ const SignUp = () => {
                         {studentSchema.map((input, index) => (
                             <Input key={index} {...input} onChange={handleStudentChange} required />
                         ))}
-                        <select name="hostel" id="hostel" className={inputCSS+'text-black'} onChange={handleStudentChange}>
+                        <select name="hostel" id="hostel" className={inputCSS + 'text-black'} onChange={handleStudentChange}>
                             <option value="" disabled selected>Select Hostel</option>
                             {Hostels.map((hostel, index) => (
-                                <option value={hostel} key={index}>{hostel}</option>
+                                <option value={hostel} key={index} className="text-black">{hostel}</option>
                             ))}
                         </select>
                         <button type="submit" className="bg-[#20BFA9] shadow-sm shadow-[#58a399] hover:shadow-none text-white font-bold py-2 px-4 rounded-lg w-[100px] mt-auto transition-all mx-auto" onClick={handleOnStudentSubmit}>Sign Up</button>
@@ -382,7 +396,7 @@ const SignUp = () => {
                         {hostelAdminSchema.map((input, index) => (
                             <Input key={index} {...input} onChange={handleHostelAdminChange} required />
                         ))}
-                        <select name="hostel" id="hostel" className={inputCSS+'bg-black'} onChange={handleHostelAdminChange}>
+                        <select name="hostel" id="hostel" className={inputCSS + 'bg-black'} onChange={handleHostelAdminChange}>
                             <option value="" disabled selected>Select Hostel</option>
                             {Hostels.map((hostel, index) => (
                                 <option value={hostel} key={index} className="text-black">{hostel}</option>

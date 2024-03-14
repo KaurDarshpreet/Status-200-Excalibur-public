@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import AuthenticatedRequest from "../interfaces/authenticatedRequest";
 
 export const signup_hostelAdmin = async (req: Request, res: Response) => {
+  console.log(req.body);
   try {
     const { domain_id, name, role, hostel, password, phone_number } = req.body;
 
@@ -241,7 +242,7 @@ export const checkHostelIssue = async (req: Request, res: Response) => {
     const hostel = hostelAdmin.hostel;
     const issues = await prisma.issue.findMany({
       where: {
-        location: hostel
+        location: hostel?.toString()
       },
       include: {
         technician: true
@@ -315,6 +316,7 @@ export const checkRebates = async (req: Request, res: Response) => {
       return res.status(200).json({
         success: true,
         message: "No rebates found",
+        rebates
       });
     }
     return res.status(200).json({

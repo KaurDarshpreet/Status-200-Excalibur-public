@@ -17,7 +17,7 @@ model Student {
   domain_id       String         @id
   password        String
   name            String
-  hostel          String
+  hostel          Hostels
   room_number     String
   phone_number    String
   profile_picture String?
@@ -78,7 +78,7 @@ model Notification {
 
 model Hostel_admin {
   domain_id    String         @id
-  hostel       String
+  hostel       Hostels
   name         String
   password     String
   notification Notification[]
@@ -114,9 +114,19 @@ model Payment{
   student Student @relation(fields: [student_id], references: [domain_id], onDelete: Cascade, onUpdate: Cascade)
 }
 
+model AuthKey{
+  key String @id
+  role AuthRoles
+}
 
 enum Roles {
   student
+  technician
+  hostel_admin
+  college_admin
+}
+
+enum AuthRoles {
   technician
   hostel_admin
   college_admin
@@ -131,4 +141,22 @@ enum Categories {
   mason
   mess_staff
   sweeper
+}
+
+enum Hostels {
+  H1
+  H2
+  H3
+  H4
+  H5
+  H6
+  H7
+  H8
+  H9
+  H10
+  H11
+  Kalpana_Chawla_Bhawan
+  Bhagirathi_Bhawan
+  Cauvery_Bhawan
+  Alaknanda_Bhawan
 }
