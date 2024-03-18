@@ -35,7 +35,7 @@ const IssueCard = ({name, isAssigned, index, handleOnClick} : IssueCardProps) =>
 
 export default function ViewIssues({ issues }: ViewIssuesProps) {
   if(issues == undefined || issues == null || issues?.length == 0){
-    return (<h1>No Issues Found</h1>)
+    return (<div className="bg-slate-200 min-h-[94svh] min-w-[73svw] flex flex-col items-center justify-evenly rounded-lg font-bold text-5xl font-sans">No Issues 😊</div>)
   }
   const [idx, setIdx] = useState(0);
   const handleOnClick = (index: number) => {

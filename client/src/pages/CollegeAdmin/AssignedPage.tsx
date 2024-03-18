@@ -68,7 +68,7 @@ export default function AssignedPage({ issues }: AssignedPageProps) {
                     )
                 })}
             </div>
-            {(issues[idx]?.technician != null) && <div className="bg-[#393E46] min-h-[94svh] w-max flex flex-col items-center justify-center rounded-lg gap-5 p-[10%]">
+            {(issues[idx]?.technician != null) && <div className="bg-[#393E46] min-h-[94svh] w-max flex flex-col items-center justify-center rounded-lg gap-5">
                 <TechnicianCard user={issues[idx]?.technician} bgc={'#222831'} />
             </div>
             }

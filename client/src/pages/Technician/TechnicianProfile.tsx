@@ -16,7 +16,7 @@ type TechnicianProfileProps = {
 
 export default function TechnicianProfile({ user, bgc }: TechnicianProfileProps) {    
     return (
-        <div className={`profile flex flex-col items-center gap-2 bg-${`[${bgc}]` || '[#393E46]'} min-w-[20svw] h-max mb-auto mt-5 rounded-md p-4`}>
+        <div className={`profile flex flex-col items-center gap-2 bg-${`[${bgc}]` || '[#393E46]'} min-w-[20svw] h-max mb-auto  rounded-md p-4`}>
             <div className="profile_pic w-[150px] h-[150px] rounded-full bg-slate-700 flex items-center justify-center">
                 <img src={sampleDP} className='rounded-full' />
             </div>

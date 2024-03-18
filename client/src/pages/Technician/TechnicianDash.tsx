@@ -34,7 +34,7 @@ const TechnicianDash = () => {
     const issues = getTechnicianIssues.data;
     return (
         <div className="container flex items-center gap-4 justify-center min-w-[100svw] min-h-[100svh] bg-slate-700">
-            <div className="profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md">
+            <div className="profile flex flex-col items-center gap-[8rem] bg-[#222831] min-w-[23svw] min-h-[94svh] rounded-md pt-2">
                 <TechnicianProfile user={user} bgc='#393E46'/>
                 <button className="btn bg-[#00FFF5] cursor-pointer text-slate-700 font-bold py-2 px-4 mt-auto mb-5 rounded-md transition-all shadow-[0_0_10px_#00FFF5] hover:shadow-none">On Leave</button>
             </div>
