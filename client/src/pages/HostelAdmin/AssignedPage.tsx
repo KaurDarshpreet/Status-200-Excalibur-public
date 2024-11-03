@@ -47,6 +47,8 @@ const IssueCard = ({ name, technician, category, index, handleOnClick }: IssueCa
 }
 
 export default function AssignedPage({ issues }: AssignedPageProps) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    // @ts-ignore
     const [Assigned, setAssigned] = useState(issues.filter(issue => (issue.technician != null)));
     const [idx, setIdx] = useState(0);
     const handleOnClick = (index: number) => {

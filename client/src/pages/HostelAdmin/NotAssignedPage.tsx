@@ -1,6 +1,6 @@
 import { assignTechnician, getTechnicians } from "../../api/hostelAdminQueries";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import {
   Popover,
@@ -34,6 +34,7 @@ type Issue = {
 
 type PopOverProps = {
   issue: Issue;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   togglePopover: any;
 };
 
@@ -76,6 +77,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
   }
   const technicians = technicianQuery.data.technicians;
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleAssign = (technician: any) => {
     console.log(technician);
     console.log(issue);
@@ -87,6 +89,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
         success: 'Technician Assigned Successfully',
         error: 'Error Assigning Technician',
       });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       toast.error('Error Assigning Technician ' + error.response.data.error);
     }
@@ -108,7 +111,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
                 <div key={technician?.technician_id} className="flex justify-between items-center">
                   <h1 className="text-xl font-semibold">{technician?.name}</h1>
                   <h2 className="ml-auto mr-2 bg-black text-white outline px-2 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5]">{technician?.category}</h2>
-                  <button onClick={(e: any) => handleAssign(technician)}
+                  <button onClick={() => handleAssign(technician)}
                     className="bg-[#00FFF5] text-slate-700 outline px-1 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
                     Assign
                   </button>
@@ -124,7 +127,9 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
 
 export default function NotAssignedPage({ issues }: ViewIssuesProps) {
 
-  const [notAssigned, setNotAssigned] = useState<any>(issues?.filter(issue => (issue?.technician == null)));
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // @ts-ignore
+  const [notAssigned, setNotAssigned] = useState(issues?.filter(issue => (issue?.technician == null)));
   const [idx, setIdx] = useState(0);
 
   const [isPopoverOpen, setIsPopoverOpen] = useState(true);

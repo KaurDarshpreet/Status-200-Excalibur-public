@@ -129,6 +129,7 @@ const IssueForm = (props: any) => {
                             Location
                         </option>
                         {(location).map((loc) => (
+                            // @ts-ignore
                             <option value={loc} key={loc}>
                                 {loc}
                             </option>

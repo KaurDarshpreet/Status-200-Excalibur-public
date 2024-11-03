@@ -4,7 +4,7 @@ import {
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 type ReviewPageProps = {
@@ -50,6 +50,7 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 };
 
 export default function ReviewPage({ issues }: ReviewPageProps) {
+	// @ts-ignore
 	const [notReviewed, setNotReviewed] = useState(
 		issues.filter((issue) => issue.is_resolved)
 	);

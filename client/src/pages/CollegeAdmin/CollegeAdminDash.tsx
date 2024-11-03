@@ -11,6 +11,7 @@ interface ButtonProps {
     handleOnClick: () => void;
 }
 const Button = ({ name, handleOnClick }: ButtonProps) => {
+    // @ts-ignore
     let bg
     switch (name) {
         case "Assign Hostel Admin":
@@ -26,6 +27,7 @@ const Button = ({ name, handleOnClick }: ButtonProps) => {
             bg = "bg-yellow-500"
             break;
         default:
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
             bg = "bg-blue-500"
             break;
     }

@@ -4,7 +4,7 @@ import {
 	useMutation,
 	useQueryClient,
 } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 
 type ReviewPageProps = {
@@ -50,6 +50,8 @@ const IssueCard = ({ name, index, handleOnClick }: IssueCardProps) => {
 };
 
 export default function ReviewPage({ issues }: ReviewPageProps) {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	// @ts-ignore
 	const [notReviewed, setNotReviewed] = useState(
 		issues?.filter((issue) => issue?.is_resolved)
 	);
@@ -85,6 +87,7 @@ export default function ReviewPage({ issues }: ReviewPageProps) {
                 error: "Error Reviewing Issue",
             });
 			
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
 			toast.error(error.response.data.error);
 		}

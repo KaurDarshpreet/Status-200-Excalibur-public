@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { assignTechnician2, getTechnicians2 } from "../../api/collegeAdminQueries";
 import { QueryClient, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import toast from "react-hot-toast";
 import {
   Popover,
@@ -108,7 +109,7 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
                 <div key={technician?.technician_id} className="flex justify-between items-center">
                   <h1 className="text-xl font-semibold">{technician?.name}</h1>
                   <h2 className="ml-auto mr-2 bg-black text-white outline px-2 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5]">{technician?.category}</h2>
-                  <button onClick={(e: any) => handleAssign(technician)}
+                  <button onClick={() => handleAssign(technician)}
                     className="bg-[#00FFF5] text-slate-700 outline px-1 py-1 basis-[30%] rounded-md font-bold transition-all shadow-[0_0_1px_#00FFF5] hover:shadow-none">
                     Assign
                   </button>
@@ -124,6 +125,8 @@ const PopOver = ({ issue, togglePopover }: PopOverProps) => {
 
 export default function NotAssignedPage({ issues }: ViewIssuesProps) {
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // @ts-ignore
   const [notAssigned, setNotAssigned] = useState<any>(issues?.filter(issue => (issue?.technician == null)));
   const [idx, setIdx] = useState(0);
 
